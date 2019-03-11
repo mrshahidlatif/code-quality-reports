@@ -105,9 +105,13 @@ function ScatterPlot(){
             .attr("cy", yMap)
             .style("fill", function(d) { return "steelblue";} )
             .on("mouseover", function(d) {
-               mouseover(d);
+                var lst = d.cname.split(".");
+                var className = lst[lst.length-1];
+               var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
+               $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
             })
             .on("mouseout", function(d) {
+                $("span.varStyle",window.parent.document).css( "background-color", "transparent");
                mouseout(d);
             });
 			/*

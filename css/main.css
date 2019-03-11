@@ -47,7 +47,7 @@ body {
 
 .quality{
     width: 60%;
-    height: 650px;
+    height: 50%;
     margin: 10px;
     margin-left: 0px;
     overflow: auto;
@@ -67,7 +67,7 @@ body {
 }
 
 .visualizations {
-    display: block;
+    display: inline-block;
     bottom: 30px;
     width: 53%;
     height: 36%;
@@ -122,7 +122,7 @@ body {
 }
 
 #scatterplot {
-    position: fixed;
+    /* position: fixed; */
     width: 35%;
     height: 100%;
     margin: 0px;
@@ -130,7 +130,7 @@ body {
     border: none;
 }
 #parallelplot {
-    width: 65%;
+    width: 60%;
     height: 100%;
     margin: 0px;
     padding-right: 0px;
