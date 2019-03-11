@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body style="text-align: justify; font-family: calibri;">
+
+<h1>Coupling between Objects</h1>
+
+<p>Coupling between objects (CBO) is a count of the number of classes that are coupled to a particular class i.e. where the methods of one class call the methods or access the variables of the other. These calls need to be counted in both directions so the CBO of class A is the size of the set of classes that class A references and those classes that reference class A. Since this is a set - each class is counted only once even if the reference operates in both directions i.e. if A references B and B references A, B is only counted once. </br></br>
+
+Increased coupling increases interclass dependancies, making the code less modular and less suitable for reuse. In other words if you wanted to package up the code for reuse you might end up having to include code that was not really fundamental to the core functionality.
+More coupling means that the code becomes more difficult to maintain since an alteration to code in one area runs a higher risk of affecting code in another (linked) area.
+The more links between classes the more complex the code and the more difficult it will be to test.
+The only consideration in calculating this metric is whether only the classes written for the project should be considered or whether library classes should be included. </br>
+
+</body>
+</html>

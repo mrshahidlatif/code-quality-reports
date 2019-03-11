@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
+<title>Parallelplot</title>
+<style>
+body {
+	font-family: calibri;
+	margin: 0px;
+	padding: 0px;
+}
+
+.text-center {
+	text-align: center;
+	margin: 6px 0;
+}
+
+#example {
+	height:230px;
+	width: 520px;
+}
+
+#example_container {
+	width: 520px;
+	height: 230px;
+	position: relative;
+	margin: auto;
+}
+
+#example {
+	width: 520px;
+	height: 230px;
+	position: absolute;
+}
+</style>
+
+<body>
+<div id="example_container">
+	<div id="example" class="parcoords"></div>
+</div>
+
+<script src="lib/jquery-2.2.2.min.js"></script>
+<script src="lib/d3.min.js"></script>
+<script src="lib/d3.parcoords.js"></script>
+
+<script>
+var pcz;
+
+// load csv file and create the chart
+function parallelplot(data) {
+	data.forEach(function(d, i){
+		delete d.cname;
+	});
+
+	var w = (data.columns.length)*44.55;
+	$("#example_container").css({width: w+"px"});
+	$("#example").css({width: w+"px"});
+
+  pcz = d3.parcoords()("#example")
+    .data(data)
+    .hideAxis(["name"])
+    .composite("darken")
+	.color(function(d) { return "steelblue"; })
+    .render()
+    .alpha(0.35)
+    .brushMode("1D-axes")  // enable brushing
+    .interactive()  // command line mode
+
+  // click label to activate coloring
+  pcz.svg.selectAll(".dimension")
+    .selectAll(".label")
+    .style("font-size", "14px");
+
+}
+
+function parallelfilter(dims) {
+	for(var dim in dims){
+		var domain = pcz.dimensions()[dim].yscale["domain"]();
+
+		if(dims[dim][0] == null){
+			dims[dim][0] = Math.min(domain[0], domain[1]);
+		}
+
+		if(dims[dim][1] == null){
+			dims[dim][1] = Math.max(domain[0], domain[1]);
+		}
+	}
+
+//	pcz.svg.selectAll(".dimension")
+//			.style("font-weight", "normal")
+//			.filter(function(d) { return !!dims[d]; })
+//			.style("font-weight", "bold");
+
+	pcz.brushReset();
+	pcz.brushExtents(dims);
+}
+
+
+window.parent._parallelplot = parallelplot;
+window.parent._parallelfilter = parallelfilter;
+</script>
+</body>
+</html>

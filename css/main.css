@@ -1,0 +1,311 @@
+body {
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 0px;
+    padding: 0px;
+    background-color:#F8F8F8;
+}
+
+#file-upload {
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    float: right;
+    color: black;
+}
+
+.heading{
+    position: fixed;
+    top:0px;
+    width: 100%;
+    height: 70px;
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #e8e8e8;
+    vertical-align: middle;
+}
+#title{
+    font-size: 26px;
+    font-weight: bold;
+}
+#subtitle{
+    font-size: 20px;
+    font-style: italic;
+}
+
+.main-container {
+    padding-top: 70px;
+    margin-left: 5% ;
+    margin-right: 5%;
+    display: flex;
+    width: 90%;
+    height: 100%;
+    background: #fff;
+    visibility: hidden;
+}
+
+.quality{
+    width: 60%;
+    height: 650px;
+    margin: 10px;
+    margin-left: 0px;
+    overflow: auto;
+    padding: 10px;
+    text-align: justify;
+}
+
+.code{
+    width: 40%;
+    height: 100%;
+    margin: 10px;
+    margin-right: 0px;
+    padding: 10px;
+    padding-top: 0px;
+    text-align: justify;
+
+}
+
+.visualizations {
+    display: block;
+    bottom: 30px;
+    width: 53%;
+    height: 36%;
+    position: fixed;
+    margin: 0px;
+    padding: 0px;
+    border: black solid 1px;
+    background-color: white;
+}
+.captionPP{
+    position: absolute;
+    top: 230px;
+    z-index: 10;
+    background-color: white;
+    width: 65%;
+    text-align: justify;
+}
+.captionSP{
+    position: absolute;
+    top: 305px;
+    z-index: 10;
+    background-color: white;
+    width: 32%;
+    left:67%;
+}
+.visualizations p{
+    font-size: 16px !important;
+}
+
+.text{
+    width: 80%;
+}
+.headlines{
+    width: 20%;
+}
+.main-container h3{
+    -webkit-margin-before: 0.5em;
+    -webkit-margin-after: 0.5em;
+    font-size: 19px;
+}
+.main-container h4{
+    display: inline;
+}
+
+.main-container p{
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: normal;
+
+}
+
+#scatterplot {
+    position: fixed;
+    width: 35%;
+    height: 100%;
+    margin: 0px;
+    padding-left: 20px;
+    border: none;
+}
+#parallelplot {
+    width: 65%;
+    height: 100%;
+    margin: 0px;
+    padding-right: 0px;
+    border: none;
+}
+
+
+.infoIcon :hover{
+    cursor: pointer;
+
+}
+
+#sourcecode {
+    width: 100%;
+    margin:  0px;
+    padding: 0px;
+    border: none;
+height: 850px;
+}
+
+.bar_1 .bar {
+    fill: #969696;
+}
+
+.bar_2 .bar {
+    fill: #969696;
+}
+
+.bar_3 .bar {
+    fill: #969696;
+}
+
+.bar_4 .bar{
+fill: #969696;
+}
+
+.bar_5 .bar{
+fill: #969696;
+}
+.bar_6 .bar{
+fill: #969696;
+}
+.bar_7 .bar{
+fill: #969696;
+}
+.bar_8 .bar{
+fill: #969696;
+}
+.bar_9 .bar{
+fill: #969696;
+}
+.bar_10 .bar{
+fill: #969696;
+}
+.bar_11 .bar{
+fill: #969696;
+}
+.bar_12 .bar{
+fill: #969696;
+}
+.bar_13 .bar{
+fill: #969696;
+}
+.bar_14 .bar{
+fill: #969696;
+}
+.bar_15 .bar{
+fill: #969696;
+}
+.bar_16 .bar{
+fill: #969696;
+}
+.bar_17 .bar{
+    fill: #969696;
+}
+
+.bad_1 {
+color: #0000EE;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bad_2 {
+color: #0000EE;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bad_3 {
+color: #0000EE;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bad_4 {
+    color: #0000EE;
+    cursor: pointer;
+    text-decoration: none;
+}
+.coupling_metric {
+    color: #0000EE;
+    cursor: pointer;
+    text-decoration: none;
+}
+a:link {
+text-decoration: none;
+color: black;
+}
+
+.collapsible {
+background-color: white;
+color: black;
+cursor: pointer;
+padding: 1px;
+border: none;
+text-align: left;
+outline: none;
+font-size: 14px;
+}
+
+.active{
+background-color: white;
+}
+.collapsible:hover {
+background-color: #777;
+}
+
+.content {
+padding: 5px 5px 5px 5px;
+font-size: 16px;
+/*display: none; content is hidden later using code*/
+overflow: auto;
+background-color: #f1f1f1;
+}
+
+.content p{
+    font-size: 16px;
+}
+
+.collapsible:after {
+content: '[\002B]';
+color: black;
+margin-left: 0px;
+}
+
+.active:after {
+content: "[\2212]";
+}
+
+/*can change the following css attributes for these classes specified in mysparklines.css*/
+div.sl {margin-top: 0px; margin-bottom: 0px; padding-top: 5px!important;}  /*applied to graph containers*/
+div.pckg>span.slcls {margin: 0 0 0 1px;}      /*applied to each bar*/
+div.pckg>div.lbl {border-left: dotted 2px #000; height: 10px;}  /*applied to package labels container*/
+div.pckg>div.lbl>span {font-size: 10px;}  /*applied to package labels text*/
+div.pckg:hover>div.lbl>span {font-weight: bold;}  /*applied to each package label on hover over package div*/
+/*can change this class or use another*/
+.hl {background-color: #ccc;} /*applied to bars on highlight*/
+
+::-webkit-scrollbar {
+width: 0.5em;
+height: 0.5em;
+}
+::-webkit-scrollbar-track {
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+background-color: lightgrey;
+outline: 1px solid slategrey;
+}
+
+.varStyle{
+    font-style: italic;
+}
+
+#DoDHeader{
+    font-size: 18px;
+}
