@@ -18,6 +18,12 @@ function ScatterPlot(){
     var width, height;
     var force;
 
+
+    var tooltip = d3.select('body',window.parent.document)
+        .append('div')
+        .attr('class', 'tooltip')
+        .style("opacity", 0);
+
     function clone(obj) {
         if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
             return obj;
@@ -109,10 +115,24 @@ function ScatterPlot(){
                 var className = lst[lst.length-1];
                var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
+
+               //Show the tooltip 
+               d3.select('.tooltip')
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(className)
+                .style("left", (d3.event.pageX + 5) + "px")
+                .style("top", (d3.event.pageY - 5) + "px");
             })
             .on("mouseout", function(d) {
                 $("span.varStyle",window.parent.document).css( "background-color", "transparent");
                mouseout(d);
+
+               //Hiding the tooltip
+               tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
             });
 			/*
 			svg.append("rect")

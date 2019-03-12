@@ -14,7 +14,7 @@
 
 <div class="heading">
     <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
-    <div id="title" style="margin-top:0px;">Exploranative Code Quality Document </div>
+    <div id="title" style="margin-top:0px;">Code Quality Documents </div>
     <div id="subtitle" style="margin-top:0px;"></div>
 </div>
 
@@ -23,8 +23,8 @@
   <hr style="margin:0em;">
 	<div class="main-container">
 		<div class="quality">
-      <div class="text">
-        <p id="reporttext"></p>
+      <div id="reporttext" class="text">
+        <!-- <p id="reporttext"></p> -->
       </div>
       <div class="headlines"></div>
     </div>
@@ -761,7 +761,7 @@ function bugText(){
 
   
   //visualizations
-  html += '<br><br>The sparklines below are created using values of the metrics respective to these four quality attributes. To add meaningful interpretation, the stacked-bar charts are structured with respect to packages. In addition, a parallel coordinates plot is provided to obtain the overview of the software metrics and explore correlations among them. It is also used for highlighting metrics related to bad smells.'
+  // html += '<br><br>The sparklines below are created using values of the metrics respective to these four quality attributes. To add meaningful interpretation, the stacked-bar charts are structured with respect to packages. In addition, a parallel coordinates plot is provided to obtain the overview of the software metrics and explore correlations among them. It is also used for highlighting metrics related to bad smells.'
   //<br><span class="bad_1">Blob</span> | <span class="bad_2">Functional Decomposition</span> | <span class="bad_3">Spaghetti Code</span> | <span class="bad_4">Lazy Class</span>'
 
 
