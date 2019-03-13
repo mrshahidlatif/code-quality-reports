@@ -1,8 +1,9 @@
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-top: 0px;
-    padding: 0px;
+    /* margin-top: 0px; */
+    /* padding: 0px; */
     background-color:#F8F8F8;
     font-size: 16px;
 }
@@ -20,14 +21,14 @@ body {
     position: fixed;
     top:0px;
     width: 100%;
-    height: 70px;
+    height: 60px;
     padding-left: 5%;
     padding-right: 5%;
     background-color: #e8e8e8;
     vertical-align: middle;
 }
 #title{
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
 }
 #subtitle{
@@ -36,7 +37,7 @@ body {
 }
 
 .main-container {
-    padding-top: 70px;
+    padding-top: 55px;
     margin-left: 5% ;
     margin-right: 5%;
     display: flex;
@@ -45,11 +46,20 @@ body {
     background: #fff;
     visibility: hidden;
 }
+.space {
+    /* position: absolute; */
+    top:0;
+    bottom:0;
+    width: 25px;
+    float: left;
+    /* height: 100vh; */
+    background-color: #F8F8F8;
+  }
 
 .quality{
     width: 60%;
     height: 50%;
-    margin: 10px;
+    /* margin: 10px; */
     margin-left: 0px;
     overflow: auto;
     padding: 10px;
@@ -70,7 +80,7 @@ body {
 .visualizations {
     display: inline-block;
     bottom: 30px;
-    width: 53%;
+    width: 52.5%;
     height: 35%;
     position: fixed;
     margin: 0px;
@@ -124,14 +134,14 @@ body {
 
 #scatterplot {
     /* position: fixed; */
-    width: 35%;
+    width: 30%;
     height: 100%;
     margin: 0px;
     padding-left: 20px;
     border: none;
 }
 #parallelplot {
-    width: 60%;
+    width: 68%;
     height: 100%;
     margin: 0px;
     padding-right: 0px;

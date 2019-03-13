@@ -9,7 +9,7 @@
 
 <style>
     body {
-		font-family: calibri;
+		font-family: 'Segoe UI';
 		margin: 0px;
         padding: 0px;
         width: 280px;
@@ -48,7 +48,8 @@
     }
     #controls{
         z-index: 10;
-        text-align: center;
+        text-align: left;
+        display:inline-block;
         margin: 5px;
         height: 30px;
         width: 280px;
@@ -153,13 +154,13 @@
     }
 
     function setup(data){
-        console.log(data);
+        // console.log(data);
         try {OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value);} catch(e){}
 
         d3.selectAll('#controls>*').remove();
 
         var xSpan = root.append('span')
-            .text('X-axis Metric: ');
+            .text('X-axis: ');
 
         var xInput = root.append('select')
             .attr('id','xSelect')
@@ -171,10 +172,10 @@
             .attr('value', function (d) { return d.text })
             .text(function (d) { return d.text ;});
 
-        root.append('br');
+        // root.append('br');
 
         var ySpan = root.append('span')
-            .text('Y-Axis Metric: ')
+            .text(' Y-Axis: ')
 
         var yInput = root.append('select')
             .attr('id','ySelect')
@@ -211,7 +212,7 @@
         
 
         d3.selectAll("#chart>*").remove();
-        var scatterplot = ScatterPlot().$el("#chart").size(215).threshold(12).margin(35).threshold(OUTLIER_THRESHOLD)
+        var scatterplot = ScatterPlot().$el("#chart").size(200).threshold(12).margin(35).threshold(OUTLIER_THRESHOLD)
             .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
                 tooltip.style("opacity", 1)
                     .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))
