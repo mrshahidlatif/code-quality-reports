@@ -109,8 +109,15 @@ function ScatterPlot(){
             .attr("r", 3)
             .attr("cx", xMap)
             .attr("cy", yMap)
+            .attr("id",function(d){
+                //adding class name to each dot DOM
+                var fName = d.cname.split(".")
+                var cName = fName[fName.length-1];
+                return cName;
+            })
             .style("fill", function(d) { return "steelblue";} )
             .on("mouseover", function(d) {
+                console.log(d);
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
                var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();

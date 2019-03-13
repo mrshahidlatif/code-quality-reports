@@ -78,12 +78,21 @@
      //linking bar in sparkline to corresponding dot in scatterplot
       //----------------------------------------------------------------------------
       $(".sl span").on('mouseover', function() {
+        //getting the class name of hovered bar
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-        console.log(clsName);
+        // console.log(clsName);
+        
+        //highlighting the class name in text
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#FFFF00");
-        xxx='';
-      }).on('mouseout', function(){
+
+        //Highlighting dot of the class in scatter plot 
+      // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
+        $("#scatterplot").contents().find("circle#"+clsName).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","2px");
+
+        }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "transparent");
+
+        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
       });
       //-----------------------------------------------------------------------------
   }
