@@ -23,8 +23,8 @@
   <hr style="margin:0em;">
 	<div class="main-container">
 		<div class="quality">
-      <div id="reporttext" class="text">
-        <!-- <p id="reporttext"></p> -->
+      <div class="text">
+        <p id="reporttext"></p>
       </div>
       <div class="headlines"></div>
     </div>
@@ -35,7 +35,7 @@
           <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
         </div>
         <div class="captionSP">
-            <p id=captionTextSP>Each point in the scatterplot represents a class in the project. Classes with bad smells are depicted in red, otherwise in blue.</p>
+            <p id=captionTextSP>Each dot in the scatterplot represents a class in the project.</p>
         </div>
     </div>
 
@@ -531,7 +531,8 @@ console.log(classesWithBadSmells);
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    text += 'This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
+    text += '<span class="varStyle">SAXException</span>' ;
+    text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
     return text;
   }
 
@@ -779,7 +780,7 @@ function bugText(){
 	$reporttext.html(html);
 
 	$("#reporttext a").click(function(){
-    $("#scatterplot").css({"height":"0px", "width":"0"});
+    // $("#scatterplot").css({"height":"0px", "width":"0"});
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
@@ -970,6 +971,7 @@ function bugText(){
 
 
 
+  
 	$("#sourcecode").height(($(".quality").height()-43));
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added

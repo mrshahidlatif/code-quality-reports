@@ -74,8 +74,24 @@
     });
 
   }
+  function addLinking(){
+     //linking bar in sparkline to corresponding dot in scatterplot
+      //----------------------------------------------------------------------------
+      $(".sl span").on('mouseover', function() {
+        var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
+        console.log(clsName);
+        $("span.varStyle:contains("+ clsName +")").css( "background-color", "#FFFF00");
+        xxx='';
+      }).on('mouseout', function(){
+        $("span.varStyle").css( "background-color", "transparent");
+      });
+      //-----------------------------------------------------------------------------
+  }
   function addHLeffects() {  //add and remove highlight on corresponding bars
-    $(".sl span").on('mouseover', function() { $(".sl span[data-bar="+$(this).attr('data-bar')+"]").addClass(settings.HLclass); })
+    $(".sl span").on('mouseover', function() { 
+      $(".sl span[data-bar="+$(this).attr('data-bar')+"]").addClass(settings.HLclass);
+      // alert($(".sl span[data-bar="+$(this).attr('data-bar')+"]").html());
+    })
                  .on('mouseout', function() { $(".sl span[data-bar="+$(this).attr('data-bar')+"]").removeClass(settings.HLclass); });
   }
   function slToolTip(slel, flds) {  //create and store tooltip for bar if not set already and return it
@@ -137,6 +153,8 @@
     newlbls.css('visibility', 'visible');
     $("span.slcls").css("width", settings.slopts[0].barWidth+"px"); //span containing bar for a class cannot exceed bar width
     addHLeffects();
+    addLinking();
+
   }
   function updateminmax(slidx, a) {  //update the relevant minmax array
     min = max = 0;

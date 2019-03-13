@@ -44,7 +44,6 @@ body {
     height: 100%;
     background: #fff;
     visibility: hidden;
-    display: flex;
 }
 
 .quality{
@@ -72,7 +71,7 @@ body {
     display: inline-block;
     bottom: 30px;
     width: 53%;
-    height: 36%;
+    height: 35%;
     position: fixed;
     margin: 0px;
     padding: 0px;
@@ -96,7 +95,7 @@ body {
     left:67%;
 }
 .visualizations p{
-    font-size: 16px !important;
+    font-size: 12px !important;
 }
 
 .text{
