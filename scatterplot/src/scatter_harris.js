@@ -5,7 +5,8 @@ function ScatterPlot(){
     var colorAcessor = null;
     var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
     var data;
-    var dimensions = [], excluded_dimensions = ["cname", "index", "neighbors"];
+    //not used parameters : 
+    var dimensions = [], excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"];
     var dotRadius = 3;
     var mouseout = function(d,i){};
     var mouseover = function(d,i){};

@@ -50,6 +50,14 @@ var pcz;
 function parallelplot(data) {
 	data.forEach(function(d, i){
 		delete d.cname;
+		delete d.rfc;
+		delete d.dam;
+		delete d.moa;
+		delete d.mfa;
+		delete d.cam;
+		delete d.ic;
+		delete d.cbm;
+		delete d.avg_cc;
 	});
 
 	var w = (data.columns.length)*44.55;
