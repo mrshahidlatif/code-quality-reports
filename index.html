@@ -103,7 +103,7 @@ function handleFileSelect(event) {
                   slids: ['samplsl1','samplsl2', 'samplsl3', 'samplsl4'],     //pass ids for containers of first and second graph, dafaults to ['sl1', 'sl2']
                   sldef: ['cbo,ca,ce', 'wmc,max_cc', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs, defaults to ['cbo,ca,ce', 'wmc,max_cc']
                   slopts: [
-                            {height: 40}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
+                            {height: 25}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
                             //pass options specfic to each sl if required, in order
                             {stackedBarColor: ['#238b45','#66c2a4','#b2e2e2']},
                             {stackedBarColor: ['#2b8cbe','#7bccc4']},
@@ -481,7 +481,7 @@ console.log(classesWithBadSmells);
   numberOfPackages = packages.length;
   result = stringify(structurize(paths)).join("\n");
   // console.log(result);
-  
+
   function printList(list){
     // array argument
     var s="";
@@ -521,7 +521,7 @@ console.log(classesWithBadSmells);
   html += generalQualtiyText();
   html += badSmellsText();
   html += bugText();
-  
+
   function introText(){
     var text = "";
     if(projectName.includes("xerces")) {
@@ -607,7 +607,7 @@ console.log(classesWithBadSmells);
   }
   return text;
   }
-  
+
   function NoOfBadSmells(list){
     for(var i=0;i<list.length;i++){
       if(list[i].badSmells.length == 4)
@@ -678,7 +678,7 @@ console.log(classesWithBadSmells);
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;
   }
- 
+
 //bugs report
 function NoOfBugSmells(list){
     for(var i=0; i<list.length; i++){
@@ -702,7 +702,7 @@ function NoOfBugSmells(list){
       c.push(list[i].name);
     }
     return c;
-  }  
+  }
 
 
 function bugText(){
@@ -722,14 +722,14 @@ function bugText(){
       text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' carries' : ' The classes ' + printItalicList(d) + ' carry' ;
       text += ' both bugs and bad smells.';
     }
-    
+
   }
-  
+
   return text;
 }
 
- 
-  
+
+
   // if((bugCt/classCt) >= 0.15){
   //   html+= ' Most of the classes in <i>PROJECTNAME</i> carry a large number of bugs. We found BUGCT classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(bugArr) + '.</p></div> having large number of bugs.'
   // }
@@ -760,7 +760,7 @@ function bugText(){
   //   }
   // }
 
-  
+
   //visualizations
   // html += '<br><br>The sparklines below are created using values of the metrics respective to these four quality attributes. To add meaningful interpretation, the stacked-bar charts are structured with respect to packages. In addition, a parallel coordinates plot is provided to obtain the overview of the software metrics and explore correlations among them. It is also used for highlighting metrics related to bad smells.'
   //<br><span class="bad_1">Blob</span> | <span class="bad_2">Functional Decomposition</span> | <span class="bad_3">Spaghetti Code</span> | <span class="bad_4">Lazy Class</span>'
@@ -971,7 +971,7 @@ function bugText(){
 
 
 
-  
+
 	$("#sourcecode").height(($(".quality").height()-43));
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added

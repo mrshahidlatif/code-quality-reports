@@ -13,8 +13,8 @@
                               {                         //options for all sls
                                 type: 'bar',
                                 disableHiddenCheck: true,
-                                height: 50,
-                                barWidth: 4,
+                                height: 25,
+                                barWidth: 3.5,
                                 tooltipFormatter: function(sl, opts, flds) { return slToolTip(sl.$el, flds); },
                               },
                               //additional options objects here will apply to each sl
@@ -81,11 +81,11 @@
         //getting the class name of hovered bar
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
         // console.log(clsName);
-        
+
         //highlighting the class name in text
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#FFFF00");
 
-        //Highlighting dot of the class in scatter plot 
+        //Highlighting dot of the class in scatter plot
       // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","2px");
 
@@ -97,7 +97,7 @@
       //-----------------------------------------------------------------------------
   }
   function addHLeffects() {  //add and remove highlight on corresponding bars
-    $(".sl span").on('mouseover', function() { 
+    $(".sl span").on('mouseover', function() {
       $(".sl span[data-bar="+$(this).attr('data-bar')+"]").addClass(settings.HLclass);
       // alert($(".sl span[data-bar="+$(this).attr('data-bar')+"]").html());
     })
