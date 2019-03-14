@@ -120,13 +120,12 @@ function ScatterPlot(){
             })
             .style("fill", function(d) { return "steelblue";} )
             .on("mouseover", function(d) {
-                console.log(d);
+                // console.log(d);
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
-               var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
-               $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
-
-               //Show the tooltip
+                var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
+                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
+               //Show the new tooltip
                d3.select('.tooltip')
                 tooltip.transition()
                     .duration(200)
@@ -134,10 +133,17 @@ function ScatterPlot(){
                 tooltip.html(className)
                 .style("left", (d3.event.pageX + 5) + "px")
                 .style("top", (d3.event.pageY - 5) + "px");
+
+                //Highlighting corresponding bar in the sparklines 
+                var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
+                $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
+                console.log(xxx);
             })
             .on("mouseout", function(d) {
                 $("span.varStyle",window.parent.document).css( "background-color", "transparent");
-               mouseout(d);
+                $("span.slcls",window.parent.document).css('background','transparent');
+               
+                mouseout(d);
 
                //Hiding the tooltip
                tooltip.transition()

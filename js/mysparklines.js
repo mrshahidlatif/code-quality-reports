@@ -79,8 +79,9 @@
       //----------------------------------------------------------------------------
       $(".sl span").on('mouseover', function() {
         //getting the class name of hovered bar
+        // console.log($(this));
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-        // console.log(clsName);
+        console.log($(".sl span[data-bar="+$(this).attr('data-bar')+"]"));
         
         //highlighting the class name in text
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#FFFF00");
@@ -101,7 +102,7 @@
       $(".sl span[data-bar="+$(this).attr('data-bar')+"]").addClass(settings.HLclass);
       // alert($(".sl span[data-bar="+$(this).attr('data-bar')+"]").html());
     })
-                 .on('mouseout', function() { $(".sl span[data-bar="+$(this).attr('data-bar')+"]").removeClass(settings.HLclass); });
+      .on('mouseout', function() { $(".sl span[data-bar="+$(this).attr('data-bar')+"]").removeClass(settings.HLclass); });
   }
   function slToolTip(slel, flds) {  //create and store tooltip for bar if not set already and return it
     var tt = slel.data('sltooltip');
