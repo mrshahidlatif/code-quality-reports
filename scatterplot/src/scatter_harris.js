@@ -5,7 +5,7 @@ function ScatterPlot(){
     var colorAcessor = null;
     var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
     var data;
-    //not used parameters : 
+    //not used parameters :
     var dimensions = [], excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"];
     var dotRadius = 3;
     var mouseout = function(d,i){};
@@ -78,7 +78,8 @@ function ScatterPlot(){
         root.append("g")
             .attr("class", "axis x-axis")
             .attr("transform", "translate( 0, " +size+")") // move axis to bottom of chart
-            .call(d3.axisBottom(xScale));
+            .call(d3.axisBottom(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
+          }));
 
         // x-axis label
         root.append("text")
@@ -92,7 +93,8 @@ function ScatterPlot(){
         root.append("g")
             .attr("class", "axis y-axis")
             .attr("transform", "translate("+ 0 + ",0)") // move axis to bottom of chart
-            .call(d3.axisLeft(yScale));
+            .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
+          }));
 
         // y-axis label
         root.append("text")
@@ -124,7 +126,7 @@ function ScatterPlot(){
                var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
 
-               //Show the tooltip 
+               //Show the tooltip
                d3.select('.tooltip')
                 tooltip.transition()
                     .duration(200)
@@ -211,7 +213,7 @@ function ScatterPlot(){
             }
 
         });
-        
+
 
         window.makeAnnotations = d3.annotation()
             .type(d3.annotationLabel)
