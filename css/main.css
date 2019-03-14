@@ -294,7 +294,7 @@ content: "[\2212]";
 /*can change the following css attributes for these classes specified in mysparklines.css*/
 div.sl {margin-top: 0px; margin-bottom: 0px; padding-top: 5px!important;}  /*applied to graph containers*/
 div.pckg>span.slcls {margin: 0 0 0 1px;}      /*applied to each bar*/
-div.pckg>div.lbl {border-left: dotted 2px #000; height: 10px;}  /*applied to package labels container*/
+div.pckg>div.lbl {border-left: solid 1px #000; height: 10px;}  /*applied to package labels container*/
 div.pckg>div.lbl>span {font-size: 10px;}  /*applied to package labels text*/
 div.pckg:hover>div.lbl>span {font-weight: bold;}  /*applied to each package label on hover over package div*/
 /*can change this class or use another*/
