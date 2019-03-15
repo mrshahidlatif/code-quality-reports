@@ -12,15 +12,14 @@
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
   </header>
 
-<div class="heading">
+<!-- <div class="heading">
     <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
     <div id="title" style="margin-top:0px;">Code Quality Documents </div>
     <div id="subtitle" style="margin-top:0px;"></div>
-</div>
+</div> -->
 
 <body>
-
-  <hr style="margin:0em;">
+  <!-- <hr style="margin:0em;">
 	<div class="main-container">
 		<div class="quality">
       <div class="text">
@@ -43,7 +42,39 @@
 			<h3 id="DoDHeader"></h3>
     		<iframe id="sourcecode"></iframe>
 		</div>
-	</div>
+  </div> -->
+  <div class="grid-container">
+    <div class="header">
+      <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
+      <div id="title" style="margin-top:0px;">Code Quality Documents </div>
+      <div id="subtitle" style="margin-top:0px;"></div>
+    </div>
+    <div class="text">
+      <div class="quality">
+          <p id="reporttext"></p>
+      </div>
+    </div>
+    <div class="vis">
+        <!-- <div class="visualizations"> -->
+            <iframe id="parallelplot"></iframe>
+            <iframe id="scatterplot"></iframe>
+            <!-- <div class="captionPP">
+              <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
+            </div>
+            <div class="captionSP">
+                <p id=captionTextSP>Each dot in the scatterplot represents a class in the project.</p>
+            </div> -->
+          <!-- </div> -->
+    </div>  
+    <div class="details">
+      <div class="code">
+        <h3 id="DoDHeader"></h3>
+        <iframe id="sourcecode"></iframe>
+      </div>
+    </div>
+    <div class="foot">Footer
+    </div>
+  </div>
 </body>
 <script type="text/javascript">
 window._scatterplot = function(){};
@@ -78,7 +109,7 @@ function handleFileSelect(event) {
 		alert('The File APIs are not fully supported in this browser.');
 	}
 
-	$(".main-container").css({visibility: "hidden"});
+	$(".text").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
 	$("#parallelplot").attr("src", "");
 	$("#sourcecode").attr("src", "");
@@ -114,7 +145,7 @@ function handleFileSelect(event) {
                   //HLclass: 'hl',                       //pass class used to high  //function to run on success, null by defaultlight linked bar, defaults to 'hl'
                   fn_wrapup: function() {   //function to run on success, null by default
                                       $(".content").hide();
-                                      $(".main-container").css({visibility: "visible"});
+                                      $(".text").css({visibility: "visible"});
                                      }
                  }
   //end of modified
