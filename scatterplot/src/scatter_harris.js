@@ -135,14 +135,24 @@ function ScatterPlot(){
                 .style("top", (d3.event.pageY - 5) + "px");
 
                 //Highlighting corresponding bar in the sparklines 
-                var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
+                // var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
                 $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
-                console.log(xxx);
+                // console.log(xxx);
+                //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+                var d = window.parent.fullData;
+                for(var i=0; i<d.length;i++){
+                    if(d[i] != undefined && d[i].cname.includes(className)){
+                        // console.log(d[i]);
+                        window.parent._highlightEdge(d[i]);
+                    }
+                }
+                // console.log(window.parent.fullData);
+
             })
             .on("mouseout", function(d) {
                 $("span.varStyle",window.parent.document).css( "background-color", "transparent");
                 $("span.slcls",window.parent.document).css('background','transparent');
-               
+                window.parent._unHighlight();
                 mouseout(d);
 
                //Hiding the tooltip

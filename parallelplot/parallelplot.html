@@ -59,26 +59,48 @@ function parallelplot(data) {
 		delete d.cbm;
 		delete d.avg_cc;
 	});
+	// console.log(data[0]);
 
 	var w = (data.columns.length)*44.55;
 	$("#example_container").css({width: w+"px"});
 	$("#example").css({width: w+"px"});
-
   pcz = d3.parcoords()("#example")
     .data(data)
     .hideAxis(["name"])
     .composite("darken")
-	.color(function(d) { return "steelblue"; })
+		.color(function(d) { return "steelblue"; })
     .render()
     .alpha(0.35)
     .brushMode("1D-axes")  // enable brushing
-    .interactive()  // command line mode
-
+		.interactive(); // command line mode
+		
   // click label to activate coloring
   pcz.svg.selectAll(".dimension")
     .selectAll(".label")
-    .style("font-size", "14px");
+		.style("font-size", "14px");
 
+}
+function unHighlight(){
+	//clearing the highlighting
+	pcz.clear('highlight');
+	d3.select("canvas.foreground.faded").classed("faded", false);
+}
+function highlightEdge(d){
+	// console.log(d);
+		var classData = {amc: d.amc,
+										bug: d.bug,
+										ca: d.ca,
+										cbo: d.cbo,
+										ce: d.ce,
+										dit: d.dit,
+										lcom: d.lcom,
+										lcom3: d.lcom3,
+										loc: d.loc,
+										max_cc: d.max_cc,
+										noc: d.noc,
+										npm: d.npm,
+										wmc: d.wmc};
+	pcz.highlight([classData]).color('#FFFF00');
 }
 
 function parallelfilter(dims) {
@@ -105,6 +127,9 @@ function parallelfilter(dims) {
 
 window.parent._parallelplot = parallelplot;
 window.parent._parallelfilter = parallelfilter;
+window.parent._highlightEdge = highlightEdge;
+window.parent._unHighlight = unHighlight;
+
 </script>
 </body>
 </html>

@@ -49,6 +49,7 @@
 window._scatterplot = function(){};
 window._parallelplot = function(){};
 var projectName = "";
+var fullData;
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -120,7 +121,9 @@ function handleFileSelect(event) {
 }
 
 function generateReport(){
-	var data = clone(_chartdata);
+  var data = clone(_chartdata);
+  //making data available to all files
+  fullData = data;
 
 	data.forEach(function(d, i){
 		d.index = i;
@@ -219,7 +222,7 @@ function generateReport(){
       classesWithBadSmells.push(badClass);
     }
 
-console.log(classesWithBadSmells);
+// console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
       goodCouplingArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
@@ -904,7 +907,7 @@ function bugText(){
 			dims[LOC_S] = [1500, null];
 			dims[AMC_S] = [129, null];
 
-			window._parallelfilter(dims);
+      window._parallelfilter(dims);
 		}
 	});
 
