@@ -90,10 +90,19 @@
       // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","2px");
 
+      //Highlight corresponding edge in parallel coordinates
+      var d = window.parent.fullData;
+      for(var i=0; i<d.length;i++){
+          if(d[i] != undefined && d[i].cname.includes(clsName)){
+              // console.log(d[i]);
+              window.parent._highlightEdge(d[i]);
+          }
+      }
+
         }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "transparent");
-
         $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+        window.parent._unHighlight();
       });
       //-----------------------------------------------------------------------------
   }
