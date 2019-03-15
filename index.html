@@ -1057,9 +1057,21 @@ $(document).on("mouseover", ".varStyle", function() {
     $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
     $("#scatterplot").contents().find("circle#"+className).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
 
+    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+    var d = window.parent.fullData;
+            for(var i=0; i<d.length;i++){
+                if(d[i] != undefined && d[i].cname.includes(className)){
+                    // console.log(d[i]);
+                    window.parent._highlightEdge(d[i]);
+                }
+            }
+
  }).on('mouseout', '.varStyle', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
+    
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+
+    window.parent._unHighlight();
  });
 
 </script>
