@@ -1051,6 +1051,14 @@ function num2word(n){
   else return n;
 }
 
+//Highlighting corresponding element of vis on hovering class name in text
+$(document).on("mouseover", ".varStyle", function() {
+    var className = $(this).text();
+    $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
+
+ }).on('mouseout', '.varStyle', function() {
+    $("span.slcls",window.parent.document).css('background','transparent'); 
+ });
 
 </script>
 </html>

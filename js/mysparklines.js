@@ -81,7 +81,7 @@
         //getting the class name of hovered bar
         // console.log($(this));
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-        console.log($(".sl span[data-bar="+$(this).attr('data-bar')+"]"));
+        // console.log($(".sl span[data-bar="+$(this).attr('data-bar')+"]"));
         
         //highlighting the class name in text
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#FFFF00");

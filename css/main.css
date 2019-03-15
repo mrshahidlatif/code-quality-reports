@@ -315,6 +315,7 @@ outline: 1px solid slategrey;
 
 .varStyle{
     font-style: italic;
+    cursor: pointer;
 }
 
 #DoDHeader{

@@ -83,6 +83,7 @@ function parallelplot(data) {
 function unHighlight(){
 	//clearing the highlighting
 	pcz.unhighlight();
+	// pcz.color(function(d) { return "steelblue"; });
 	// pcz.clear('highlight');
 	// d3.select("canvas.foreground.faded").classed("faded", false);
 }
@@ -101,7 +102,8 @@ function highlightEdge(d){
 										noc: d.noc,
 										npm: d.npm,
 										wmc: d.wmc};
-	pcz.highlight([classData]);//.color('#FFFF00');
+	pcz.highlight([classData]);
+	// .color("#FFFF00");
 }
 
 function parallelfilter(dims) {

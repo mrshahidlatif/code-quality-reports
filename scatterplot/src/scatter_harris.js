@@ -138,6 +138,7 @@ function ScatterPlot(){
                 // var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
                 $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
                 // console.log(xxx);
+                
                 //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
                 var d = window.parent.fullData;
                 for(var i=0; i<d.length;i++){
