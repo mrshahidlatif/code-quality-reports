@@ -1055,9 +1055,11 @@ function num2word(n){
 $(document).on("mouseover", ".varStyle", function() {
     var className = $(this).text();
     $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
+    $("#scatterplot").contents().find("circle#"+className).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
 
  }).on('mouseout', '.varStyle', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
+    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
  });
 
 </script>

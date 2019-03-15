@@ -88,7 +88,7 @@
 
         //Highlighting dot of the class in scatter plot
       // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
-        $("#scatterplot").contents().find("circle#"+clsName).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","2px");
+        $("#scatterplot").contents().find("circle#"+clsName).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
 
       //Highlight corresponding edge in parallel coordinates
       var d = window.parent.fullData;
