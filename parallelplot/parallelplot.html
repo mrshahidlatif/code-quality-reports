@@ -70,7 +70,7 @@ function parallelplot(data) {
     .composite("darken")
 		.color(function(d) { return "steelblue"; })
     .render()
-    .alpha(0.35)
+    // .alpha(0.35)
     .brushMode("1D-axes")  // enable brushing
 		.interactive(); // command line mode
 		
@@ -82,8 +82,9 @@ function parallelplot(data) {
 }
 function unHighlight(){
 	//clearing the highlighting
-	pcz.clear('highlight');
-	d3.select("canvas.foreground.faded").classed("faded", false);
+	pcz.unhighlight();
+	// pcz.clear('highlight');
+	// d3.select("canvas.foreground.faded").classed("faded", false);
 }
 function highlightEdge(d){
 	// console.log(d);
@@ -100,7 +101,7 @@ function highlightEdge(d){
 										noc: d.noc,
 										npm: d.npm,
 										wmc: d.wmc};
-	pcz.highlight([classData]).color('#FFFF00');
+	pcz.highlight([classData]);//.color('#FFFF00');
 }
 
 function parallelfilter(dims) {
