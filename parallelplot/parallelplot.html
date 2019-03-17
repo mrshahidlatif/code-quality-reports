@@ -44,7 +44,7 @@ var pcz;
 // load csv file and create the chart
 function parallelplot(data) {
 	data.forEach(function(d, i){
-		delete d.cname;
+		// delete d.cname;
 		delete d.rfc;
 		delete d.dam;
 		delete d.moa;
@@ -63,11 +63,38 @@ function parallelplot(data) {
     .data(data)
     .hideAxis(["name"])
     .composite("darken")
-		.color(function(d) { return "steelblue"; })
+		.color(function(d) {
+			var className = d.cname.split(".").pop();
+			console.log(className);
+			var data = window.parent.badClasses;
+			for (var i=0;i<data.length;i++){
+				if (data[i].name == className){
+					if (data[i].badSmells.length != 0){
+						if(data[i].badSmells.includes('blob')){
+							return 'red';
+						}
+						else if (data[i].badSmells.includes('functional decomposition')){
+							return 'green';
+						}
+						else if (data[i].badSmells.includes('spaghetti code')){
+							return 'orange';
+						}
+						else if (data[i].badSmells.includes('lazy class')){
+							return 'violet';
+						}
+					}
+					else return "steelblue";
+				}
+			}
+			 
+		})
+		.hideAxis(['cname'])
     .render()
     // .alpha(0.35)
     .brushMode("1D-axes")  // enable brushing
 		.interactive(); // command line mode
+
+		// pcz.hideAxis(['cname']);
 		
   // click label to activate coloring
   pcz.svg.selectAll(".dimension")
@@ -84,7 +111,8 @@ function unHighlight(){
 }
 function highlightEdge(d){
 	// console.log(d);
-		var classData = {amc: d.amc,
+		var classData = {cname:d.cname,
+										amc: d.amc,
 										bug: d.bug,
 										ca: d.ca,
 										cbo: d.cbo,

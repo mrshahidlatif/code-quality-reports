@@ -82,6 +82,7 @@ window._scatterplot = function(){};
 window._parallelplot = function(){};
 var projectName = "";
 var fullData;
+var badClasses;
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -253,7 +254,7 @@ function generateReport(){
       badClass.bug = d.bug;
       classesWithBadSmells.push(badClass);
     }
-
+    badClasses = classesWithBadSmells;
 // console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
