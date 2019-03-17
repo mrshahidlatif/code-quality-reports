@@ -2,11 +2,8 @@
 body {
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* margin-top: 0px; */
-    /* padding: 0px; */
-    background-color:#e2e2e2;
     font-size: 16px;
-    margin: 0; height: 100%; overflow: hidden;
+    height: 100%; overflow: hidden;
 }
 
 /* Trying new layout */
@@ -15,34 +12,36 @@ body {
     grid-area: header;
     top:0px;
     width: 100%;
-    height: 10vh;
+    height: 50px;
     padding-left: 5%;
     padding-right: 5%;
-    vertical-align: top;
 
 }
 .text {grid-area: main; 
     background: #fff;
     /* visibility: hidden; */
     width: 70vw;
-    height:50vh;
-    margin-top:70px;
+    height:55vh;
+    margin-top:5vh;
     overflow:auto;
 }
 .vis{
     grid-area: vis; 
     width: 70vw;
     height:35vh;
+    /* display: inline-block; */
 }
 .details { grid-area: right; 
     width: 25vw;
-    margin-top:70px;
+    margin-top:5vh;
     margin-right: 2vw;
     overflow:auto;
 }
 .foot { grid-area: footer;
     width:100vw;
-    height: 2vh;
+    height: 10px;
+    position:fixed;
+    bottom:0px;
  }
 
 .grid-container {
@@ -60,7 +59,7 @@ body {
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: left;
-  padding: 20px 0;
+  padding: 0px 0;
   font-size: 14px;
 }
 /* ending new layout */
@@ -75,11 +74,11 @@ body {
 }
 
 #title{
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
 }
 #subtitle{
-    font-size: 20px;
+    font-size: 18px;
     font-style: italic;
 }
 
@@ -114,22 +113,6 @@ body {
 
 }
 
-.captionPP{
-    position: absolute;
-    top: 230px;
-    z-index: 10;
-    background-color: white;
-    width: 65%;
-    text-align: justify;
-}
-.captionSP{
-    position: absolute;
-    top: 305px;
-    z-index: 10;
-    background-color: white;
-    width: 32%;
-    left:67%;
-}
 
 .main-container h3{
     -webkit-margin-before: 0.5em;
@@ -150,19 +133,12 @@ body {
 } */
 
 #scatterplot {
-    /* position: fixed; */
-    width: 30%;
-    height: 100%;
-    margin: 0px;
-    padding-left: 20px;
-    border: none;
+   width:30%; 
+   height:80%; 
 }
 #parallelplot {
-    width: 68%;
-    height: 100%;
-    margin: 0px;
-    padding-right: 0px;
-    border: none;
+    width: 69%; 
+    height: 80%; 
 }
 .infoIcon :hover{
     cursor: pointer;
@@ -233,32 +209,28 @@ fill: #969696;
 }
 
 .bad_1 {
-color: #0000EE;
-    cursor: pointer;
-    text-decoration: none;
+    border-bottom: 1px dashed #999;
 }
 
 .bad_2 {
-color: #0000EE;
-    cursor: pointer;
-    text-decoration: none;
+    border-bottom: 1px dashed #999;
 }
 
 .bad_3 {
-color: #0000EE;
-    cursor: pointer;
-    text-decoration: none;
+    border-bottom: 1px dashed #999;
 }
 
 .bad_4 {
-    color: #0000EE;
-    cursor: pointer;
-    text-decoration: none;
+    border-bottom: 1px dashed #999;
 }
 .coupling_metric {
-    color: #0000EE;
+    border-bottom: 1px dashed #999;
+    
+}
+
+.bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover, .coupling_metric:hover{
     cursor: pointer;
-    text-decoration: none;
+    font-weight: bold;
 }
 a:link {
 text-decoration: none;
@@ -328,8 +300,12 @@ outline: 1px solid slategrey;
 }
 
 .varStyle{
-    font-style: italic;
+    border-bottom: 1px dashed #999;
+}
+
+.varStyle:hover{
     cursor: pointer;
+    font-weight: bold;
 }
 
 #DoDHeader{

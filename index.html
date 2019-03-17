@@ -46,8 +46,8 @@
   <div class="grid-container">
     <div class="header">
       <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
-      <div id="title" style="margin-top:0px;">Code Quality Documents </div>
-      <div id="subtitle" style="margin-top:0px;"></div>
+      <div id="title">Code Quality Documents </div>
+      <div id="subtitle" ></div>
     </div>
     <div class="text">
       <div class="quality">
@@ -55,9 +55,10 @@
       </div>
     </div>
     <div class="vis">
-        <!-- <div class="visualizations"> -->
-            <iframe id="parallelplot"></iframe>
-            <iframe id="scatterplot"></iframe>
+        <!-- <div class="visualizations"> --> 
+        <iframe id="parallelplot"></iframe>
+        <iframe id="scatterplot"></iframe>
+    
             <!-- <div class="captionPP">
               <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
             </div>
@@ -72,7 +73,7 @@
         <iframe id="sourcecode"></iframe>
       </div>
     </div>
-    <div class="foot">Footer
+    <div class="foot">
     </div>
   </div>
 </body>
@@ -704,10 +705,10 @@ function generateReport(){
     var c = NoOfBadSmells(classesWithBadSmells);
     if (c != undefined){ text += ' For instance, <span class="varStyle">'+ c.name + '</span> has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; }
     if(highblobCt == 1){
-      text += ' Comparatively high metric value of <span class="varStyle">lines of code</span> indicates worse quality in HIGHBLOB.'
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.';
     }
     if(highblobCt > 1){
-      text += ' Comparatively high metric value of <span class="varStyle">lines of code</span> indicates worse quality in HIGHBLOB.'
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.'
     }
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;

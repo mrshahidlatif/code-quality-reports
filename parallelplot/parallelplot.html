@@ -15,11 +15,6 @@ body {
 	margin: 6px 0;
 }
 
-#example {
-	height:230px;
-	width: 520px;
-}
-
 #example_container {
 	width: 520px;
 	height: 230px;
@@ -61,7 +56,7 @@ function parallelplot(data) {
 	});
 	// console.log(data[0]);
 
-	var w = (data.columns.length)*44.55;
+	var w = (data.columns.length)*32.55;
 	$("#example_container").css({width: w+"px"});
 	$("#example").css({width: w+"px"});
   pcz = d3.parcoords()("#example")
