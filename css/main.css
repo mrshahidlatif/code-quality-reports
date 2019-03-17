@@ -30,6 +30,7 @@ body {
     width: 70vw;
     height:35vh;
     /* display: inline-block; */
+    position: relative;
 }
 .details { grid-area: right; 
     width: 25vw;
@@ -72,6 +73,13 @@ body {
     float: right;
     color: black;
 }
+
+.vis div {
+    position: absolute;
+    width: 68%;
+    top: 80%;
+    left:0;
+ }
 
 #title{
     font-size: 20px;
@@ -311,3 +319,30 @@ outline: 1px solid slategrey;
 #DoDHeader{
     font-size: 18px;
 }
+
+.blobCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid red;
+    display: inline-block;
+}
+.FDCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid blue;
+    display: inline-block;
+}
+.SCCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid orange;
+    display: inline-block;
+}
+.LCCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid violet;
+    display: inline-block;
+}
+.NoBSCap{
+    border-top: 2px solid steelblue;
+    display: inline-block;
+}
+
+

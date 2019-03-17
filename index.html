@@ -58,7 +58,7 @@
         <!-- <div class="visualizations"> --> 
         <iframe id="parallelplot"></iframe>
         <iframe id="scatterplot"></iframe>
-    
+        <div id="captionPP"></div>
             <!-- <div class="captionPP">
               <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
             </div>
@@ -557,6 +557,7 @@ function generateReport(){
   html += generalQualtiyText();
   html += badSmellsText();
   html += bugText();
+  $("#captionPP").html(generatePPCaption());
 
   function introText(){
     var text = "";
@@ -714,6 +715,22 @@ function generateReport(){
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;
   }
+
+function generatePPCaption(){
+  var legend = [];
+  var caption = 'The Parallel Coordinates provides an overview of the software quality metrics. Each line represents a class. Classes with bad smells: ';
+  
+  if ($("#parallelplot")[0].contentWindow.isBlob) legend.push('<span class="blobCap">Blob</span>');
+  if ($("#parallelplot")[0].contentWindow.isFD) legend.push('<span class="FDCap">Functional decomposition</span>');
+  if ($("#parallelplot")[0].contentWindow.isSC) legend.push('<span class="SCCap">Spaghetti class</span>');
+  if ($("#parallelplot")[0].contentWindow.isLC) legend.push('<span class="LCCap">Lazy class</span>');
+  legend.push('<span class="NoBSCap">No</span>');
+  caption += printList(legend);
+  // console.log(legend);
+  caption += '.';
+
+  return caption;
+}
 
 //bugs report
 function NoOfBugSmells(list){
@@ -1006,8 +1023,6 @@ function bugText(){
   });
 
 
-
-
 	$("#sourcecode").height(($(".quality").height()-43));
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
@@ -1105,6 +1120,7 @@ $(document).on("mouseover", ".varStyle", function() {
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
 
     window.parent._unHighlight();
+
  });
 
 </script>
