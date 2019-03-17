@@ -660,9 +660,9 @@ function generateReport(){
     text += '<h3 align="left">Bad Smells:</h3>';
     if(badCt == 0){text+= 'There are no bad smells in the project&mdash;the quality is high and no refactoring is required.'
     }
-    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell:'
+    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell <span class="pie"></span>: ';
     }
-    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells:'
+    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells <span class="pie"></span>: ';
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
@@ -841,9 +841,9 @@ function bugText(){
 
 	$('.pie').sparkline([blobCt,decomCt,spaCt,lazyCt], {
 		type:'bar',
-		width: '15px',
+		width: '25px',
 		height: '15px',
-    colorMap: ["#ff9900", "#dc3912", "#3366cc", "#008000"]
+    colorMap: ["red", "blue", "orange", "violet"]
 
 	});
 
