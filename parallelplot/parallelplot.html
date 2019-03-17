@@ -69,11 +69,13 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
+			// console.log(d);
 			var className = d.cname.split(".").pop();
 			// console.log(className);
 			var data = window.parent.badClasses;
 			for (var i=0;i<data.length;i++){
-				if (data[i].name == className){
+				if (data[i].name === className){
+					// console.log(className);
 					if (data[i].badSmells.length != 0){
 						if(data[i].badSmells.includes('blob')){
 							isBlob=true;
@@ -94,8 +96,8 @@ function parallelplot(data) {
 					}
 					else return "steelblue";
 				}
+				// else if (data[i].name != className)  return "steelblue";
 			}
-			 
 		})
 		.hideAxis(['cname'])
     .render()

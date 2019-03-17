@@ -19,7 +19,6 @@ function ScatterPlot(){
     var width, height;
     var force;
 
-
     var tooltip = d3.select('body',window.parent.document)
         .append('div')
         .attr('class', 'tooltip')
@@ -118,7 +117,37 @@ function ScatterPlot(){
                 var cName = fName[fName.length-1];
                 return cName;
             })
-            .style("fill", function(d) { return "steelblue";} )
+            .style("fill", function(d) {
+                // console.log(d);
+                var className = d.cname.split(".").pop();
+                // console.log(className);
+                var data = window.parent.badClasses;
+                for (var i=0;i<data.length;i++){
+                    if (data[i].name === className){
+                        // console.log(className);
+                        if (data[i].badSmells.length != 0){
+                            if(data[i].badSmells.includes('blob')){
+                                isBlob=true;
+                                return 'red';
+                            }
+                            else if (data[i].badSmells.includes('functional decomposition')){
+                                isFD=true;
+                                return 'blue';
+                            }
+                            else if (data[i].badSmells.includes('spaghetti code')){
+                                isSC=true;
+                                return 'orange';
+                            }
+                            else if (data[i].badSmells.includes('lazy class')){
+                                isLC=true;
+                                return 'violet';
+                            }
+                        }
+                        else return "steelblue";
+                    }
+                    // else return "steelblue"
+                }
+            })
             .on("mouseover", function(d) {
                 // console.log(d);
                 var lst = d.cname.split(".");
