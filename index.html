@@ -206,7 +206,7 @@ function generateReport(){
 
 		if(s.blob){
 			blobCt++;
-      blobArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      blobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
       bad = true;
 
       badSmellsinClass.push("blob");
@@ -214,7 +214,7 @@ function generateReport(){
 
     if(s.highblob){
       highblobCt++;
-      highblobArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      highblobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
       //bad = true;
 
 
@@ -222,14 +222,14 @@ function generateReport(){
 
 		if(s.decomposition){
 			decomCt++;
-      decomArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      decomArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
 			bad = true;
       badSmellsinClass.push("functional decomposition");
 		}
 
 		if(s.spaghetti){
 			spaCt++;
-      spaArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      spaArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
       bad = true;
 
       badSmellsinClass.push("spaghetti code");
@@ -237,12 +237,12 @@ function generateReport(){
 
     if(s.lazy){
       lazyCt++;
-      lazyArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      lazyArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
       badSmellsinClass.push("lazy class");
     }
 
     if(d.bug >= 1){
-      bugArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      bugArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
       bugCt++;
     }
 
@@ -259,62 +259,62 @@ function generateReport(){
 // console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
-      goodCouplingArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+      goodCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
       goodCouplingCt++;
     }
     //check for regular coupling
     if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
-     regularCouplingArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     regularCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularCouplingCt++;
    }
    //check for bad coupling
    if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
-     badCouplingArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     badCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCouplingCt++;
     }
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
-    goodInheritanceArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+    goodInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
     goodInheritanceCt++;
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
-    regularInheritanceArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+    regularInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
     regularInheritanceCt++;
    }
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
-    badInheritanceArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+    badInheritanceArr.push('<span class="varStyle">'+ d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
     badInheritanceCt++;
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
-     goodCohesionArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     goodCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodCohesionCt++;
    }
    //check for regular cohesion
    if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
-     regularCohesionArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     regularCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularCohesionCt++;
    }
    //check for bad cohesion
    if(d.lcom3 > 0.725){
-     badCohesionArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     badCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCohesionCt++;
    }
    //check for good Complexity
    if(d.max_cc <= 2 || d.wmc <= 11){
-     goodComplexityArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     goodComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodComplexityCt++;
    }
    //check for regular Complexity
    if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
-     regularComplexityArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     regularComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularComplexityCt++;
    }
    //check for bad Complexity
    if(d.max_cc > 4 || d.wmc > 34){
-     badComplexityArr.push("<i>" + d.cname.split(".").pop() + "</i>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
+     badComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badComplexityCt++;
    }
   })
@@ -571,7 +571,7 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    text += '<span class="varStyle">SAXException</span>' ;
+    // text += '<span class="varStyle">SAXException</span>' ; // just for testing
     text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
     return text;
   }
