@@ -11,10 +11,11 @@ body {
     position: fixed;
     grid-area: header;
     top:0px;
-    width: 100%;
+    width: 100vw !important;
     height: 50px;
-    padding-left: 5%;
-    padding-right: 5%;
+    left: 0px;
+    /* padding-left: 5%;
+    padding-right: 5%; */
 
 }
 .text {grid-area: main; 
@@ -51,12 +52,15 @@ body {
     float:right;
     padding: 10px;
 }
-.details { grid-area: right; 
+.details { 
+    grid-area: right; 
     width: 25vw;
     margin-top:5vh;
-    margin-right: 2vw;
+    /* margin-right: 2vw; */
     overflow:auto;
+    padding : 10px;
 }
+#details
 .foot { grid-area: footer;
     width:100vw;
     height: 10px;
@@ -71,9 +75,9 @@ body {
     'main  right'
     'vis right'
     'footer footer';
-  grid-gap: 10px;
+  grid-gap: 5px;
   background-color: #e8e8e8;
-  padding: 10px;
+  padding: 25px;
 }
 
 .grid-container > div {
@@ -121,10 +125,12 @@ body {
 #title{
     font-size: 20px;
     font-weight: bold;
+    padding-left: 2%;
 }
 #subtitle{
     font-size: 18px;
     font-style: italic;
+    padding-left: 2%;
 }
 
 .main-container {
@@ -334,13 +340,15 @@ background-color: lightgrey;
 outline: 1px solid slategrey;
 }
 
-.varStyle{
-    border-bottom: 1px dashed #999;
+.varStyle, .educationalDescriptions{
+    border-bottom: 1px dashed #8e8d8d;
+    color:#8e8d8d;
 }
 
-.varStyle:hover{
+.varStyle:hover, .educationalDescriptions:hover {
     cursor: pointer;
-    font-weight: bold;
+    /* font-weight: bold; */
+    color:black;
 }
 
 #DoDHeader{
@@ -367,9 +375,28 @@ outline: 1px solid slategrey;
     border-top: 2px solid violet;
     display: inline-block;
 }
+#cboCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid #238b45;
+    display: inline-block;
+}
+#ecCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid #66c2a4;
+    display: inline-block;
+}
+#acCap{
+    /* text-decoration: red overline; */
+    border-top: 2px solid #b2e2e2;
+    display: inline-block;
+}
+
 .NoBSCap{
     border-top: 2px solid steelblue;
     display: inline-block;
 }
 
-
+#eduDetailsHead{
+    font-weight: bold;
+    font-size: 14px;
+}

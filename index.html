@@ -64,15 +64,10 @@
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
         <div id="captionSP"></div>
-            <!-- <div class="captionPP">
-              <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
-            </div>
-            <div class="captionSP">
-                <p id=captionTextSP>Each dot in the scatterplot represents a class in the project.</p>
-            </div> -->
-          <!-- </div> -->
     </div>  
     <div class="details">
+      <span id="eduDetailsHead"></span>
+      <span id="eduDetails"></span>
       <div class="code">
         <h3 id="DoDHeader"></h3>
         <iframe id="sourcecode"></iframe>
@@ -1035,8 +1030,18 @@ function bugText(){
     var url = "BS Description/cbo.htm";
     $("#sourcecode").attr("src", url);
     $("#DoDHeader").text("METRIC DESCRIPTION");
+    
   });
 
+  //new implementation of educational details. 
+  // $(".educationalDescriptions").on("click", function(){
+
+  //   if($(".educationalDescriptions").text() == "coupling metrics"){
+  //     $("#eduDetailsHead").html($(".educationalDescriptions").text() +"<br>");
+  //   $("#eduDetails").html("Coupling between objects (CBO) is a count of the number of classes that are coupled to a particular class i.e. where the methods of one class call the methods or access the variables of the other. These calls need to be counted in both directions so the CBO of class A is the size of the set of classes that class A references and those classes that reference class A. Since this is a set - each class is counted only once even if the reference operates in both directions i.e. if A references B and B references A, B is only counted once. </br></br> Increased coupling increases interclass dependancies, making the code less modular and less suitable for reuse. In other words if you wanted to package up the code for reuse you might end up having to include code that was not really fundamental to the core functionality. More coupling means that the code becomes more difficult to maintain since an alteration to code in one area runs a higher risk of affecting code in another (linked) area. The more links between classes the more complex the code and the more difficult it will be to test. The only consideration in calculating this metric is whether only the classes written for the project should be considered or whether library classes should be included. ");
+  //   }
+
+  // });
 
 	$("#sourcecode").height(($(".quality").height()-43));
 
@@ -1115,16 +1120,16 @@ function showAdditionalDetails(type){
   $('.textDetails').css('border-left', '3px solid gray');
   $('#detailHead').html('<b>'+type+'<b><br>');
   if(type === 'coupling'){
-      $('#details').html('Three coupling metrics are used to assess the quality from coupling perspective. The metrics are: coupling between objects, afferent coupling, and efferent coupling. We applied the threshold-based approach to label the classes with high coupling. First, we use a rule to classify the classes in good coupling range, and then we check the percentage of high-coupling-classes for the whole project.');
+      $('#details').html('The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.');
     }
     else if(type === 'complexity'){
-      $('#details').html('We adopt two metrics, weighted method per class and cyclomatic complexity, to evaluate the complexity aspects. Threshold values are used to tag the classes with low complexity. In order to do this, we use a rule to identify the classes that are in good complexity range, and then we determine the percentage of low-complexity-classes for all the classes.');
+      $('#details').html('The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.');
     }
     if(type === 'cohesion'){
-      $('#details').html('We use two versions of a cohesion metric to analyze the cohesive properties of the project. Lack of cohesion of methods and its another version, lack of cohesion of methods 3, are used in rules with thresholds. We mark the classes that are in good cohesion slab, and then we use the overall percentage of high-cohesive-classes for the entire project.');
+      $('#details').html('Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.');
     }
     if(type === 'inheritance'){
-      $('#details').html('Depth of inheritance and number of children metrics are utilized to examine the inheritance related characteristics. Once again, these metrics are used in classifiers with threshold values to flag the classes with bad inheritance. Then we see the percentage of bad-inheritance-classes with respect to the full project.');
+      $('#details').html('The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance. ');
     }
 }
 function num2word(n){

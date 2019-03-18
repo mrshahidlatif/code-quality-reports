@@ -46,9 +46,9 @@ function ScatterPlot(){
 
     var object = {}, prev_data = [];
     object.render = function() {
-        svg = d3.select($el).append("svg").attr('width', "280").attr("height", "280");
+        svg = d3.select($el).append("svg").attr('width', "280").attr("height", "250");
         root = svg.append("g")
-            .attr("transform", "translate(" + margin + "," + margin + ")");
+            .attr("transform", "translate(" + margin + "," + 2 + ")");
         if(prev_data != null && prev_data.length > 0) {
             var chart_data = clone(prev_data);
             data = chart_data;
