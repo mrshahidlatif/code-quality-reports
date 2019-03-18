@@ -53,12 +53,17 @@
       <div class="quality">
           <p id="reporttext"></p>
       </div>
+      <div class="textDetails">
+        <span id="detailHead"></span>
+        <p id="details"></p>
+      </div>
     </div>
     <div class="vis">
         <!-- <div class="visualizations"> --> 
         <iframe id="parallelplot"></iframe>
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
+        <div id="captionSP"></div>
             <!-- <div class="captionPP">
               <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
             </div>
@@ -157,7 +162,7 @@ function generateReport(){
   var data = clone(_chartdata);
   //making data available to all files
   fullData = data;
-  console.log(fullData);
+  // console.log(fullData);
 
 	data.forEach(function(d, i){
 		d.index = i;
@@ -559,6 +564,8 @@ function generateReport(){
   html += badSmellsText();
   html += bugText();
   $("#captionPP").html(generatePPCaption());
+  $("#captionSP").html(generateSPCaption());
+  
 
   function introText(){
     var text = "";
@@ -588,15 +595,15 @@ function generateReport(){
   var i  = couplingArr.indexOf(m);
 
   if(i == 0){
-    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Three coupling metrics are used to assess the quality from coupling perspective. The metrics are: coupling between objects, afferent coupling, and efferent coupling. We applied the threshold-based approach to label the classes with high coupling. First, we use a rule to classify the classes in good coupling range, and then we check the percentage of high-coupling-classes for the whole project. </p><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
   }
 
   else if(i == 1){
-    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an acceptable range. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Three coupling metrics are used to assess the quality from coupling perspective. The metrics are: coupling between objects, afferent coupling, and efferent coupling. We applied the threshold-based approach to label the classes with moderate coupling. First, we use a rule to classify the classes in regular coupling range, and then we check the percentage of moderate-coupling-classes for the whole project.</p><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   else if(i == 2){
-    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an undersired range. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Three coupling metrics are used to assess the quality from coupling perspective. The metrics are: coupling between objects, afferent coupling, and efferent coupling. We applied the threshold-based approach to label the classes with low coupling. First, we use a rule to classify the classes in bad coupling range, and then we check the percentage of low-coupling-classes for the whole project.</p><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   // complextiy quality
@@ -605,13 +612,13 @@ function generateReport(){
   i  = complexityArr.indexOf(m);
 
   if(i == 0){
-    text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We adopt two metrics, weighted method per class and cyclomatic complexity, to evaluate the complexity aspects. Threshold values are used to tag the classes with low complexity. In order to do this, we use a rule to identify the classes that are in good complexity range, and then we determine the percentage of low-complexity-classes for all the classes.</p><div id="samplsl2"></div></div>'
+    text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
   }
   else if(i == 1){
-    text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We adopt two metrics, weighted method per class and cyclomatic complexity, to evaluate the complexity aspects. Threshold values are used to tag the classes with moderate complexity. In order to do this, we use a rule to identify the classes that are in regular complexity range, and then we determine the percentage of moderate-complexity-classes for all the classes.</p><div id="samplsl2"></div></div>'
+    text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
   }
   else if(i == 2){
-    text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We adopt two metrics, weighted method per class and cyclomatic complexity, to evaluate the complexity aspects. Threshold values are used to tag the classes with high complexity. In order to do this, we use a rule to identify the classes that are in bad complexity range, and then we determine the percentage of high-complexity-classes for all the classes.</p><div id="samplsl2"></div></div>'
+    text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
   }
 
   // cohesion quality
@@ -620,13 +627,13 @@ function generateReport(){
   i  = cohesionArr.indexOf(m);
 
   if(i == 0){
-    text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We use two versions of a cohesion metric to analyze the cohesive properties of the project. Lack of cohesion of methods and its another version, lack of cohesion of methods 3, are used in rules with thresholds. We mark the classes that are in good cohesion slab, and then we use the overall percentage of high-cohesive-classes for the entire project.</p><div id="samplsl3"></div></div>'
+    text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
   }
   else if(i == 1){
-    text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We use two versions of a cohesion metric to analyze the cohesive properties of the project. Lack of cohesion of methods and its another version, lack of cohesion of methods 3, are used in rules with thresholds. We mark the classes that are in acceptable cohesion slab, and then we use the overall percentage of moderate-cohesive-classes for the entire project.</p><div id="samplsl3"></div></div>'
+    text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
   }
   else if(i == 2){
-    text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>We use two versions of a cohesion metric to analyze the cohesive properties of the project. Lack of cohesion of methods and its another version, lack of cohesion of methods 3, are used in rules with thresholds. We mark the classes that are in bad cohesion slab, and then we use the overall percentage of low-cohesive-classes for the entire project.</p><div id="samplsl3"></div></div>'
+    text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
   }
 
   // inheritance quality
@@ -635,13 +642,13 @@ function generateReport(){
   i  = inheritanceArr.indexOf(m);
 
   if(i == 0){
-    text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Depth of inheritance and number of children metrics are utilized to examine the inheritance related characteristics. Once again, these metrics are used in classifiers with threshold values to flag the classes with good inheritance. Then we see the percentage of good-inheritance-classes with respect to the full project.</p><div id="samplsl4"></div></div>'
+    text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
   }
   else if(i == 1){
-    text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Depth of inheritance and number of children metrics are utilized to examine the inheritance related characteristics. Once again, these metrics are used in classifiers with threshold values to flag the classes with regular inheritance. Then we see the percentage of moderate-inheritance-classes with respect to the full project.</p><div id="samplsl4"></div></div>'
+    text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
   }
   else if(i == 2){
-    text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>Depth of inheritance and number of children metrics are utilized to examine the inheritance related characteristics. Once again, these metrics are used in classifiers with threshold values to flag the classes with bad inheritance. Then we see the percentage of bad-inheritance-classes with respect to the full project.</p><div id="samplsl4"></div></div>'
+    text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
   }
   return text;
   }
@@ -731,6 +738,13 @@ function generatePPCaption(){
   caption += '.';
 
   return caption;
+}
+function generateSPCaption(){
+  
+  $('#xSelect',)
+ 
+
+  return 'Correlation between X and Y';
 }
 
 //bugs report
@@ -1078,10 +1092,12 @@ function drawBarChart(tagNmae, val){
 	$(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="'+(val/2)+'" height="14"></rect><text x="25" y="11" style="font-size:12px">'+val+'%</text></g></svg>');
 }
 
-function expandContent(){
+function expandContent(type){
   var coll = document.getElementsByClassName("collapsible");
   var i;
   for (i = 0; i < coll.length; i++) {
+    //showing additional details in the side panel
+    showAdditionalDetails(type);
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
@@ -1093,6 +1109,24 @@ function expandContent(){
     });
   }
 }
+
+function showAdditionalDetails(type){
+
+  $('.textDetails').css('border-left', '3px solid gray');
+  $('#detailHead').html('<b>'+type+'<b><br>');
+  if(type === 'coupling'){
+      $('#details').html('Three coupling metrics are used to assess the quality from coupling perspective. The metrics are: coupling between objects, afferent coupling, and efferent coupling. We applied the threshold-based approach to label the classes with high coupling. First, we use a rule to classify the classes in good coupling range, and then we check the percentage of high-coupling-classes for the whole project.');
+    }
+    else if(type === 'complexity'){
+      $('#details').html('We adopt two metrics, weighted method per class and cyclomatic complexity, to evaluate the complexity aspects. Threshold values are used to tag the classes with low complexity. In order to do this, we use a rule to identify the classes that are in good complexity range, and then we determine the percentage of low-complexity-classes for all the classes.');
+    }
+    if(type === 'cohesion'){
+      $('#details').html('We use two versions of a cohesion metric to analyze the cohesive properties of the project. Lack of cohesion of methods and its another version, lack of cohesion of methods 3, are used in rules with thresholds. We mark the classes that are in good cohesion slab, and then we use the overall percentage of high-cohesive-classes for the entire project.');
+    }
+    if(type === 'inheritance'){
+      $('#details').html('Depth of inheritance and number of children metrics are utilized to examine the inheritance related characteristics. Once again, these metrics are used in classifiers with threshold values to flag the classes with bad inheritance. Then we see the percentage of bad-inheritance-classes with respect to the full project.');
+    }
+}
 function num2word(n){
   if (numToWord[n] != undefined){
     return numToWord[n];
@@ -1100,11 +1134,32 @@ function num2word(n){
   else return n;
 }
 
+// $(window).load(function () {
+//   var xxx = $("#scatterplot").contents().find("#xSelect :selected").val();
+//   console.log(xxx);
+// });
+
+// $( document ).ready(function() {
+//     console.log( "ready!" );
+    // $('#scatterplot').on ('load', function() { 
+    //    // do something
+    //    var xxx = $("#scatterplot").contents().find("select#xSelect :selected").val();
+    //    console.log(xxx);
+    // });
+   
+// });
+
+//avoid scrolling of the textDetails panel 
+$(".text").scroll(function(){
+  $(".textDetails").css({"margin-top": ($(".text").scrollTop()) + "px", "margin-left":($(".text").scrollLeft()) + "px"});
+});
+
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".varStyle", function() {
     var className = $(this).text();
     $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
     $("#scatterplot").contents().find("circle#"+className).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
+
 
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;

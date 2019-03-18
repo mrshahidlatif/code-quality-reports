@@ -24,6 +24,7 @@ body {
     height:55vh;
     margin-top:5vh;
     overflow:auto;
+    float: left;
 }
 .vis{
     grid-area: vis; 
@@ -31,6 +32,24 @@ body {
     height:35vh;
     /* display: inline-block; */
     position: relative;
+}
+
+.quality{
+    width: 45vw;
+    height: 100%;
+    margin-left: 0px;
+    /* overflow: auto; */
+    padding: 10px;
+    text-align: justify;
+    float: left;
+}
+
+.textDetails{
+    width: 33%;
+    left: 40vw;
+    font-size:12px;
+    float:right;
+    padding: 10px;
 }
 .details { grid-area: right; 
     width: 25vw;
@@ -74,11 +93,29 @@ body {
     color: black;
 }
 
-.vis div {
+/* .vis div {
     position: absolute;
     width: 68%;
     top: 80%;
     left:0;
+ } */
+
+ #captionPP{
+    /* position: absolute; */
+    float: left;
+    width: 68%;
+    top: 80%;
+    left:0;
+    font-size:12px;
+ }
+
+ #captionSP{
+    /* position: absolute; */
+    float: right;
+    width: 30%;
+    left: 68%;
+    top:80;
+    font-size:12px;
  }
 
 #title{
@@ -99,16 +136,6 @@ body {
     height: 100%;
     background: #fff;
     visibility: hidden;
-}
-
-
-.quality{
-    width: 45vw;
-    height: 100%;
-    margin-left: 0px;
-    /* overflow: auto; */
-    padding: 10px;
-    text-align: justify;
 }
 
 .code{
