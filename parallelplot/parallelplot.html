@@ -69,7 +69,7 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
-			// console.log(d);
+			console.log(d);
 			var className = d.cname.split(".").pop();
 			// console.log(className);
 			var data = window.parent.badClasses;
@@ -79,33 +79,31 @@ function parallelplot(data) {
 					if (data[i].badSmells.length != 0){
 						if(data[i].badSmells.includes('blob')){
 							isBlob=true;
-							return 'red';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('functional decomposition')){
 							isFD=true;
-							return 'blue';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('spaghetti code')){
 							isSC=true;
-							return 'orange';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('lazy class')){
 							isLC=true;
-							return 'violet';
+							return 'black';
 						}
 					}
-					else return "gray";
+					else return "#d6d6d6";
 				}
 				// else if (data[i].name != className)  return "steelblue";
 			}
 		})
 		.hideAxis(['cname'])
     .render()
-    .alpha(0.6)
+    // .alpha(0.6)
     .brushMode("1D-axes")  // enable brushing
 		.interactive(); // command line mode
-
-		// pcz.hideAxis(['cname']);
 		
   // click label to activate coloring
   pcz.svg.selectAll(".dimension")

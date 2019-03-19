@@ -88,7 +88,7 @@ body {
 }
 
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgb(255, 255, 255);
   text-align: left;
   padding: 0px 0;
   font-size: 14px;
@@ -135,7 +135,7 @@ body {
     padding-left: 2%;
 }
 #subtitle{
-    font-size: 18px;
+    font-size: 15px;
     font-style: italic;
     padding-left: 2%;
 }
@@ -167,18 +167,9 @@ body {
     -webkit-margin-after: 0.5em;
     font-size: 19px;
 }
-.main-container h4{
+h4{
     display: inline;
 }
-
-/* .main-container p{
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 0px;
-    font-size: 16px;
-    line-height: 18px;
-    font-weight: normal;
-
-} */
 
 #scatterplot {
    width:30%; 
@@ -306,9 +297,9 @@ background-color: #777;
 .content {
 padding: 5px 5px 5px 5px;
 font-size: 12px;
-/*display: none; content is hidden later using code*/
 overflow: auto;
-background-color: #f1f1f1;
+border: 1px solid gray;
+margin-top: 2px;
 }
 
 .content p{
@@ -379,27 +370,29 @@ outline: 1px solid slategrey;
 }
 .LCCap{
     /* text-decoration: red overline; */
-    border-top: 2px solid violet;
+    border-bottom: 2px solid violet;
     display: inline-block;
 }
 #cboCap{
     /* text-decoration: red overline; */
-    border-top: 2px solid #238b45;
+    border-bottom: 2px solid #238b45;
     display: inline-block;
 }
 #ecCap{
     /* text-decoration: red overline; */
-    border-top: 2px solid #66c2a4;
+    border-bottom: 2px solid #66c2a4;
     display: inline-block;
 }
 #acCap{
     /* text-decoration: red overline; */
-    border-top: 2px solid #b2e2e2;
+    border-bottom: 2px solid #b2e2e2;
     display: inline-block;
 }
 
 .NoBSCap{
-    border-top: 2px solid gray;
+    /* text-decoration: 5px solid red underline; */
+    /* border-top: 2px solid gray; */
+    border-bottom: 2px solid gray;
     display: inline-block;
 }
 

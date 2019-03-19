@@ -559,7 +559,7 @@ function generateReport(){
   //Generate report text
   $(".quality").html(badSmellsText());
 
-  html += introText();
+  $("#subtitle").html(introText());
   html += generalQualtiyText();
   html += bugText();
   $("#captionPP").html(generatePPCaption());
@@ -668,9 +668,9 @@ function generateReport(){
     text += '<h3 align="left">Bad Smells:</h3>';
     if(badCt == 0){text+= 'There are no bad smells in the project&mdash;the quality is high and no refactoring is required.'
     }
-    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell <span class="pie"></span>: ';
+    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell: ';
     }
-    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells <span class="pie"></span>: ';
+    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells: ';
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
@@ -728,9 +728,7 @@ function generatePPCaption(){
   var caption = 'The Parallel Coordinates provides an overview of the software quality metrics. Each line represents a class. Classes with bad smells: ';
   
   if ($("#parallelplot")[0].contentWindow.isBlob) legend.push('<span class="blobCap">Blob</span>');
-  if ($("#parallelplot")[0].contentWindow.isFD) legend.push('<span class="FDCap">Functional decomposition</span>');
-  if ($("#parallelplot")[0].contentWindow.isSC) legend.push('<span class="SCCap">Spaghetti class</span>');
-  if ($("#parallelplot")[0].contentWindow.isLC) legend.push('<span class="LCCap">Lazy class</span>');
+
   legend.push('<span class="NoBSCap">No</span>');
   caption += printList(legend);
   // console.log(legend);
@@ -739,8 +737,6 @@ function generatePPCaption(){
   return caption;
 }
 function generateSPCaption(){
-  
-  $('#xSelect',)
  
 
   return 'Correlation between X and Y';
@@ -870,13 +866,7 @@ function bugText(){
     $("#DoDHeader").text("Package Information");
 	});
 
-	$('.pie').sparkline([blobCt,decomCt,spaCt,lazyCt], {
-		type:'bar',
-		width: '25px',
-		height: '15px',
-    colorMap: ["red", "blue", "orange", "violet"]
 
-	});
 
   var sparklineOptions = {
     type:'bar',
@@ -886,39 +876,7 @@ function bugText(){
     highlightColor: 'black',
   }
 
-  /*var couplingValues = [];
-  data.forEach(function(d, i){
-		couplingValues.push([d.cbo,d.ca,d.ce]);
-	});
-  $('.couplingStacked').sparkline(couplingValues, sparklineOptions);
 
-  var complexityValues = [];
-  data.forEach(function(d, i){
-		 	complexityValues.push([d.wmc,d.max_cc]);
-	});
-  $('.complexityStacked').sparkline(complexityValues, sparklineOptions);
-
-  var cohesionValues = [];
-  data.forEach(function(d, i){
-      cohesionValues.push([d.lcom,d.lcom3]);
-  });
-  $('.cohesionStacked').sparkline(cohesionValues, sparklineOptions);
-
-  $('.couplingStacked').bind('sparklineRegionChange', function(ev){
-    var spark = ev.sparklines[0];
-     region = spark.getCurrentRegionFields();
-    console.log(region[0]);
-  });
-
-  var inheritanceValues = [];
-  data.forEach(function(d, i){
-      inheritanceValues.push([d.dit,d.noc]);
-  });
-  $('.inheritanceStacked').sparkline(inheritanceValues, sparklineOptions);
-
-//  $('#mysparkline').sparkline(cohesionValues, {type: 'line', width: '800px', height: '30px'});
-//  $('#mysparkline').sparkline(complexityValues, {type: 'discrete', thresholdValue:2, thresholdColor:'#ff007f', width: '800px', height: '30px', composite: true});
-*/
   //bad smells charts
 	drawBarChart(".bar_1", Math.round((blobCt/badCt)*1000)/10);
 	drawBarChart(".bar_2", Math.round((decomCt/badCt)*1000)/10);
@@ -1143,21 +1101,6 @@ function num2word(n){
   else return n;
 }
 
-// $(window).load(function () {
-//   var xxx = $("#scatterplot").contents().find("#xSelect :selected").val();
-//   console.log(xxx);
-// });
-
-// $( document ).ready(function() {
-//     console.log( "ready!" );
-    // $('#scatterplot').on ('load', function() { 
-    //    // do something
-    //    var xxx = $("#scatterplot").contents().find("select#xSelect :selected").val();
-    //    console.log(xxx);
-    // });
-   
-// });
-
 //avoid scrolling of the textDetails panel 
 $(".text").scroll(function(){
   $(".textDetails").css({"margin-top": ($(".text").scrollTop()) + "px", "margin-left":($(".text").scrollLeft()) + "px"});
@@ -1166,9 +1109,8 @@ $(".text").scroll(function(){
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".varStyle", function() {
     var className = $(this).text();
-    $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
-    $("#scatterplot").contents().find("circle#"+className).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
-
+    $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
+    $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
