@@ -583,10 +583,10 @@ function generateReport(){
   //general quality report
   function generalQualtiyText(){
     var text = '';
-    var coup = '<br><h4 align="left">Coupling:</h4>';
-    var comp = '<br><h4 align="left">Complexity:</h4>';
-    var coh = '<br><h4 align="left">Cohesion:</h4>';
-    var inher = '<br><h4 align="left">Inheritance:</h4>';
+    var coup = '<br><h4><span id="couplingLegend">Coupling</span>:</h4>';
+    var comp = '<br><h4><span id="complexityLegend">Complexity</span>:</h4>';
+    var coh = '<br><h4><span id="cohesionLegend">Cohesion</span>:</h4>';
+    var inher = '<br><h4><span id="inheritanceLegend">Inheritance</span>:</h4>';
     text+='<h3 align="left">General Quality Attributes:</h3>The quality of the project is described in terms of four quality attributes.'
   // coupling quality
   var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
@@ -994,16 +994,6 @@ function bugText(){
     $("#DoDHeader").text("METRIC DESCRIPTION");
     
   });
-
-  //new implementation of educational details. 
-  // $(".educationalDescriptions").on("click", function(){
-
-  //   if($(".educationalDescriptions").text() == "coupling metrics"){
-  //     $("#eduDetailsHead").html($(".educationalDescriptions").text() +"<br>");
-  //   $("#eduDetails").html("Coupling between objects (CBO) is a count of the number of classes that are coupled to a particular class i.e. where the methods of one class call the methods or access the variables of the other. These calls need to be counted in both directions so the CBO of class A is the size of the set of classes that class A references and those classes that reference class A. Since this is a set - each class is counted only once even if the reference operates in both directions i.e. if A references B and B references A, B is only counted once. </br></br> Increased coupling increases interclass dependancies, making the code less modular and less suitable for reuse. In other words if you wanted to package up the code for reuse you might end up having to include code that was not really fundamental to the core functionality. More coupling means that the code becomes more difficult to maintain since an alteration to code in one area runs a higher risk of affecting code in another (linked) area. The more links between classes the more complex the code and the more difficult it will be to test. The only consideration in calculating this metric is whether only the classes written for the project should be considered or whether library classes should be included. ");
-  //   }
-
-  // });
 
 	$("#sourcecode").height(($(".quality").height()-43));
 

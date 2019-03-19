@@ -27,6 +27,7 @@ body {
 	height: 220px;
 	position: absolute;
 }
+
 </style>
 
 <body>
@@ -60,6 +61,19 @@ function parallelplot(data) {
 		delete d.avg_cc;
 	});
 	// console.log(data[0]);
+
+	//specify the dimensions and their order
+	var myDimensions = {
+	"cbo":{type:"number"},
+	"ca": {type:"number"},
+	"ce": {type:"number"},
+	"wmc": {type:"number"},
+	"max_cc": {type:"number"},
+	"lcom": {type:"number"},
+	"lcom3": {type:"number"},
+	"noc": {type:"number"},
+	"dit": {type:"number"},
+};
 
 	var w = (data.columns.length)*32.55;
 	$("#example_container").css({width: w+"px"});
@@ -100,12 +114,13 @@ function parallelplot(data) {
 			}
 		})
 		.hideAxis(['cname'])
+		.dimensions(myDimensions)
     .render()
     // .alpha(0.6)
     .brushMode("1D-axes")  // enable brushing
 		.interactive(); // command line mode
 		
-  // click label to activate coloring
+  // adding axis labels
   pcz.svg.selectAll(".dimension")
     .selectAll(".label")
 		.style("font-size", "14px");

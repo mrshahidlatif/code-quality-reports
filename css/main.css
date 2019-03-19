@@ -353,45 +353,25 @@ outline: 1px solid slategrey;
     font-size: 18px;
 }
 
-.blobCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid red;
-    display: inline-block;
-}
-.FDCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid blue;
-    display: inline-block;
-}
-.SCCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid orange;
-    display: inline-block;
-}
-.LCCap{
-    /* text-decoration: red overline; */
-    border-bottom: 2px solid violet;
-    display: inline-block;
-}
-#cboCap{
-    /* text-decoration: red overline; */
+#couplingLegend{
     border-bottom: 2px solid #238b45;
     display: inline-block;
 }
-#ecCap{
-    /* text-decoration: red overline; */
-    border-bottom: 2px solid #66c2a4;
+#complexityLegend{
+
+    border-bottom: 2px solid #2b8cbe;
     display: inline-block;
 }
-#acCap{
-    /* text-decoration: red overline; */
-    border-bottom: 2px solid #b2e2e2;
+#cohesionLegend{
+    border-bottom: 2px solid #c51b8a;
+    display: inline-block;
+}
+#inheritanceLegend{
+    border-bottom: 2px solid #88419d;
     display: inline-block;
 }
 
 .NoBSCap{
-    /* text-decoration: 5px solid red underline; */
-    /* border-top: 2px solid gray; */
     border-bottom: 2px solid gray;
     display: inline-block;
 }
@@ -400,3 +380,4 @@ outline: 1px solid slategrey;
     font-weight: bold;
     font-size: 14px;
 }
+
