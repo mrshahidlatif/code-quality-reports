@@ -399,7 +399,7 @@ outline: 1px solid slategrey;
 }
 
 .NoBSCap{
-    border-top: 2px solid steelblue;
+    border-top: 2px solid gray;
     display: inline-block;
 }
 

@@ -143,7 +143,7 @@ function ScatterPlot(){
                                 return 'violet';
                             }
                         }
-                        else return "steelblue";
+                        else return "gray";
                     }
                     // else return "steelblue"
                 }
