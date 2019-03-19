@@ -83,7 +83,7 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
-			console.log(d);
+			// console.log(d);
 			var className = d.cname.split(".").pop();
 			// console.log(className);
 			var data = window.parent.badClasses;
@@ -124,6 +124,8 @@ function parallelplot(data) {
   pcz.svg.selectAll(".dimension")
     .selectAll(".label")
 		.style("font-size", "14px");
+
+	console.log($("#parallelplot").contents().find("text.label").html());
 }
 function unHighlight(){
 	//clearing the highlighting

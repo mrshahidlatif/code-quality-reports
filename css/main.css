@@ -132,6 +132,7 @@ body {
 #title{
     font-size: 20px;
     font-weight: bold;
+    letter-spacing: 3px;
     padding-left: 2%;
 }
 #subtitle{
@@ -248,28 +249,33 @@ fill: #969696;
 }
 
 .bad_1 {
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px solid #444444;
+    color: #444444;
 }
 
 .bad_2 {
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px solid #444444;
+    color: #444444;
 }
 
 .bad_3 {
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px solid #444444;
+    color: #444444;
 }
 
 .bad_4 {
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px solid #444444;
+    color: #444444;
 }
 .coupling_metric {
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px solid #444444;
+    color: #444444;
     
 }
 
 .bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover, .coupling_metric:hover{
     cursor: pointer;
-    font-weight: bold;
+    color: black;
 }
 a:link {
 text-decoration: none;
@@ -339,8 +345,8 @@ outline: 1px solid slategrey;
 }
 
 .varStyle, .educationalDescriptions{
-    border-bottom: 1px dashed #8e8d8d;
-    color:#8e8d8d;
+    border-bottom: 1px dotted #444444;
+    color:#444444;
 }
 
 .varStyle:hover, .educationalDescriptions:hover {
