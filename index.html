@@ -903,11 +903,11 @@ function bugText(){
 		NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
 
 	$(".bad_1").on("click", function(){
-
-    var url = "BS Description/blob.htm";
-    $("#sourcecode").attr("src", url);
+    var url = "bad_smell_descriptions/blob.htm";
+    $("#detailsHeader").text("The 'Blob' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
     // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Blob Bad Smell");
 		if(blobCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -924,10 +924,10 @@ function bugText(){
 	});
 
 	$(".bad_2").on("click", function(){
-    var url = "BS Description/FD.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Functional Decomposition Bad Smell");
+    var url = "bad_smell_descriptions/fd.htm";
+    $("#detailsHeader").text("The 'Functional Decomposition' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(decomCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -943,10 +943,10 @@ function bugText(){
 	});
 
 	$(".bad_3").on("click", function(){
-    var url = "BS Description/SC.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Spaghetti Code Bad Smell");
+    var url = "bad_smell_descriptions/sc.htm";
+    $("#detailsHeader").text("The 'Spaghetti Code' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(spaCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -961,10 +961,10 @@ function bugText(){
 	});
 
   $(".bad_4").on("click", function(){
-    var url = "BS Description/lazy.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Lazy Class Bad Smell");
+    var url = "bad_smell_descriptions/lazy.htm";
+    $("#detailsHeader").text("The 'Lazy Class' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(lazyCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -979,18 +979,14 @@ function bugText(){
 	});
 
   $(".coupling_metric").on("click", function(){
-    var url = "BS Description/cbo.htm";
-    $("#sourcecode").attr("src", url);
-    $("#DoDHeader").text("METRIC DESCRIPTION");
+    var url = "bad_smell_descriptions/cbo.htm";
+    $("#detailsHeader").text("METRIC DESCRIPTION");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
     
   });
 
-	$("#sourcecode").height(($(".quality").height()-43));
-
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
-	//$(".main-container").css({visibility: "visible"});                  //commented out
-
-  //package structure
 
 }
 

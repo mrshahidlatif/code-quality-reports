@@ -169,11 +169,10 @@ body {
     visibility: hidden;
 }
 
-.main-container h3{
-    -webkit-margin-before: 0.5em;
-    -webkit-margin-after: 0.5em;
-    font-size: 19px;
+h3 {
+    padding-bottom: 6pt;
 }
+
 h4{
     display: inline;
 }
