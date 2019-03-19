@@ -257,7 +257,7 @@ function generateReport(){
       classesWithBadSmells.push(badClass);
     }
     badClasses = classesWithBadSmells;
-// console.log(classesWithBadSmells);
+    // console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
       goodCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
@@ -721,13 +721,21 @@ function generateReport(){
     return text;
   }
 
+function countClassesHavingBadSmells (data){
+  var count = 0;
+  for (var i=0;i<data.length;i++){
+    if (data[i].badSmells.length != 0){
+        count++;
+    }
+  }
+  return count;
+}
+
 function generatePPCaption(){
   var legend = [];
-  var caption = 'The Parallel Coordinates provides an overview of the software quality metrics. Each line represents a class. Classes with bad smells: ';
-  
-  if ($("#parallelplot")[0].contentWindow.isBlob) legend.push('<span class="blobCap">Blob</span>');
+  var caption = 'The overview of the software quality in terms of <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
 
-  legend.push('<span class="NoBSCap">No</span>');
   caption += printList(legend);
   // console.log(legend);
   caption += '.';
