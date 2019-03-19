@@ -59,16 +59,32 @@ body {
     float:right;
     padding: 10px;
 }
-.details { 
+
+/* Details panel */
+
+#details { 
     grid-area: right; 
     width: 25vw;
+    height: 90vh;
     margin-top:5vh;
-    /* margin-right: 2vw; */
-    overflow:auto;
+    overflow: hidden;
     padding : 10px;
 }
-#details
-.foot { grid-area: footer;
+
+#sourcecodeContainer {
+    height: 800px; /*TODO: fix to 100%*/
+    background-color: white;
+}
+
+#sourcecode {
+    font-size: 11px;
+    
+}
+
+/* Footer */
+
+.foot { 
+    grid-area: footer;
     width:100vw;
     height: 10px;
     position:fixed;
@@ -151,14 +167,6 @@ body {
     visibility: hidden;
 }
 
-.code{
-    padding: 10px;
-}
-
-.code pre {
-    height: 800px;
-}
-
 .main-container h3{
     -webkit-margin-before: 0.5em;
     -webkit-margin-after: 0.5em;
@@ -179,10 +187,6 @@ h4{
 .infoIcon :hover{
     cursor: pointer;
 
-}
-
-#detailsContent {
-    
 }
 
 .bar_1 .bar {
@@ -343,10 +347,6 @@ outline: 1px solid slategrey;
     color:black;
 }
 
-#DoDHeader{
-    font-size: 18px;
-}
-
 #couplingLegend{
     border-bottom: 2px solid #238b45;
     display: inline-block;
@@ -368,10 +368,5 @@ outline: 1px solid slategrey;
 .NoBSCap{
     border-bottom: 2px solid gray;
     display: inline-block;
-}
-
-#eduDetailsHead{
-    font-weight: bold;
-    font-size: 14px;
 }
 

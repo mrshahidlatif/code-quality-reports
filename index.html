@@ -70,16 +70,9 @@
         <div id="captionPP"></div>
         <div id="captionSP"></div>
     </div>  
-    <div class="details">
-      <span id="eduDetailsHead"></span>
-      <span id="eduDetails"></span>
-      <div class="code">
-        <h3 id="DoDHeader"></h3>
-        <!--iframe id="sourcecode"></iframe-->
-        <div id="detailsContent">
-          <pre><code id="sourcecode2" class="language-java"></code></pre>
-        </div>
-      </div>
+    <div id="details">
+      <h3 id="detailsHeader"></h3>
+      <div id="detailsContent"/>
     </div>
     <div class="foot">
     </div>
@@ -847,18 +840,18 @@ function bugText(){
 
 	$reporttext.html(html);
 
-	$("#reporttext a").click(function(){
-    // $("#scatterplot").css({"height":"0px", "width":"0"});
+	$(".quality a").click(function(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-		//$("#sourcecode").attr("src", url);
-    $("#sourcecode2").load(url, function() {
-      Prism.highlightElement($('#sourcecode2')[0]);
+		console.log("test");
+    $("#detailsHeader").text(str+ ".java");
+    $("#detailsContent").empty();
+    $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>').appendTo($("#detailsContent"));
+    $("#sourcecode").load(url, function() {
+      Prism.highlightElement($("#sourcecode")[0]);
     });   
-    //$("#sourcecode2").append($("<embed src='"+url+"'>"));
-
-    $("#DoDHeader").text("Source Code of " + str.split(".").pop());
+   
 	});
 
   $(".pack").click(function(){
