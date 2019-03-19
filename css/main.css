@@ -145,15 +145,12 @@ body {
 }
 
 .code{
-    width: 100%;
-    margin: 10px;
-    margin-right: 0px;
     padding: 10px;
-    padding-top: 0px;
-    text-align: justify;
-
 }
 
+.code pre {
+    height: 800px;
+}
 
 .main-container h3{
     -webkit-margin-before: 0.5em;
@@ -185,12 +182,9 @@ body {
     cursor: pointer;
 
 }
-#sourcecode {
-    width: 100%;
-    margin:  0px;
-    padding: 0px;
-    border: none;
-    /* height: 850px; */
+
+#detailsContent {
+    
 }
 
 .bar_1 .bar {

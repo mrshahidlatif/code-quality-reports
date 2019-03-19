@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <script src="lib/jquery-2.2.2.min.js"></script>
     <script src="lib/jquery.sparkline.js"></script>
+    <script type="text/javascript" src="lib/prism.js"></script>
     <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
     <script type="text/javascript" src="js/mysparklines.js"></script>
-    <script type="text/javascript" src="js/dictionary.js"></script>
+    <script type="text/javascript" src="js/dictionary.js"></script>    
 
     <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
+    <link href="lib/prism.css" rel="stylesheet" />
   </header>
 
 <!-- <div class="heading">
@@ -70,7 +72,10 @@
       <span id="eduDetails"></span>
       <div class="code">
         <h3 id="DoDHeader"></h3>
-        <iframe id="sourcecode"></iframe>
+        <!--iframe id="sourcecode"></iframe-->
+        <div id="detailsContent">
+          <pre><code id="sourcecode2" class="language-java"></code></pre>
+        </div>
       </div>
     </div>
     <div class="foot">
@@ -847,7 +852,11 @@ function bugText(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-		$("#sourcecode").attr("src", url);
+		//$("#sourcecode").attr("src", url);
+    $("#sourcecode2").load(url, function() {
+      Prism.highlightElement($('#sourcecode2')[0]);
+    });   
+    //$("#sourcecode2").append($("<embed src='"+url+"'>"));
 
     $("#DoDHeader").text("Source Code of " + str.split(".").pop());
 	});
@@ -864,6 +873,7 @@ function bugText(){
 		$("#sourcecode").attr("src", url);
 
     $("#DoDHeader").text("Package Information");
+
 	});
 
 	$('.pie').sparkline([blobCt,decomCt,spaCt,lazyCt], {
