@@ -72,13 +72,14 @@ body {
 }
 
 #sourcecodeContainer {
+    padding: 0px;
+    margin: 0px;
     height: 800px; /*TODO: fix to 100%*/
     background-color: white;
 }
 
 #sourcecode {
     font-size: 11px;
-    
 }
 
 /* Footer */

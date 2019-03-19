@@ -831,12 +831,14 @@ function bugText(){
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
     $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
     $("#detailsContent").empty();
-    $("#detailsContent").append($("<p>Package "+str.substring(0, str.lastIndexOf("."))+"</p>"))
     $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-    $("#sourcecode").load(url, function() {
-      Prism.highlightElement($("#sourcecode")[0]);
-    });   
-   
+    var src = $.ajax({
+      url: url,
+      async: false
+    }).responseText;
+    src = src.substring(src.indexOf("package "));   // cut out license text
+    $("#sourcecode").text(src);
+    Prism.highlightElement($("#sourcecode")[0]);
 	});
 
   /* TODO: reimplement a proper package details page
