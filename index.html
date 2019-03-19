@@ -829,9 +829,10 @@ function bugText(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-    $("#detailsHeader").text("File "+str+ ".java");
+    $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
     $("#detailsContent").empty();
-    $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>').appendTo($("#detailsContent"));
+    $("#detailsContent").append($("<p>Package "+str.substring(0, str.lastIndexOf("."))+"</p>"))
+    $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
     $("#sourcecode").load(url, function() {
       Prism.highlightElement($("#sourcecode")[0]);
     });   
