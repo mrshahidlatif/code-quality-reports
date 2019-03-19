@@ -21,30 +21,6 @@
 </div> -->
 
 <body>
-  <!-- <hr style="margin:0em;">
-	<div class="main-container">
-		<div class="quality">
-      <div class="text">
-        <p id="reporttext"></p>
-      </div>
-      <div class="headlines"></div>
-    </div>
-    <div class="visualizations">
-        <iframe id="parallelplot"></iframe>
-        <iframe id="scatterplot"></iframe>
-        <div class="captionPP">
-          <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
-        </div>
-        <div class="captionSP">
-            <p id=captionTextSP>Each dot in the scatterplot represents a class in the project.</p>
-        </div>
-    </div>
-    <div class="space"></div>
-		<div class="code">
-			<h3 id="DoDHeader"></h3>
-    		<iframe id="sourcecode"></iframe>
-		</div>
-  </div> -->
   <div class="grid-container">
     <div class="header">
       <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
@@ -115,8 +91,6 @@ function handleFileSelect(event) {
 	$(".text").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
 	$("#parallelplot").attr("src", "");
-	$("#sourcecode").attr("src", "");
-	$("#sourcecode").height(500);
   $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
 	$("#parallelplot").attr("src", "parallelplot/parallelplot.html");
 
@@ -203,11 +177,13 @@ function generateReport(){
     var badClass = new Object;
     var badSmellsinClass = [];
 
-		var bad = false;
+    var bad = false;
+    
+    var classSpan = "<span class='varStyle'><a href='javascript:;' data-index='" + i + "'>" + d.cname.split(".").pop() + "</a></span>";
 
 		if(s.blob){
 			blobCt++;
-      blobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      blobArr.push(classSpan);
       bad = true;
 
       badSmellsinClass.push("blob");
@@ -215,22 +191,22 @@ function generateReport(){
 
     if(s.highblob){
       highblobCt++;
-      highblobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      highblobArr.push(classSpan);
       //bad = true;
 
 
     }
 
 		if(s.decomposition){
-			decomCt++;
-      decomArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      decomCt++;
+      decomArr.push(classSpan);
 			bad = true;
       badSmellsinClass.push("functional decomposition");
 		}
 
 		if(s.spaghetti){
-			spaCt++;
-      spaArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      spaCt++;
+      spaArr.push(classSpan);
       bad = true;
 
       badSmellsinClass.push("spaghetti code");
@@ -238,13 +214,14 @@ function generateReport(){
 
     if(s.lazy){
       lazyCt++;
-      lazyArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      lazyArr.push(classSpan);
       badSmellsinClass.push("lazy class");
     }
 
     if(d.bug >= 1){
-      bugArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+
       bugCt++;
+      bugArr.push(classSpan);
     }
 
 		if(bad){
@@ -260,63 +237,63 @@ function generateReport(){
     // console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
-      goodCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
       goodCouplingCt++;
+      goodCouplingArr.push(classSpan);
     }
     //check for regular coupling
     if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
-     regularCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-     regularCouplingCt++;
+      regularCouplingCt++;
+     regularCouplingArr.push(classSpan);
    }
    //check for bad coupling
    if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
-     badCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCouplingCt++;
+     badCouplingArr.push(classSpan);
     }
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
-    goodInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    goodInheritanceCt++;
+     goodInheritanceCt++;
+    goodInheritanceArr.push(classSpan);
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
-    regularInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    regularInheritanceCt++;
+     regularInheritanceCt++;
+    regularInheritanceArr.push(classSpan);
    }
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
-    badInheritanceArr.push('<span class="varStyle">'+ d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    badInheritanceCt++;
+     badInheritanceCt++;
+    badInheritanceArr.push(classSpan);
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
-     goodCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodCohesionCt++;
+     goodCohesionArr.push(classSpan);
    }
    //check for regular cohesion
    if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
-     regularCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularCohesionCt++;
+     regularCohesionArr.push(classSpan);
    }
    //check for bad cohesion
    if(d.lcom3 > 0.725){
-     badCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCohesionCt++;
+     badCohesionArr.push(classSpan);
    }
    //check for good Complexity
    if(d.max_cc <= 2 || d.wmc <= 11){
-     goodComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodComplexityCt++;
+     goodComplexityArr.push(classSpan);
    }
    //check for regular Complexity
    if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
-     regularComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularComplexityCt++;
+     regularComplexityArr.push(classSpan);
    }
    //check for bad Complexity
    if(d.max_cc > 4 || d.wmc > 34){
-     badComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badComplexityCt++;
+     badComplexityArr.push(classSpan);
    }
   })
 
@@ -852,8 +829,7 @@ function bugText(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-		console.log("test");
-    $("#detailsHeader").text(str+ ".java");
+    $("#detailsHeader").text("File "+str+ ".java");
     $("#detailsContent").empty();
     $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>').appendTo($("#detailsContent"));
     $("#sourcecode").load(url, function() {
@@ -862,8 +838,8 @@ function bugText(){
    
 	});
 
+  /* TODO: reimplement a proper package details page
   $(".pack").click(function(){
-    // $("#scatterplot").css({"height":"0x", "width":"0"});
     var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
     var classUrl = str.replace(/[.]/g, "/");
@@ -871,11 +847,11 @@ function bugText(){
     var curl = classUrl.substring(0,n);
 	//	var url = "http://svn.apache.org/viewvc/xerces/java/branches/xerces_j_1/src/"+curl;
     var url = "https://svn.apache.org/repos/asf/xerces/java/branches/xerces_j_1/src/"+curl;
-		$("#sourcecode").attr("src", url);
-
-    $("#DoDHeader").text("Package Information");
-
-	});
+    $("#detailsHeader").text("Package "+url);
+    $("#detailsContent").empty();
+    $("#detailsContent").load(curl, function() {
+    });   
+	});*/
 
 
 

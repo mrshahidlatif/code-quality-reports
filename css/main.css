@@ -343,14 +343,16 @@ outline: 1px solid slategrey;
 }
 
 .varStyle, .educationalDescriptions{
-    border-bottom: 1px dotted #444444;
-    color:#444444;
+    border-bottom: 1px solid black;
+}
+
+.educationalDescriptions{
+    border-bottom: 1px dotted black;
 }
 
 .varStyle:hover, .educationalDescriptions:hover {
     cursor: pointer;
-    /* font-weight: bold; */
-    color:black;
+    background-color: #ffe68e;
 }
 
 #couplingLegend{
