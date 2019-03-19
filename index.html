@@ -51,12 +51,15 @@
     </div>
     <div class="text">
       <div class="quality">
+          
+      </div>
+      <div class="generalQuality">
           <p id="reporttext"></p>
       </div>
-      <div class="textDetails">
+      <!-- <div class="textDetails">
         <span id="detailHead"></span>
         <p id="details"></p>
-      </div>
+      </div> -->
     </div>
     <div class="vis">
         <!-- <div class="visualizations"> --> 
@@ -554,9 +557,10 @@ function generateReport(){
   }
 
   //Generate report text
+  $(".quality").html(badSmellsText());
+
   html += introText();
   html += generalQualtiyText();
-  html += badSmellsText();
   html += bugText();
   $("#captionPP").html(generatePPCaption());
   $("#captionSP").html(generateSPCaption());
