@@ -27,6 +27,7 @@ body {
 	height: 220px;
 	position: absolute;
 }
+
 </style>
 
 <body>
@@ -61,6 +62,19 @@ function parallelplot(data) {
 	});
 	// console.log(data[0]);
 
+	//specify the dimensions and their order
+	var myDimensions = {
+	"cbo":{type:"number"},
+	"ca": {type:"number"},
+	"ce": {type:"number"},
+	"wmc": {type:"number"},
+	"max_cc": {type:"number"},
+	"lcom": {type:"number"},
+	"lcom3": {type:"number"},
+	"noc": {type:"number"},
+	"dit": {type:"number"},
+};
+
 	var w = (data.columns.length)*32.55;
 	$("#example_container").css({width: w+"px"});
 	$("#example").css({width: w+"px"});
@@ -69,7 +83,7 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
-			// console.log(d);
+			console.log(d);
 			var className = d.cname.split(".").pop();
 			// console.log(className);
 			var data = window.parent.badClasses;
@@ -79,35 +93,34 @@ function parallelplot(data) {
 					if (data[i].badSmells.length != 0){
 						if(data[i].badSmells.includes('blob')){
 							isBlob=true;
-							return 'red';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('functional decomposition')){
 							isFD=true;
-							return 'blue';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('spaghetti code')){
 							isSC=true;
-							return 'orange';
+							return 'black';
 						}
 						else if (data[i].badSmells.includes('lazy class')){
 							isLC=true;
-							return 'violet';
+							return 'black';
 						}
 					}
-					else return "steelblue";
+					else return "#d6d6d6";
 				}
 				// else if (data[i].name != className)  return "steelblue";
 			}
 		})
 		.hideAxis(['cname'])
+		.dimensions(myDimensions)
     .render()
-    .alpha(0.6)
+    // .alpha(0.6)
     .brushMode("1D-axes")  // enable brushing
 		.interactive(); // command line mode
-
-		// pcz.hideAxis(['cname']);
 		
-  // click label to activate coloring
+  // adding axis labels
   pcz.svg.selectAll(".dimension")
     .selectAll(".label")
 		.style("font-size", "14px");

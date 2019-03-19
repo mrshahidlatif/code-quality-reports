@@ -226,7 +226,7 @@
   function scatterfilter(newdata){
 		var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
-			.style("fill", function(d,i) { return newdata[i]? "red": "steelblue";} );
+			.style("fill", function(d,i) { return newdata[i]? "#ffe68e": "#d6d6d6";} );
 
     }
 

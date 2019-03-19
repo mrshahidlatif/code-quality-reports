@@ -36,13 +36,20 @@ body {
 }
 
 .quality{
-    width: 45vw;
+    width: 30vw;
     height: 100%;
     margin-left: 0px;
     /* overflow: auto; */
     padding: 10px;
     text-align: justify;
     float: left;
+}
+.generalQuality{
+    width: 55%;
+    left: 30vw;
+    font-size:14px;
+    float:right;
+    padding: 10px;
 }
 
 .textDetails{
@@ -81,7 +88,7 @@ body {
 }
 
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgb(255, 255, 255);
   text-align: left;
   padding: 0px 0;
   font-size: 14px;
@@ -128,7 +135,7 @@ body {
     padding-left: 2%;
 }
 #subtitle{
-    font-size: 18px;
+    font-size: 15px;
     font-style: italic;
     padding-left: 2%;
 }
@@ -157,18 +164,9 @@ body {
     -webkit-margin-after: 0.5em;
     font-size: 19px;
 }
-.main-container h4{
+h4{
     display: inline;
 }
-
-/* .main-container p{
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 0px;
-    font-size: 16px;
-    line-height: 18px;
-    font-weight: normal;
-
-} */
 
 #scatterplot {
    width:30%; 
@@ -293,9 +291,9 @@ background-color: #777;
 .content {
 padding: 5px 5px 5px 5px;
 font-size: 12px;
-/*display: none; content is hidden later using code*/
 overflow: auto;
-background-color: #f1f1f1;
+border: 1px solid gray;
+margin-top: 2px;
 }
 
 .content p{
@@ -349,44 +347,26 @@ outline: 1px solid slategrey;
     font-size: 18px;
 }
 
-.blobCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid red;
+#couplingLegend{
+    border-bottom: 2px solid #238b45;
     display: inline-block;
 }
-.FDCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid blue;
+#complexityLegend{
+
+    border-bottom: 2px solid #2b8cbe;
     display: inline-block;
 }
-.SCCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid orange;
+#cohesionLegend{
+    border-bottom: 2px solid #c51b8a;
     display: inline-block;
 }
-.LCCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid violet;
-    display: inline-block;
-}
-#cboCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid #238b45;
-    display: inline-block;
-}
-#ecCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid #66c2a4;
-    display: inline-block;
-}
-#acCap{
-    /* text-decoration: red overline; */
-    border-top: 2px solid #b2e2e2;
+#inheritanceLegend{
+    border-bottom: 2px solid #88419d;
     display: inline-block;
 }
 
 .NoBSCap{
-    border-top: 2px solid steelblue;
+    border-bottom: 2px solid gray;
     display: inline-block;
 }
 
@@ -394,3 +374,4 @@ outline: 1px solid slategrey;
     font-weight: bold;
     font-size: 14px;
 }
+

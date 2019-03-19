@@ -126,35 +126,20 @@ function ScatterPlot(){
                     if (data[i].name === className){
                         // console.log(className);
                         if (data[i].badSmells.length != 0){
-                            if(data[i].badSmells.includes('blob')){
-                                isBlob=true;
-                                return 'red';
-                            }
-                            else if (data[i].badSmells.includes('functional decomposition')){
-                                isFD=true;
-                                return 'blue';
-                            }
-                            else if (data[i].badSmells.includes('spaghetti code')){
-                                isSC=true;
-                                return 'orange';
-                            }
-                            else if (data[i].badSmells.includes('lazy class')){
-                                isLC=true;
-                                return 'violet';
-                            }
+                            return 'black';
                         }
-                        else return "steelblue";
                     }
-                    // else return "steelblue"
                 }
+                return "#d6d6d6";
             })
             .on("mouseover", function(d) {
-                // console.log(d);
+                
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
                 var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
-                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#FFFF00");
-               //Show the new tooltip
+                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#ffe68e");
+                $(this).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
+                //Show the new tooltip
                d3.select('.tooltip')
                 tooltip.transition()
                     .duration(200)
@@ -165,7 +150,7 @@ function ScatterPlot(){
 
                 //Highlighting corresponding bar in the sparklines 
                 // var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
-                $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
+                $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
                 // console.log(xxx);
                 
                 //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
@@ -177,10 +162,11 @@ function ScatterPlot(){
                     }
                 }
                 // console.log(window.parent.fullData);
-
             })
             .on("mouseout", function(d) {
                 $("span.varStyle",window.parent.document).css( "background-color", "transparent");
+                $(this).attr("r","6").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+
                 $("span.slcls",window.parent.document).css('background','transparent');
                 window.parent._unHighlight();
                 mouseout(d);

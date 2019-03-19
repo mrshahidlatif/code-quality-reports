@@ -53,12 +53,15 @@
     </div>
     <div class="text">
       <div class="quality">
+          
+      </div>
+      <div class="generalQuality">
           <p id="reporttext"></p>
       </div>
-      <div class="textDetails">
+      <!-- <div class="textDetails">
         <span id="detailHead"></span>
         <p id="details"></p>
-      </div>
+      </div> -->
     </div>
     <div class="vis">
         <!-- <div class="visualizations"> --> 
@@ -559,9 +562,10 @@ function generateReport(){
   }
 
   //Generate report text
-  html += introText();
+  $(".quality").html(badSmellsText());
+
+  $("#subtitle").html(introText());
   html += generalQualtiyText();
-  html += badSmellsText();
   html += bugText();
   $("#captionPP").html(generatePPCaption());
   $("#captionSP").html(generateSPCaption());
@@ -584,10 +588,10 @@ function generateReport(){
   //general quality report
   function generalQualtiyText(){
     var text = '';
-    var coup = '<br><h4 align="left">Coupling:</h4>';
-    var comp = '<br><h4 align="left">Complexity:</h4>';
-    var coh = '<br><h4 align="left">Cohesion:</h4>';
-    var inher = '<br><h4 align="left">Inheritance:</h4>';
+    var coup = '<br><h4><span id="couplingLegend">Coupling</span>:</h4>';
+    var comp = '<br><h4><span id="complexityLegend">Complexity</span>:</h4>';
+    var coh = '<br><h4><span id="cohesionLegend">Cohesion</span>:</h4>';
+    var inher = '<br><h4><span id="inheritanceLegend">Inheritance</span>:</h4>';
     text+='<h3 align="left">General Quality Attributes:</h3>The quality of the project is described in terms of four quality attributes.'
   // coupling quality
   var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
@@ -669,9 +673,9 @@ function generateReport(){
     text += '<h3 align="left">Bad Smells:</h3>';
     if(badCt == 0){text+= 'There are no bad smells in the project&mdash;the quality is high and no refactoring is required.'
     }
-    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell <span class="pie"></span>: ';
+    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell: ';
     }
-    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells <span class="pie"></span>: ';
+    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells: ';
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
@@ -729,9 +733,7 @@ function generatePPCaption(){
   var caption = 'The Parallel Coordinates provides an overview of the software quality metrics. Each line represents a class. Classes with bad smells: ';
   
   if ($("#parallelplot")[0].contentWindow.isBlob) legend.push('<span class="blobCap">Blob</span>');
-  if ($("#parallelplot")[0].contentWindow.isFD) legend.push('<span class="FDCap">Functional decomposition</span>');
-  if ($("#parallelplot")[0].contentWindow.isSC) legend.push('<span class="SCCap">Spaghetti class</span>');
-  if ($("#parallelplot")[0].contentWindow.isLC) legend.push('<span class="LCCap">Lazy class</span>');
+
   legend.push('<span class="NoBSCap">No</span>');
   caption += printList(legend);
   // console.log(legend);
@@ -740,8 +742,6 @@ function generatePPCaption(){
   return caption;
 }
 function generateSPCaption(){
-  
-  $('#xSelect',)
  
 
   return 'Correlation between X and Y';
@@ -876,13 +876,7 @@ function bugText(){
 
 	});
 
-	$('.pie').sparkline([blobCt,decomCt,spaCt,lazyCt], {
-		type:'bar',
-		width: '25px',
-		height: '15px',
-    colorMap: ["red", "blue", "orange", "violet"]
 
-	});
 
   var sparklineOptions = {
     type:'bar',
@@ -892,39 +886,7 @@ function bugText(){
     highlightColor: 'black',
   }
 
-  /*var couplingValues = [];
-  data.forEach(function(d, i){
-		couplingValues.push([d.cbo,d.ca,d.ce]);
-	});
-  $('.couplingStacked').sparkline(couplingValues, sparklineOptions);
 
-  var complexityValues = [];
-  data.forEach(function(d, i){
-		 	complexityValues.push([d.wmc,d.max_cc]);
-	});
-  $('.complexityStacked').sparkline(complexityValues, sparklineOptions);
-
-  var cohesionValues = [];
-  data.forEach(function(d, i){
-      cohesionValues.push([d.lcom,d.lcom3]);
-  });
-  $('.cohesionStacked').sparkline(cohesionValues, sparklineOptions);
-
-  $('.couplingStacked').bind('sparklineRegionChange', function(ev){
-    var spark = ev.sparklines[0];
-     region = spark.getCurrentRegionFields();
-    console.log(region[0]);
-  });
-
-  var inheritanceValues = [];
-  data.forEach(function(d, i){
-      inheritanceValues.push([d.dit,d.noc]);
-  });
-  $('.inheritanceStacked').sparkline(inheritanceValues, sparklineOptions);
-
-//  $('#mysparkline').sparkline(cohesionValues, {type: 'line', width: '800px', height: '30px'});
-//  $('#mysparkline').sparkline(complexityValues, {type: 'discrete', thresholdValue:2, thresholdColor:'#ff007f', width: '800px', height: '30px', composite: true});
-*/
   //bad smells charts
 	drawBarChart(".bar_1", Math.round((blobCt/badCt)*1000)/10);
 	drawBarChart(".bar_2", Math.round((decomCt/badCt)*1000)/10);
@@ -1043,16 +1005,6 @@ function bugText(){
     
   });
 
-  //new implementation of educational details. 
-  // $(".educationalDescriptions").on("click", function(){
-
-  //   if($(".educationalDescriptions").text() == "coupling metrics"){
-  //     $("#eduDetailsHead").html($(".educationalDescriptions").text() +"<br>");
-  //   $("#eduDetails").html("Coupling between objects (CBO) is a count of the number of classes that are coupled to a particular class i.e. where the methods of one class call the methods or access the variables of the other. These calls need to be counted in both directions so the CBO of class A is the size of the set of classes that class A references and those classes that reference class A. Since this is a set - each class is counted only once even if the reference operates in both directions i.e. if A references B and B references A, B is only counted once. </br></br> Increased coupling increases interclass dependancies, making the code less modular and less suitable for reuse. In other words if you wanted to package up the code for reuse you might end up having to include code that was not really fundamental to the core functionality. More coupling means that the code becomes more difficult to maintain since an alteration to code in one area runs a higher risk of affecting code in another (linked) area. The more links between classes the more complex the code and the more difficult it will be to test. The only consideration in calculating this metric is whether only the classes written for the project should be considered or whether library classes should be included. ");
-  //   }
-
-  // });
-
 	$("#sourcecode").height(($(".quality").height()-43));
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
@@ -1149,21 +1101,6 @@ function num2word(n){
   else return n;
 }
 
-// $(window).load(function () {
-//   var xxx = $("#scatterplot").contents().find("#xSelect :selected").val();
-//   console.log(xxx);
-// });
-
-// $( document ).ready(function() {
-//     console.log( "ready!" );
-    // $('#scatterplot').on ('load', function() { 
-    //    // do something
-    //    var xxx = $("#scatterplot").contents().find("select#xSelect :selected").val();
-    //    console.log(xxx);
-    // });
-   
-// });
-
 //avoid scrolling of the textDetails panel 
 $(".text").scroll(function(){
   $(".textDetails").css({"margin-top": ($(".text").scrollTop()) + "px", "margin-left":($(".text").scrollLeft()) + "px"});
@@ -1172,9 +1109,8 @@ $(".text").scroll(function(){
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".varStyle", function() {
     var className = $(this).text();
-    $("span.slcls."+className+"",window.parent.document).css('background','#FFFF00');
-    $("#scatterplot").contents().find("circle#"+className).attr("r","8").attr("stroke", "#FFFF00").attr("stroke-width","6px");
-
+    $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
+    $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
