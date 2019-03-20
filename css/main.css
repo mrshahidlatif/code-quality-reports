@@ -1,12 +1,15 @@
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
 
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     height: 100%; overflow: hidden;
 }
 
-/* Trying new layout */
+/* ------------------------------------------------------------------------*/
+/* Grid layout */
+/* ------------------------------------------------------------------------*/
+
 .header { 
     position: fixed;
     grid-area: header;
@@ -103,7 +106,27 @@ body {
   padding: 0px 0;
   font-size: 14px;
 }
-/* ending new layout */
+
+/* ------------------------------------------------------------------------*/
+/* Base tags */
+/* ------------------------------------------------------------------------*/
+
+p {
+    margin-top: 6pt;
+    margin-bottom: 6pt;
+}
+
+h3 {
+    padding-bottom: 6pt;
+}
+
+h4{
+    display: inline;
+}
+
+/* ------------------------------------------------------------------------*/
+/* Other -- TODO: sort and refactor properly */
+/* ------------------------------------------------------------------------*/
 
 #file-upload {
     display: block;
@@ -160,14 +183,6 @@ body {
     height: 100%;
     background: #fff;
     visibility: hidden;
-}
-
-h3 {
-    padding-bottom: 6pt;
-}
-
-h4{
-    display: inline;
 }
 
 #scatterplot {
