@@ -1065,8 +1065,8 @@ $(document).on("mouseover", ".className", function() {
     window.parent._highlightEdge(d[classShortNameToIndex[className]]);
 
  }).on('mouseout', '.className', function() {
-    $("span.slcls",window.parent.document).css('background','transparent'); 
-    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+    $("span.slcls",window.parent.document).css('background',''); 
+    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
     window.parent._unHighlight();
 
  });

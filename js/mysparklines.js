@@ -100,8 +100,8 @@
           }
       }
         }).on('mouseout', function(){
-        $("span.varStyle").css( "background-color", "transparent");
-        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+        $("span.varStyle").css( "background-color", "");
+        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
         window.parent._unHighlight();
       });
       //-----------------------------------------------------------------------------

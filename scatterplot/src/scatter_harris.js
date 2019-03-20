@@ -136,8 +136,8 @@ function ScatterPlot(){
                 
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
-                var x = $("span.varStyle:contains("+ className +")",window.parent.document).html();
-                $("span.varStyle:contains("+ className +")",window.parent.document).css( "background-color", "#ffe68e");
+                var x = $("span.className:contains("+ className +")",window.parent.document).html();
+                $("span.className:contains("+ className +")",window.parent.document).css( "background-color", "#ffe68e");
                 $(this).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
                 //Show the new tooltip
                d3.select('.tooltip')
@@ -149,7 +149,6 @@ function ScatterPlot(){
                 .style("top", (d3.event.pageY - 5) + "px");
 
                 //Highlighting corresponding bar in the sparklines 
-                // var xxx =   $("span.slcls."+className+"",window.parent.document).attr('data-slcls');
                 $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
                 // console.log(xxx);
                 
@@ -161,13 +160,12 @@ function ScatterPlot(){
                         window.parent._highlightEdge(d[i]);
                     }
                 }
-                // console.log(window.parent.fullData);
             })
             .on("mouseout", function(d) {
-                $("span.varStyle",window.parent.document).css( "background-color", "transparent");
+                $("span.className",window.parent.document).css( "background-color", "");
                 $(this).attr("r","6").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
 
-                $("span.slcls",window.parent.document).css('background','transparent');
+                $("span.slcls",window.parent.document).css('background','');
                 window.parent._unHighlight();
                 mouseout(d);
 
