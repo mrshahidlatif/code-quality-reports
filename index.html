@@ -535,15 +535,15 @@ function generateReport(){
     var i  = couplingArr.indexOf(m);
 
     if(i == 0){
-      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
+      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>';
     }
 
     else if(i == 1){
-      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>'
     }
 
     else if(i == 2){
-      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>'
     }
     text += '</p>';
     return text;
@@ -557,13 +557,13 @@ function generateReport(){
     i  = complexityArr.indexOf(m);
     var text = '<p>';
     if(i == 0){
-      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
     }
     else if(i == 1){
-      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
     }
     else if(i == 2){
-      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
     }
     return text += '</p>';
 
@@ -576,13 +576,13 @@ function generateReport(){
     i  = cohesionArr.indexOf(m);
     var text = '<p>';
     if(i == 0){
-      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
     }
     else if(i == 1){
-      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
     }
     else if(i == 2){
-      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
     }
 
     return  text += '<p>';
@@ -597,13 +597,13 @@ function generateReport(){
     i  = inheritanceArr.indexOf(m);
     var text='<p>';
     if(i == 0){
-      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" ></button><div class="content"><div id="samplsl4"></div></div>'
     }
     else if(i == 1){
-      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div>'
     }
     else if(i == 2){
-      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div>'
     }
 
     return text += '</p>';
@@ -612,7 +612,6 @@ function generateReport(){
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
-    // TODO: use p tags instead of br
     // TODO: change order (everywhere) to comp, coup, coh, inheri
   
     text+='<p><h3 align="left">General Quality Attributes:</h3> The quality of the project is described in terms of four quality attributes.'
@@ -622,7 +621,7 @@ function generateReport(){
     text += generateCohesionText();
     text += generateInheritanceText();
  
-  return text;
+    return text;
   }
 
   function noOfBadSmells(list){
@@ -648,41 +647,41 @@ function generateReport(){
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
       var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
-      blobText += ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
+      blobText += ' <button class="collapsible"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(blobCt > 1){
       var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
-      blobText+= ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
+      blobText+= ' <button class="collapsible"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
       listOfBadSmellTypes.push(decomText);
     }
     if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
       listOfBadSmellTypes.push(decomText);
     }
     if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
       listOfBadSmellTypes.push(spaText);
     }
     if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
       listOfBadSmellTypes.push(spaText);
     }
     if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
     if(superSmellsCt > 0){
-      text+= ' Some classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
+      text+= ' Some classes <button class="collapsible"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
     }
     var c = noOfBadSmells(classesWithBadSmells);
     if (c != undefined){ 
@@ -766,7 +765,7 @@ function bugText(){
     var d = classesWithBugSmells(classesWithBadSmells);
     text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> classes contain bugs.';
     if(d.length > 3){
-      text += ' The classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(d) + '</p></div> carry both bugs and bad smells';
+      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printList(d) + '</p></div> carry both bugs and bad smells';
     }
     else if (d.length > 0){
       text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' carries' : ' The classes ' + printItalicList(d) + ' carry' ;
@@ -1047,22 +1046,19 @@ function drawBarChart(tagNmae, val){
 	$(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="'+(val/2)+'" height="14"></rect><text x="25" y="11" style="font-size:12px">'+val+'%</text></g></svg>');
 }
 
-function expandContent(type){
-  // TODO: also show the metric description in the details panel
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
+// TODO: also show the metric description in the details panel
+$(document).on("click","button.collapsible", function () {
+   var clickedBtnID = $(this)[0]; // or var clickedBtnID = this.id
+   $(this)[0].classList.toggle("active");
+   console.log(clickedBtnID);
+   var content = this.nextElementSibling;
       if (content.style.display === "block") {
         content.style.display = "none";
       } else {
         content.style.display = "block";
       }
-    });
-  }
-}
+  //  alert('you clicked on button #' + clickedBtnID);
+});
 
 /* ------------------------------------------------------------------------*/
 /* Metric descriptions */
@@ -1117,9 +1113,7 @@ $(document).on("mouseover", ".className", function() {
 
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
-    
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
-
     window.parent._unHighlight();
 
  });
