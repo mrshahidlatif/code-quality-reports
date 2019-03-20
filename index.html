@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="vis">
-        <!-- <div class="visualizations"> --> 
+        <!-- TODO: replace iframes -->         
         <iframe id="parallelplot"></iframe>
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
@@ -519,6 +519,7 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
+    // FIXME: fill in the vars
     text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
     return text;
   }
@@ -526,6 +527,8 @@ function generateReport(){
   //general quality report
   function generalQualtiyText(){
     var text = '';
+    // TODO: expand details (bar chart) when clicking on the metrics
+    // TODO: user p tags instead of br
     var coup = '<br><h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
     var comp = '<br><h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
     var coh = '<br><h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
@@ -681,6 +684,9 @@ function countClassesHavingBadSmells (data){
 
 function generatePPCaption(){
   var legend = [];
+  // TODO: "id" used instead of "class"
+  // TODO: make metrics categories clickable
+  // TODO: color metric names
   var caption = 'The overview of the software quality in terms of <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
   caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
 
@@ -803,6 +809,7 @@ function bugText(){
     $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
     $("#detailsContent").empty();
     $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+    // TODO: replace by asynchronous load
     var src = $.ajax({
       url: url,
       async: false
@@ -869,7 +876,9 @@ function bugText(){
 	var LOC_S = (columns.indexOf("LOC") >= 0)? "LOC" : "loc",
 		AMC_S = (columns.indexOf("AMC") >= 0)? "AMC" : "amc",
 		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
-		NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+    NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+    
+  // FIXME: highlight of the bad smells in the PCP doesn't work anymore properly
 
 	$(".badBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
@@ -1012,6 +1021,7 @@ function drawBarChart(tagNmae, val){
 }
 
 function expandContent(type){
+  // TODO: also show the metric description in the details panel
   var coll = document.getElementsByClassName("collapsible");
   var i;
   for (i = 0; i < coll.length; i++) {
@@ -1028,6 +1038,8 @@ function expandContent(type){
 }
 
 /* Metric descriptions */
+
+// TODO: color metric names accordingly
 
 function showCouplingMetricDescription() {
   const content = `
