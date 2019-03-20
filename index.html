@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <script src="lib/jquery-2.2.2.min.js"></script>
     <script src="lib/jquery.sparkline.js"></script>
+    <script type="text/javascript" src="lib/prism.js"></script>
     <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
     <script type="text/javascript" src="js/mysparklines.js"></script>
-    <script type="text/javascript" src="js/dictionary.js"></script>
+    <script type="text/javascript" src="js/dictionary.js"></script>    
 
     <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
+    <link href="lib/prism.css" rel="stylesheet" />
   </header>
 
 <!-- <div class="heading">
@@ -19,30 +21,6 @@
 </div> -->
 
 <body>
-  <!-- <hr style="margin:0em;">
-	<div class="main-container">
-		<div class="quality">
-      <div class="text">
-        <p id="reporttext"></p>
-      </div>
-      <div class="headlines"></div>
-    </div>
-    <div class="visualizations">
-        <iframe id="parallelplot"></iframe>
-        <iframe id="scatterplot"></iframe>
-        <div class="captionPP">
-          <p id=captionTextPP>Parallel Coordinates Plot provides an overview of the software quality metrics. Each blue line represents a class in the project. </p>
-        </div>
-        <div class="captionSP">
-            <p id=captionTextSP>Each dot in the scatterplot represents a class in the project.</p>
-        </div>
-    </div>
-    <div class="space"></div>
-		<div class="code">
-			<h3 id="DoDHeader"></h3>
-    		<iframe id="sourcecode"></iframe>
-		</div>
-  </div> -->
   <div class="grid-container">
     <div class="header">
       <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
@@ -56,36 +34,31 @@
       <div class="generalQuality">
           <p id="reporttext"></p>
       </div>
-      <!-- <div class="textDetails">
-        <span id="detailHead"></span>
-        <p id="details"></p>
-      </div> -->
     </div>
     <div class="vis">
-        <!-- <div class="visualizations"> --> 
+        <!-- TODO: replace iframes -->         
         <iframe id="parallelplot"></iframe>
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
         <div id="captionSP"></div>
     </div>  
-    <div class="details">
-      <span id="eduDetailsHead"></span>
-      <span id="eduDetails"></span>
-      <div class="code">
-        <h3 id="DoDHeader"></h3>
-        <iframe id="sourcecode"></iframe>
-      </div>
+    <div id="details">
+      <h3 id="detailsHeader"></h3>
+      <div id="detailsContent"/>
     </div>
     <div class="foot">
     </div>
   </div>
 </body>
+
 <script type="text/javascript">
 window._scatterplot = function(){};
 window._parallelplot = function(){};
 var projectName = "";
 var fullData;
 var badClasses;
+var classFullNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
+var classShortNameToIndex = {} // equivalent dictionary with short class names -- TODO: temporary solution, should be removed
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -117,8 +90,6 @@ function handleFileSelect(event) {
 	$(".text").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
 	$("#parallelplot").attr("src", "");
-	$("#sourcecode").attr("src", "");
-	$("#sourcecode").height(500);
   $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
 	$("#parallelplot").attr("src", "parallelplot/parallelplot.html");
 
@@ -155,23 +126,6 @@ function handleFileSelect(event) {
                  }
   //end of modified
 }
-
-//-----------------------------
-// methodological explainations 
-//-----------------------------
-
-   var couplingInfo = 'The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.';
-    
- 
-  var complexityInfo = 'The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.';
-  
-  var cohesionInfo = 'Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.';
-  
-  var inheritanceInfo = 'The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance. ';
-
-
-    
-//------------------------------------
 
 function generateReport(){
   var data = clone(_chartdata);
@@ -218,15 +172,21 @@ function generateReport(){
 	var $reporttext = $("#reporttext"), html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = data.length, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, classesWithBadSmells = [], bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 	data.forEach(function(d, i){
+    classFullNameToIndex[d.cname] = i; 
+    classShortNameToIndex[d.cname.split(".").pop()] = i;
     var s = d.smells;
     var badClass = new Object;
     var badSmellsinClass = [];
 
-		var bad = false;
+    var bad = false;
+    
+    var fileSpan = createClassSpan(d.cname);
+
+    // TODO: remove code clones in the following
 
 		if(s.blob){
 			blobCt++;
-      blobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      blobArr.push(fileSpan);
       bad = true;
 
       badSmellsinClass.push("blob");
@@ -234,22 +194,22 @@ function generateReport(){
 
     if(s.highblob){
       highblobCt++;
-      highblobArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      highblobArr.push(fileSpan);
       //bad = true;
 
 
     }
 
 		if(s.decomposition){
-			decomCt++;
-      decomArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      decomCt++;
+      decomArr.push(fileSpan);
 			bad = true;
       badSmellsinClass.push("functional decomposition");
 		}
 
 		if(s.spaghetti){
-			spaCt++;
-      spaArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      spaCt++;
+      spaArr.push(fileSpan);
       bad = true;
 
       badSmellsinClass.push("spaghetti code");
@@ -257,13 +217,14 @@ function generateReport(){
 
     if(s.lazy){
       lazyCt++;
-      lazyArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+      lazyArr.push(fileSpan);
       badSmellsinClass.push("lazy class");
     }
 
     if(d.bug >= 1){
-      bugArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>(&#128463; </a>" + " <a class='pack' href='#'; data-index='" + i + "'>&#128448;)</a>");
+
       bugCt++;
+      bugArr.push(fileSpan);
     }
 
 		if(bad){
@@ -279,63 +240,63 @@ function generateReport(){
     // console.log(classesWithBadSmells);
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
-      goodCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
       goodCouplingCt++;
+      goodCouplingArr.push(fileSpan);
     }
     //check for regular coupling
     if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
-     regularCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-     regularCouplingCt++;
+      regularCouplingCt++;
+     regularCouplingArr.push(fileSpan);
    }
    //check for bad coupling
    if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
-     badCouplingArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCouplingCt++;
+     badCouplingArr.push(fileSpan);
     }
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
-    goodInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    goodInheritanceCt++;
+     goodInheritanceCt++;
+    goodInheritanceArr.push(fileSpan);
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
-    regularInheritanceArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    regularInheritanceCt++;
+     regularInheritanceCt++;
+    regularInheritanceArr.push(fileSpan);
    }
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
-    badInheritanceArr.push('<span class="varStyle">'+ d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
-    badInheritanceCt++;
+     badInheritanceCt++;
+    badInheritanceArr.push(fileSpan);
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
-     goodCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodCohesionCt++;
+     goodCohesionArr.push(fileSpan);
    }
    //check for regular cohesion
    if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
-     regularCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularCohesionCt++;
+     regularCohesionArr.push(fileSpan);
    }
    //check for bad cohesion
    if(d.lcom3 > 0.725){
-     badCohesionArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badCohesionCt++;
+     badCohesionArr.push(fileSpan);
    }
    //check for good Complexity
    if(d.max_cc <= 2 || d.wmc <= 11){
-     goodComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      goodComplexityCt++;
+     goodComplexityArr.push(fileSpan);
    }
    //check for regular Complexity
    if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
-     regularComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      regularComplexityCt++;
+     regularComplexityArr.push(fileSpan);
    }
    //check for bad Complexity
    if(d.max_cc > 4 || d.wmc > 34){
-     badComplexityArr.push('<span class="varStyle">' + d.cname.split(".").pop() + "</span>"+" <a href='javascript:;' data-index='" + i + "'>&#128463;</a>");
      badComplexityCt++;
+     badComplexityArr.push(fileSpan);
    }
   })
 
@@ -539,40 +500,6 @@ function generateReport(){
   result = stringify(structurize(paths)).join("\n");
   // console.log(result);
 
-  function printList(list){
-    // array argument
-    var s="";
-    switch(list.length){
-      case 1: s += list[0]; break;
-      case 2: s +=  list[0] + " and " + list[1]; break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += list[i]+ ", ";
-          }
-          else s += " and " + list[i];
-        }
-    }
-    return s;
-  }
-
-  function printItalicList(list){
-    // array argument
-    var s="";
-    switch(list.length){
-      case 1: s += '<span class="varStyle">' + list[0] + '</span>'; break;
-      case 2: s += '<span class="varStyle">' + list[0] + '</span>'+ ' and ' + '<span class="varStyle">' + list[1] + '</span>'; break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += '<span class="varStyle">' + list[i] + '</span>' + ", ";
-          }
-          else s += " and " + '<span class="varStyle">' + list[i] + '</span>';
-        }
-    }
-    return s;
-  }
-
   //Generate report text
   $(".quality").html(badSmellsText());
 
@@ -592,18 +519,20 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    // text += '<span class="varStyle">SAXException</span>' ; // just for testing
-    text += ' This document presents the code quality aspects of '+ projectName +' <span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+ classCt +' classes.'
+    // FIXME: fill in the vars
+    text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
     return text;
   }
 
   //general quality report
   function generalQualtiyText(){
     var text = '';
-    var coup = '<br><h4><span id="couplingLegend">Coupling</span>:</h4>';
-    var comp = '<br><h4><span id="complexityLegend">Complexity</span>:</h4>';
-    var coh = '<br><h4><span id="cohesionLegend">Cohesion</span>:</h4>';
-    var inher = '<br><h4><span id="inheritanceLegend">Inheritance</span>:</h4>';
+    // TODO: expand details (bar chart) when clicking on the metrics
+    // TODO: user p tags instead of br
+    var coup = '<br><h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
+    var comp = '<br><h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
+    var coh = '<br><h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
+    var inher = '<br><h4><span id="inheritanceLegend" class="inheritanceMetric clickable">Inheritance</span>:</h4>';
     text+='<h3 align="left">General Quality Attributes:</h3>The quality of the project is described in terms of four quality attributes.'
   // coupling quality
   var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
@@ -611,15 +540,15 @@ function generateReport(){
   var i  = couplingArr.indexOf(m);
 
   if(i == 0){
-    text+= coup + '<span id="couplingInfo"> &#9432;</span> The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
+    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
   }
 
   else if(i == 1){
-    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   else if(i == 2){
-    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   // complextiy quality
@@ -669,7 +598,7 @@ function generateReport(){
   return text;
   }
 
-  function NoOfBadSmells(list){
+  function noOfBadSmells(list){
     for(var i=0;i<list.length;i++){
       if(list[i].badSmells.length == 4)
         return list[i];
@@ -691,51 +620,54 @@ function generateReport(){
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
-      var blobText = num2word(blobCt) +' <span class="bad_1"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
+      var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
       blobText += ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(blobCt > 1){
-      var blobText = num2word(blobCt) +' <span class="bad_1"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
+      var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
       blobText+= ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="bad_2"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
       listOfBadSmellTypes.push(decomText);
     }
     if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="bad_2"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
       listOfBadSmellTypes.push(decomText);
     }
     if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="bad_3"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
       listOfBadSmellTypes.push(spaText);
     }
     if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="bad_3"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
       listOfBadSmellTypes.push(spaText);
     }
     if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="bad_4"> lazy class </span><span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="bad_4"> lazy class </span><span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
     if(superSmellsCt > 0){
       text+= ' Some classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
     }
-    var c = NoOfBadSmells(classesWithBadSmells);
-    if (c != undefined){ text += ' For instance, <span class="varStyle">'+ c.name + '</span> has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; }
-    if(highblobCt == 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.';
+    var c = noOfBadSmells(classesWithBadSmells);
+    if (c != undefined){ 
+      text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
+    }
+    // TODO: implement the following correctly
+    /* if(highblobCt == 1){
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.';
     }
     if(highblobCt > 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.'
-    }
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.'
+    } */
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;
   }
@@ -752,9 +684,14 @@ function countClassesHavingBadSmells (data){
 
 function generatePPCaption(){
   var legend = [];
+  // TODO: "id" used instead of "class"
+  // TODO: make metrics categories clickable
+  // TODO: color metric names
   var caption = 'The overview of the software quality in terms of <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells.';
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
 
+  caption += printList(legend);
+  // console.log(legend);
   caption += '.';
 
   return caption;
@@ -865,18 +802,25 @@ function bugText(){
 
 	$reporttext.html(html);
 
-	$("#reporttext a").click(function(){
-    // $("#scatterplot").css({"height":"0px", "width":"0"});
+	$(".className").click(function(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-		$("#sourcecode").attr("src", url);
-
-    $("#DoDHeader").text("Source Code of " + str.split(".").pop());
+    $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
+    $("#detailsContent").empty();
+    $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+    // TODO: replace by asynchronous load
+    var src = $.ajax({
+      url: url,
+      async: false
+    }).responseText;
+    src = src.substring(src.indexOf("package "));   // cut out license text
+    $("#sourcecode").text(src);
+    Prism.highlightElement($("#sourcecode")[0]);
 	});
 
+  /* TODO: reimplement a proper package details page
   $(".pack").click(function(){
-    // $("#scatterplot").css({"height":"0x", "width":"0"});
     var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
     var classUrl = str.replace(/[.]/g, "/");
@@ -884,12 +828,11 @@ function bugText(){
     var curl = classUrl.substring(0,n);
 	//	var url = "http://svn.apache.org/viewvc/xerces/java/branches/xerces_j_1/src/"+curl;
     var url = "https://svn.apache.org/repos/asf/xerces/java/branches/xerces_j_1/src/"+curl;
-		$("#sourcecode").attr("src", url);
-
-    $("#DoDHeader").text("Package Information");
-	});
-
-
+    $("#detailsHeader").text("Package "+url);
+    $("#detailsContent").empty();
+    $("#detailsContent").load(curl, function() {
+    });   
+	});*/
 
   var sparklineOptions = {
     type:'bar',
@@ -933,14 +876,15 @@ function bugText(){
 	var LOC_S = (columns.indexOf("LOC") >= 0)? "LOC" : "loc",
 		AMC_S = (columns.indexOf("AMC") >= 0)? "AMC" : "amc",
 		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
-		NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+    NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+    
+  // FIXME: highlight of the bad smells in the PCP doesn't work anymore properly
 
-	$(".bad_1").on("click", function(){
-
-    var url = "BS Description/blob.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Blob Bad Smell");
+	$(".badBlob").on("click", function(){
+    var url = "bad_smell_descriptions/blob.htm";
+    $("#detailsHeader").text("The 'Blob' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(blobCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -956,11 +900,11 @@ function bugText(){
 		}
 	});
 
-	$(".bad_2").on("click", function(){
-    var url = "BS Description/FD.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Functional Decomposition Bad Smell");
+	$(".badFc").on("click", function(){
+    var url = "bad_smell_descriptions/fd.htm";
+    $("#detailsHeader").text("The 'Functional Decomposition' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(decomCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -975,11 +919,11 @@ function bugText(){
 		}
 	});
 
-	$(".bad_3").on("click", function(){
-    var url = "BS Description/SC.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Spaghetti Code Bad Smell");
+	$(".badSc").on("click", function(){
+    var url = "bad_smell_descriptions/sc.htm";
+    $("#detailsHeader").text("The 'Spaghetti Code' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(spaCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -993,11 +937,11 @@ function bugText(){
 		}
 	});
 
-  $(".bad_4").on("click", function(){
-    var url = "BS Description/lazy.htm";
-    $("#sourcecode").attr("src", url);
-    // $("#scatterplot").css({"height":"610px", "width":"100%"});
-    $("#DoDHeader").text("Lazy Class Bad Smell");
+  $(".badLazy").on("click", function(){
+    var url = "bad_smell_descriptions/lazy.htm";
+    $("#detailsHeader").text("The 'Lazy Class' Bad Smell");
+    $("#detailsContent").empty();
+    $("#detailsContent").load(url);
 		if(lazyCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -1011,19 +955,23 @@ function bugText(){
 		}
 	});
 
-  $(".coupling_metric").on("click", function(){
-    var url = "BS Description/cbo.htm";
-    $("#sourcecode").attr("src", url);
-    $("#DoDHeader").text("METRIC DESCRIPTION");
-    
+  $(".couplingMetric").on("click", function(){
+    showCouplingMetricDescription();
   });
 
-	$("#sourcecode").height(($(".quality").height()-43));
+  $(".complexityMetric").on("click", function(){
+    showComplexityMetricDescription();
+  });
+
+  $(".cohesionMetric").on("click", function(){
+    showCohesionMetricDescription();
+  });
+
+  $(".inheritanceMetric").on("click", function(){
+    showInheritanceMetricDescription();
+  });
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
-	//$(".main-container").css({visibility: "visible"});                  //commented out
-
-  //package structure
 
 }
 
@@ -1073,6 +1021,7 @@ function drawBarChart(tagNmae, val){
 }
 
 function expandContent(type){
+  // TODO: also show the metric description in the details panel
   var coll = document.getElementsByClassName("collapsible");
   var i;
   for (i = 0; i < coll.length; i++) {
@@ -1088,20 +1037,40 @@ function expandContent(type){
   }
 }
 
-function num2word(n){
-  if (numToWord[n] != undefined){
-    return numToWord[n];
-  }
-  else return n;
+/* Metric descriptions */
+
+// TODO: color metric names accordingly
+
+function showCouplingMetricDescription() {
+  const content = `
+    <p>The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
+  `;
+  updateDetailPanel("Coupling", content);
 }
 
-//avoid scrolling of the textDetails panel 
-$(".text").scroll(function(){
-  $(".textDetails").css({"margin-top": ($(".text").scrollTop()) + "px", "margin-left":($(".text").scrollLeft()) + "px"});
-});
+function showComplexityMetricDescription() {
+  const content = `
+    <p>The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.</p>
+  `;
+  updateDetailPanel("Complexity", content);
+}
+
+function showCohesionMetricDescription() {
+  const content = `
+    <p>Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.</p>
+  `;
+  updateDetailPanel("Cohesion", content);
+}
+
+function showInheritanceMetricDescription() {
+  const content = `
+    <p>The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance.</p>
+  `;
+  updateDetailPanel("Cohesion", content);
+}
 
 //Highlighting corresponding element of vis on hovering class name in text
-$(document).on("mouseover", ".varStyle", function() {
+$(document).on("mouseover", ".className", function() {
     var className = $(this).text();
     $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
     $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
@@ -1115,7 +1084,7 @@ $(document).on("mouseover", ".varStyle", function() {
                 }
             }
 
- }).on('mouseout', '.varStyle', function() {
+ }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
     
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
@@ -1123,6 +1092,59 @@ $(document).on("mouseover", ".varStyle", function() {
     window.parent._unHighlight();
 
  });
+
+ /* Util functions */ 
+
+function createClassSpan(cname) {
+  var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
+  return "<span class='className clickable' data-index='" + i + "'>" + cname.split(".").pop() + "</span>";
+}
+
+function printList(list){
+    var s="";
+    switch(list.length){
+      case 1: s += list[0]; break;
+      case 2: s +=  list[0] + " and " + list[1]; break;
+      default:
+        for(var i=0; i<list.length; i++){
+          if (i != list.length-1){
+            s += list[i]+ ", ";
+          }
+          else s += " and " + list[i];
+        }
+    }
+    return s;
+  }
+
+  // TODO: rename and use printList() here instead of a code clone
+  function printItalicList(list){
+    var s="";
+    switch(list.length){
+      case 1: s += createClassSpan(list[0]); break;
+      case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
+      default:
+        for(var i=0; i<list.length; i++){
+          if (i != list.length-1){
+            s += createClassSpan(list[i]) + ", ";
+          }
+          else s += " and " + createClassSpan(list[i]);
+        }
+    }
+    return s;
+  }
+
+function updateDetailPanel(title, content) {
+  $("#detailsHeader").text(title);
+  $("#detailsContent").empty();
+  $("#detailsContent").append($(content));
+}
+
+function num2word(n){
+  if (numToWord[n] != undefined){
+    return numToWord[n];
+  }
+  else return n;
+}
 
 </script>
 </html>

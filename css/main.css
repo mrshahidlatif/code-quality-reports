@@ -1,12 +1,15 @@
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
 
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     height: 100%; overflow: hidden;
 }
 
-/* Trying new layout */
+/* ------------------------------------------------------------------------*/
+/* Grid layout */
+/* ------------------------------------------------------------------------*/
+
 .header { 
     position: fixed;
     grid-area: header;
@@ -52,23 +55,33 @@ body {
     padding: 10px;
 }
 
-.textDetails{
-    width: 33%;
-    left: 40vw;
-    font-size:12px;
-    float:right;
-    padding: 10px;
-}
-.details { 
+/* Details panel */
+
+#details { 
     grid-area: right; 
     width: 25vw;
+    height: 90vh;
     margin-top:5vh;
-    /* margin-right: 2vw; */
-    overflow:auto;
+    overflow: hidden;
     padding : 10px;
+    text-align: justify;
 }
-#details
-.foot { grid-area: footer;
+
+#sourcecodeContainer {
+    padding: 0px;
+    margin: 0px;
+    height: 800px; /*TODO: fix to 100%*/
+    background-color: white;
+}
+
+#sourcecode {
+    font-size: 11px;
+}
+
+/* Footer */
+
+.foot { 
+    grid-area: footer;
     width:100vw;
     height: 10px;
     position:fixed;
@@ -93,7 +106,27 @@ body {
   padding: 0px 0;
   font-size: 14px;
 }
-/* ending new layout */
+
+/* ------------------------------------------------------------------------*/
+/* Base tags */
+/* ------------------------------------------------------------------------*/
+
+p {
+    margin-top: 6pt;
+    margin-bottom: 6pt;
+}
+
+h3 {
+    padding-bottom: 6pt;
+}
+
+h4{
+    display: inline;
+}
+
+/* ------------------------------------------------------------------------*/
+/* Other -- TODO: sort and refactor properly */
+/* ------------------------------------------------------------------------*/
 
 #file-upload {
     display: block;
@@ -152,26 +185,6 @@ body {
     visibility: hidden;
 }
 
-.code{
-    width: 100%;
-    margin: 10px;
-    margin-right: 0px;
-    padding: 10px;
-    padding-top: 0px;
-    text-align: justify;
-
-}
-
-
-.main-container h3{
-    -webkit-margin-before: 0.5em;
-    -webkit-margin-after: 0.5em;
-    font-size: 19px;
-}
-h4{
-    display: inline;
-}
-
 #scatterplot {
    width:30%; 
    height:80%; 
@@ -183,13 +196,6 @@ h4{
 .infoIcon :hover{
     cursor: pointer;
 
-}
-#sourcecode {
-    width: 100%;
-    margin:  0px;
-    padding: 0px;
-    border: none;
-    /* height: 850px; */
 }
 
 .bar_1 .bar {
@@ -248,38 +254,18 @@ fill: #969696;
     fill: #969696;
 }
 
-.bad_1 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_2 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_3 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_4 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-.coupling_metric {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-    
-}
-
-.bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover, .coupling_metric:hover{
-    cursor: pointer;
+.clickable {
     color: black;
+    border-bottom: 1px solid black;
 }
+
+.clickable:hover {
+    cursor: pointer;
+    color: #666666;
+}
+
 a:link {
-text-decoration: none;
-color: black;
+    text-decoration: none;
 }
 
 .collapsible {
@@ -309,7 +295,7 @@ margin-top: 2px;
 }
 
 .content p{
-    font-size: 12px;
+    margin: 0px;
 }
 
 .collapsible:after {
@@ -344,19 +330,17 @@ background-color: lightgrey;
 outline: 1px solid slategrey;
 }
 
-.varStyle, .educationalDescriptions{
-    border-bottom: 1px dotted #444444;
-    color:#444444;
+.educationalDescriptions{
+    border-bottom: 1px solid black;
 }
 
-.varStyle:hover, .educationalDescriptions:hover {
+.educationalDescriptions{
+    border-bottom: 1px dotted black;
+}
+
+.className:hover, .educationalDescriptions:hover {
     cursor: pointer;
-    /* font-weight: bold; */
-    color:black;
-}
-
-#DoDHeader{
-    font-size: 18px;
+    background-color: #ffe68e;
 }
 
 #couplingLegend{
@@ -380,15 +364,5 @@ outline: 1px solid slategrey;
 .NoBSCap{
     border-bottom: 2px solid gray;
     display: inline-block;
-}
-
-.BSLegend{
-    border-bottom: 2px solid black;
-    display: inline-block;
-}
-
-#eduDetailsHead{
-    font-weight: bold;
-    font-size: 14px;
 }
 
