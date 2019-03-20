@@ -519,7 +519,6 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    // FIXME: fill in the vars
     text += ' This document presents the code quality aspects of '+ projectName +'<span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+classCt+' classes.';
     return text;
   }
@@ -612,7 +611,6 @@ function generateReport(){
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
-    // TODO: change order (everywhere) to comp, coup, coh, inheri
   
     text+='<p><h3 align="left">General Quality Attributes:</h3> The quality of the project is described in terms of four quality attributes.'
       
@@ -709,15 +707,12 @@ function countClassesHavingBadSmells (data){
 }
 
 function generatePPCaption(){
-  var legend = [];
   // TODO: "id" used instead of "class"
   // TODO: make metrics categories clickable
   // TODO: color metric names
-  var caption = 'The overview of the software quality in terms of <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
+  var caption = 'The overview of the software quality in terms of <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
   caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
 
-  caption += printList(legend);
-  // console.log(legend);
   caption += '.';
 
   return caption;
@@ -1048,16 +1043,13 @@ function drawBarChart(tagNmae, val){
 
 // TODO: also show the metric description in the details panel
 $(document).on("click","button.collapsible", function () {
-   var clickedBtnID = $(this)[0]; // or var clickedBtnID = this.id
    $(this)[0].classList.toggle("active");
-   console.log(clickedBtnID);
    var content = this.nextElementSibling;
       if (content.style.display === "block") {
         content.style.display = "none";
       } else {
         content.style.display = "block";
       }
-  //  alert('you clicked on button #' + clickedBtnID);
 });
 
 /* ------------------------------------------------------------------------*/

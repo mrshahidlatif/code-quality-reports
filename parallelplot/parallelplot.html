@@ -64,20 +64,19 @@ function parallelplot(data) {
 
 	//specify the dimensions and their order
 	var myDimensions = {
-	"cbo":{type:"number"},
-	"ca": {type:"number"},
-	"ce": {type:"number"},
-	"wmc": {type:"number"},
-	"max_cc": {type:"number"},
-	"lcom": {type:"number"},
-	"lcom3": {type:"number"},
-	"noc": {type:"number"},
-	"dit": {type:"number"},
-	"loc": {type:"number"},
-	"amc": {type:"number"},
-	"npm": {type:"number"},
-
-};
+		"wmc": {type:"number"},
+		"max_cc": {type:"number"},
+		"cbo":{type:"number"},
+		"ca": {type:"number"},
+		"ce": {type:"number"},
+		"lcom": {type:"number"},
+		"lcom3": {type:"number"},
+		"noc": {type:"number"},
+		"dit": {type:"number"},
+		"loc": {type:"number"},
+		"amc": {type:"number"},
+		"npm": {type:"number"},
+	};
 
 	var w = (data.columns.length)*32.55;
 	$("#example_container").css({width: w+"px"});
@@ -129,7 +128,6 @@ function parallelplot(data) {
     .selectAll(".label")
 		.style("font-size", "14px");
 
-	console.log($("#parallelplot").contents().find("text.label").html());
 }
 function unHighlight(){
 	//clearing the highlighting
