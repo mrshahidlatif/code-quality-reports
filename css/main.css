@@ -125,6 +125,68 @@ h4{
 }
 
 /* ------------------------------------------------------------------------*/
+/* Color Legends */
+/* ------------------------------------------------------------------------*/
+
+.couplingMetric.clickable{
+    border-bottom: 2px solid #238b45;
+    display: inline-block;
+}
+.complexityMetric.clickable{
+
+    border-bottom: 2px solid #2b8cbe;
+    display: inline-block;
+}
+.cohesionMetric.clickable{
+    border-bottom: 2px solid #c51b8a;
+    display: inline-block;
+}
+.inheritanceMetric.clickable{
+    border-bottom: 2px solid #88419d;
+    display: inline-block;
+}
+.BSLegend{
+    border-bottom: 2px solid black;
+}
+
+.wmcLegend{
+    border-bottom: 2px solid #88419d;
+}
+.max_ccLegend{
+    border-bottom: 2px solid #88419d;
+}
+.cboLegend{
+    border-bottom: 2px solid #88419d;
+}
+.caLegend{
+    border-bottom: 2px solid #88419d;
+}
+.ceLegend{
+    border-bottom: 2px solid #88419d;
+}
+.lcomLegend{
+    border-bottom: 2px solid #88419d;
+}
+.lcom3Legend{
+    border-bottom: 2px solid #88419d;
+}
+.nocLegend{
+    border-bottom: 2px solid #88419d;
+}
+.ditLegend{
+    border-bottom: 2px solid #88419d;
+}
+.locLegend{
+    border-bottom: 2px solid #88419d;
+}
+.amcLegend{
+    border-bottom: 2px solid #88419d;
+}
+.npmLegend{
+    border-bottom: 2px solid #88419d;
+}
+
+/* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
 
@@ -342,27 +404,3 @@ outline: 1px solid slategrey;
     cursor: pointer;
     background-color: #ffe68e;
 }
-
-#couplingLegend{
-    border-bottom: 2px solid #238b45;
-    display: inline-block;
-}
-#complexityLegend{
-
-    border-bottom: 2px solid #2b8cbe;
-    display: inline-block;
-}
-#cohesionLegend{
-    border-bottom: 2px solid #c51b8a;
-    display: inline-block;
-}
-#inheritanceLegend{
-    border-bottom: 2px solid #88419d;
-    display: inline-block;
-}
-
-.NoBSCap{
-    border-bottom: 2px solid gray;
-    display: inline-block;
-}
-

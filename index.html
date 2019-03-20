@@ -527,7 +527,7 @@ function generateReport(){
 
   function generateCouplingText(){
     var text = '<p>';
-    var coup = '<h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
+    var coup = '<h4><span class="couplingMetric clickable">Coupling</span>:</h4>';
     // coupling quality
     var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
     var m = Math.max(...couplingArr);
@@ -549,7 +549,7 @@ function generateReport(){
 
   }
   function generateComplexityText(){
-    var comp = '<h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
+    var comp = '<h4><span class="complexityMetric clickable">Complexity</span>:</h4>';
     // complextiy quality
     var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
     m = Math.max(...complexityArr);
@@ -568,7 +568,7 @@ function generateReport(){
 
   }
   function generateCohesionText(){
-    var coh = '<h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
+    var coh = '<h4><span class="cohesionMetric clickable">Cohesion</span>:</h4>';
 
     var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
     m = Math.max(...cohesionArr);
@@ -589,7 +589,7 @@ function generateReport(){
   }
   function generateInheritanceText(){
 
-    var inher = '<h4><span id="inheritanceLegend" class="inheritanceMetric clickable">Inheritance</span>:</h4>';
+    var inher = '<h4><span class="inheritanceMetric clickable">Inheritance</span>:</h4>';
      // inheritance quality
     var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
     m = Math.max(...inheritanceArr);
@@ -611,7 +611,7 @@ function generateReport(){
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
-  
+
     text+='<p><h3 align="left">General Quality Attributes:</h3> The quality of the project is described in terms of four quality attributes.'
       
     text += generateComplexityText();
@@ -707,11 +707,9 @@ function countClassesHavingBadSmells (data){
 }
 
 function generatePPCaption(){
-  // TODO: "id" used instead of "class"
-  // TODO: make metrics categories clickable
   // TODO: color metric names
-  var caption = 'The overview of the software quality in terms of <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
+  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (wmc, max_cc), <span class="couplingMetric clickable">coupling</span> (cbo, ca, ce), <span class="cohesionMetric clickable">cohesion</span> (lcom, lcom3), and <span class="inheritanceMetric clickable">inheritance</span> (noc, dit).'
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells.';
 
   caption += '.';
 
@@ -1060,7 +1058,7 @@ $(document).on("click","button.collapsible", function () {
 
 function showCouplingMetricDescription() {
   const content = `
-    <p>The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
+    <p>The metrics coupling between objects (<span class="cboLegend">cbo</span>), afferent coupling (<span class="caLegend">ca</span>), and efferent coupling (<span class="ceLegend">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
   `;
   updateDetailPanel("Coupling", content);
 }
@@ -1096,12 +1094,12 @@ $(document).on("mouseover", ".className", function() {
 
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
-            for(var i=0; i<d.length;i++){
-                if(d[i] != undefined && d[i].cname.includes(className)){
-                    // console.log(d[i]);
-                    window.parent._highlightEdge(d[i]);
-                }
-            }
+      for(var i=0; i<d.length;i++){
+          if(d[i] != undefined && d[i].cname.includes(className)){
+              // console.log(d[i]);
+              window.parent._highlightEdge(d[i]);
+          }
+      }
 
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
