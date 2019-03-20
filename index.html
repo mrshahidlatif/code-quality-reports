@@ -34,10 +34,6 @@
       <div class="generalQuality">
           <p id="reporttext"></p>
       </div>
-      <!-- <div class="textDetails">
-        <span id="detailHead"></span>
-        <p id="details"></p>
-      </div> -->
     </div>
     <div class="vis">
         <!-- <div class="visualizations"> --> 
@@ -558,10 +554,10 @@ function generateReport(){
   //general quality report
   function generalQualtiyText(){
     var text = '';
-    var coup = '<br><h4><span id="couplingLegend">Coupling</span>:</h4>';
-    var comp = '<br><h4><span id="complexityLegend">Complexity</span>:</h4>';
-    var coh = '<br><h4><span id="cohesionLegend">Cohesion</span>:</h4>';
-    var inher = '<br><h4><span id="inheritanceLegend">Inheritance</span>:</h4>';
+    var coup = '<br><h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
+    var comp = '<br><h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
+    var coh = '<br><h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
+    var inher = '<br><h4><span id="inheritanceLegend" class="inheritanceMetric clickable">Inheritance</span>:</h4>';
     text+='<h3 align="left">General Quality Attributes:</h3>The quality of the project is described in terms of four quality attributes.'
   // coupling quality
   var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
@@ -569,15 +565,15 @@ function generateReport(){
   var i  = couplingArr.indexOf(m);
 
   if(i == 0){
-    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
+    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
   }
 
   else if(i == 1){
-    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   else if(i == 2){
-    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span> in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
   }
 
   // complextiy quality
@@ -978,12 +974,20 @@ function bugText(){
 		}
 	});
 
-  $(".coupling_metric").on("click", function(){
-    var url = "bad_smell_descriptions/cbo.htm";
-    $("#detailsHeader").text("METRIC DESCRIPTION");
-    $("#detailsContent").empty();
-    $("#detailsContent").load(url);
-    
+  $(".couplingMetric").on("click", function(){
+    showCouplingMetricDescription();
+  });
+
+  $(".complexityMetric").on("click", function(){
+    showComplexityMetricDescription();
+  });
+
+  $(".cohesionMetric").on("click", function(){
+    showCohesionMetricDescription();
+  });
+
+  $(".inheritanceMetric").on("click", function(){
+    showInheritanceMetricDescription();
   });
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
@@ -1039,8 +1043,6 @@ function expandContent(type){
   var coll = document.getElementsByClassName("collapsible");
   var i;
   for (i = 0; i < coll.length; i++) {
-    //showing additional details in the side panel
-    showAdditionalDetails(type);
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
@@ -1053,34 +1055,50 @@ function expandContent(type){
   }
 }
 
-function showAdditionalDetails(type){
+/* Metric descriptions */
 
-  $('.textDetails').css('border-left', '3px solid gray');
-  $('#detailHead').html('<b>'+type+'<b><br>');
-  if(type === 'coupling'){
-      $('#details').html('The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.');
-    }
-    else if(type === 'complexity'){
-      $('#details').html('The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.');
-    }
-    if(type === 'cohesion'){
-      $('#details').html('Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.');
-    }
-    if(type === 'inheritance'){
-      $('#details').html('The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance. ');
-    }
+function showCouplingMetricDescription() {
+  const content = `
+    <p>The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
+  `;
+  updateDetailPanel("Coupling", content);
 }
+
+function showComplexityMetricDescription() {
+  const content = `
+    <p>The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.</p>
+  `;
+  updateDetailPanel("Complexity", content);
+}
+
+function showCohesionMetricDescription() {
+  const content = `
+    <p>Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.</p>
+  `;
+  updateDetailPanel("Cohesion", content);
+}
+
+function showInheritanceMetricDescription() {
+  const content = `
+    <p>The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance.</p>
+  `;
+  updateDetailPanel("Cohesion", content);
+}
+
+/* Util functions */ 
+
+function updateDetailPanel(title, content) {
+  $("#detailsHeader").text(title);
+  $("#detailsContent").empty();
+  $("#detailsContent").append($(content));
+}
+
 function num2word(n){
   if (numToWord[n] != undefined){
     return numToWord[n];
   }
   else return n;
 }
-
-//avoid scrolling of the textDetails panel 
-$(".text").scroll(function(){
-  $(".textDetails").css({"margin-top": ($(".text").scrollTop()) + "px", "margin-left":($(".text").scrollLeft()) + "px"});
-});
 
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".varStyle", function() {

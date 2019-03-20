@@ -52,14 +52,6 @@ body {
     padding: 10px;
 }
 
-.textDetails{
-    width: 33%;
-    left: 40vw;
-    font-size:12px;
-    float:right;
-    padding: 10px;
-}
-
 /* Details panel */
 
 #details { 
@@ -265,13 +257,17 @@ fill: #969696;
     border-bottom: 1px solid #444444;
     color: #444444;
 }
-.coupling_metric {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-    
+
+.clickable {
+    color: #666666;
 }
 
-.bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover, .coupling_metric:hover{
+.clickable:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover {
     cursor: pointer;
     color: black;
 }
