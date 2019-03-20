@@ -382,6 +382,11 @@ outline: 1px solid slategrey;
     display: inline-block;
 }
 
+.BSLegend{
+    border-bottom: 2px solid black;
+    display: inline-block;
+}
+
 #eduDetailsHead{
     font-weight: bold;
     font-size: 14px;

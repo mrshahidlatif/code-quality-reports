@@ -156,6 +156,23 @@ function handleFileSelect(event) {
   //end of modified
 }
 
+//-----------------------------
+// methodological explainations 
+//-----------------------------
+
+   var couplingInfo = 'The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.';
+    
+ 
+  var complexityInfo = 'The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.';
+  
+  var cohesionInfo = 'Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.';
+  
+  var inheritanceInfo = 'The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance. ';
+
+
+    
+//------------------------------------
+
 function generateReport(){
   var data = clone(_chartdata);
   //making data available to all files
@@ -576,7 +593,7 @@ function generateReport(){
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
     // text += '<span class="varStyle">SAXException</span>' ; // just for testing
-    text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
+    text += ' This document presents the code quality aspects of '+ projectName +' <span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+ classCt +' classes.'
     return text;
   }
 
@@ -594,7 +611,7 @@ function generateReport(){
   var i  = couplingArr.indexOf(m);
 
   if(i == 0){
-    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
+    text+= coup + '<span id="couplingInfo"> &#9432;</span> The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have <span class="coupling_metric">coupling metrics</span>  in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
   }
 
   else if(i == 1){
@@ -736,10 +753,8 @@ function countClassesHavingBadSmells (data){
 function generatePPCaption(){
   var legend = [];
   var caption = 'The overview of the software quality in terms of <span id="couplingLegend">coupling</span> (cbo, ca, ce), <span id="complexityLegend">complexity</span> (wmc, max_cc), <span id="cohesionLegend">cohesion</span> (lcom, lcom3), and <span id="couplingLegend">inheritance</span> (noc, dit).'
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="NoBSCap">Classes</span> contain bad smells.';
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells.';
 
-  caption += printList(legend);
-  // console.log(legend);
   caption += '.';
 
   return caption;
@@ -1061,8 +1076,6 @@ function expandContent(type){
   var coll = document.getElementsByClassName("collapsible");
   var i;
   for (i = 0; i < coll.length; i++) {
-    //showing additional details in the side panel
-    showAdditionalDetails(type);
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
@@ -1075,23 +1088,6 @@ function expandContent(type){
   }
 }
 
-function showAdditionalDetails(type){
-
-  $('.textDetails').css('border-left', '3px solid gray');
-  $('#detailHead').html('<b>'+type+'<b><br>');
-  if(type === 'coupling'){
-      $('#details').html('The metrics coupling between objects (<span id="cboCap">cbo</span>), afferent coupling (<span id="acCap">ac</span>), and efferent coupling (<span id="ecCap">ec</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.');
-    }
-    else if(type === 'complexity'){
-      $('#details').html('The metrics weighted method per class (wmc) and cyclomatic complexity (cc) contribute towards the code complexity of a class.');
-    }
-    if(type === 'cohesion'){
-      $('#details').html('Two versions of lack of cohesion metric, i.e., loc and loc3 show the quality in terms of cohesion.');
-    }
-    if(type === 'inheritance'){
-      $('#details').html('The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance. ');
-    }
-}
 function num2word(n){
   if (numToWord[n] != undefined){
     return numToWord[n];
