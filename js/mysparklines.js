@@ -8,7 +8,7 @@
     settings  = { //default options:
                     csvurl: '',
                     slids: ['sl1', 'sl2'],              //ids for containers 1 and 2
-                    sldef: ['cbo,ca,ce', 'wmc,max_cc'], //fields for graphs 1 and 2
+                    sldef: ['wmc,max_cc', 'cbo,ca,ce'], //fields for graphs 1 and 2
                     slopts: [                           //default Sparklines options
                               {                         //options for all sls
                                 type: 'bar',

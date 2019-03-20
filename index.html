@@ -108,13 +108,13 @@ function handleFileSelect(event) {
 	//modified
 	linkedSLopts = {
                   csvurl: encodeURI("csv/"+f.name),
-                  slids: ['samplsl1','samplsl2', 'samplsl3', 'samplsl4'],     //pass ids for containers of first and second graph, dafaults to ['sl1', 'sl2']
-                  sldef: ['cbo,ca,ce', 'wmc,max_cc', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs, defaults to ['cbo,ca,ce', 'wmc,max_cc']
+                  slids: ['samplsl2', 'samplsl1', 'samplsl3', 'samplsl4'],     //pass ids for containers of first and second graph, dafaults to ['sl1', 'sl2']
+                  sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs, defaults to ['cbo,ca,ce', 'wmc,max_cc']
                   slopts: [
                             {height: 25}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
                             //pass options specfic to each sl if required, in order
-                            {stackedBarColor: ['#238b45','#66c2a4','#b2e2e2']},
                             {stackedBarColor: ['#2b8cbe','#7bccc4']},
+                            {stackedBarColor: ['#238b45','#66c2a4','#b2e2e2']},
                             {stackedBarColor: ['#c51b8a','#fa9fb5']},
                             {stackedBarColor: ['#88419d','#8c96c6']},
                           ],
@@ -1081,7 +1081,7 @@ function showInheritanceMetricDescription() {
   const content = `
     <p>The metrics depth of inheritance (dit) and number of children (noc) are used to assess the quality in terms of inheritance.</p>
   `;
-  updateDetailPanel("Cohesion", content);
+  updateDetailPanel("Inheritance", content);
 }
 
 // TODO: replace linear search

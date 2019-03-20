@@ -149,40 +149,40 @@ h4{
     border-bottom: 2px solid black;
 }
 
-.wmcLegend{
+.wmc{
+    border-bottom: 2px solid #2b8cbe;
+}
+.max_cc{
     border-bottom: 2px solid #88419d;
 }
-.max_ccLegend{
+.cbo{
     border-bottom: 2px solid #88419d;
 }
-.cboLegend{
+.ca{
     border-bottom: 2px solid #88419d;
 }
-.caLegend{
+.ce{
     border-bottom: 2px solid #88419d;
 }
-.ceLegend{
+.lcom{
     border-bottom: 2px solid #88419d;
 }
-.lcomLegend{
+.lcom3{
     border-bottom: 2px solid #88419d;
 }
-.lcom3Legend{
+.noc{
     border-bottom: 2px solid #88419d;
 }
-.nocLegend{
+.dit{
     border-bottom: 2px solid #88419d;
 }
-.ditLegend{
+.loc{
     border-bottom: 2px solid #88419d;
 }
-.locLegend{
+.amc{
     border-bottom: 2px solid #88419d;
 }
-.amcLegend{
-    border-bottom: 2px solid #88419d;
-}
-.npmLegend{
+.npm{
     border-bottom: 2px solid #88419d;
 }
 
