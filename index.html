@@ -175,7 +175,7 @@ function generateReport(){
 
     var bad = false;
     
-    var classSpan = "<span class='varStyle'><a href='javascript:;' data-index='" + i + "'>" + d.cname.split(".").pop() + "</a></span>";
+    var classSpan = "<span class='fileName clickable' data-index='" + i + "'>" + d.cname.split(".").pop() + "</span>";
 
 		if(s.blob){
 			blobCt++;
@@ -514,14 +514,14 @@ function generateReport(){
     // array argument
     var s="";
     switch(list.length){
-      case 1: s += '<span class="varStyle">' + list[0] + '</span>'; break;
-      case 2: s += '<span class="varStyle">' + list[0] + '</span>'+ ' and ' + '<span class="varStyle">' + list[1] + '</span>'; break;
+      case 1: s += '<span class="fileName clickable">' + list[0] + '</span>'; break;
+      case 2: s += '<span class="fileName clickable">' + list[0] + '</span>'+ ' and ' + '<span class="fileName">' + list[1] + '</span>'; break;
       default:
         for(var i=0; i<list.length; i++){
           if (i != list.length-1){
-            s += '<span class="varStyle">' + list[i] + '</span>' + ", ";
+            s += '<span class="fileName clickable">' + list[i] + '</span>' + ", ";
           }
-          else s += " and " + '<span class="varStyle">' + list[i] + '</span>';
+          else s += " and " + '<span class="fileName clickable">' + list[i] + '</span>';
         }
     }
     return s;
@@ -546,7 +546,6 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    // text += '<span class="varStyle">SAXException</span>' ; // just for testing
     text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
     return text;
   }
@@ -645,37 +644,37 @@ function generateReport(){
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
-      var blobText = num2word(blobCt) +' <span class="bad_1"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
+      var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
       blobText += ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(blobCt > 1){
-      var blobText = num2word(blobCt) +' <span class="bad_1"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
+      var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
       blobText+= ' <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="bad_2"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
       listOfBadSmellTypes.push(decomText);
     }
     if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="bad_2"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
       listOfBadSmellTypes.push(decomText);
     }
     if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="bad_3"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
       listOfBadSmellTypes.push(spaText);
     }
     if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="bad_3"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
       listOfBadSmellTypes.push(spaText);
     }
     if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="bad_4"> lazy class </span><span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="bad_4"> lazy class </span><span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
       listOfBadSmellTypes.push(lazyText);
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
@@ -683,12 +682,12 @@ function generateReport(){
       text+= ' Some classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
     }
     var c = NoOfBadSmells(classesWithBadSmells);
-    if (c != undefined){ text += ' For instance, <span class="varStyle">'+ c.name + '</span> has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; }
+    if (c != undefined){ text += ' For instance, <span class="fileName clickable">'+ c.name + '</span> has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; }
     if(highblobCt == 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.';
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="fileName clickable">HIGHBLOB</span>.';
     }
     if(highblobCt > 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="varStyle">HIGHBLOB</span>.'
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="fileName clickable">HIGHBLOB</span>.'
     }
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;
@@ -821,7 +820,7 @@ function bugText(){
 
 	$reporttext.html(html);
 
-	$(".quality a").click(function(){
+	$(".fileName").click(function(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
@@ -898,7 +897,7 @@ function bugText(){
 		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
 		NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
 
-	$(".bad_1").on("click", function(){
+	$(".badBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
     $("#detailsHeader").text("The 'Blob' Bad Smell");
     $("#detailsContent").empty();
@@ -919,7 +918,7 @@ function bugText(){
 		}
 	});
 
-	$(".bad_2").on("click", function(){
+	$(".badFc").on("click", function(){
     var url = "bad_smell_descriptions/fd.htm";
     $("#detailsHeader").text("The 'Functional Decomposition' Bad Smell");
     $("#detailsContent").empty();
@@ -938,7 +937,7 @@ function bugText(){
 		}
 	});
 
-	$(".bad_3").on("click", function(){
+	$(".badSc").on("click", function(){
     var url = "bad_smell_descriptions/sc.htm";
     $("#detailsHeader").text("The 'Spaghetti Code' Bad Smell");
     $("#detailsContent").empty();
@@ -956,7 +955,7 @@ function bugText(){
 		}
 	});
 
-  $(".bad_4").on("click", function(){
+  $(".badLazy").on("click", function(){
     var url = "bad_smell_descriptions/lazy.htm";
     $("#detailsHeader").text("The 'Lazy Class' Bad Smell");
     $("#detailsContent").empty();
@@ -1101,7 +1100,7 @@ function num2word(n){
 }
 
 //Highlighting corresponding element of vis on hovering class name in text
-$(document).on("mouseover", ".varStyle", function() {
+$(document).on("mouseover", ".fileName", function() {
     var className = $(this).text();
     $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
     $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
@@ -1115,7 +1114,7 @@ $(document).on("mouseover", ".varStyle", function() {
                 }
             }
 
- }).on('mouseout', '.varStyle', function() {
+ }).on('mouseout', '.fileName', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
     
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");

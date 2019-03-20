@@ -61,6 +61,7 @@ body {
     margin-top:5vh;
     overflow: hidden;
     padding : 10px;
+    text-align: justify;
 }
 
 #sourcecodeContainer {
@@ -238,42 +239,18 @@ fill: #969696;
     fill: #969696;
 }
 
-.bad_1 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_2 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_3 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
-.bad_4 {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-}
-
 .clickable {
-    color: #666666;
+    color: black;
+    border-bottom: 1px solid black;
 }
 
 .clickable:hover {
     cursor: pointer;
-    color: black;
+    color: #666666;
 }
 
-.bad_1:hover, .bad_2:hover, .bad_3:hover, .bad_4:hover {
-    cursor: pointer;
-    color: black;
-}
 a:link {
-text-decoration: none;
-color: black;
+    text-decoration: none;
 }
 
 .collapsible {
@@ -338,7 +315,7 @@ background-color: lightgrey;
 outline: 1px solid slategrey;
 }
 
-.varStyle, .educationalDescriptions{
+.educationalDescriptions{
     border-bottom: 1px solid black;
 }
 
@@ -346,7 +323,7 @@ outline: 1px solid slategrey;
     border-bottom: 1px dotted black;
 }
 
-.varStyle:hover, .educationalDescriptions:hover {
+.fileName:hover, .educationalDescriptions:hover {
     cursor: pointer;
     background-color: #ffe68e;
 }
