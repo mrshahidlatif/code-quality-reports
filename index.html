@@ -180,13 +180,13 @@ function generateReport(){
 
     var bad = false;
     
-    var fileSpan = createClassSpan(d.cname);
+    var classSpan = createClassSpan(d.cname);
 
     // TODO: remove code clones in the following
 
 		if(s.blob){
 			blobCt++;
-      blobArr.push(fileSpan);
+      blobArr.push(classSpan);
       bad = true;
 
       badSmellsinClass.push("blob");
@@ -194,7 +194,7 @@ function generateReport(){
 
     if(s.highblob){
       highblobCt++;
-      highblobArr.push(fileSpan);
+      highblobArr.push(classSpan);
       //bad = true;
 
 
@@ -202,14 +202,14 @@ function generateReport(){
 
 		if(s.decomposition){
       decomCt++;
-      decomArr.push(fileSpan);
+      decomArr.push(classSpan);
 			bad = true;
       badSmellsinClass.push("functional decomposition");
 		}
 
 		if(s.spaghetti){
       spaCt++;
-      spaArr.push(fileSpan);
+      spaArr.push(classSpan);
       bad = true;
 
       badSmellsinClass.push("spaghetti code");
@@ -217,14 +217,14 @@ function generateReport(){
 
     if(s.lazy){
       lazyCt++;
-      lazyArr.push(fileSpan);
+      lazyArr.push(classSpan);
       badSmellsinClass.push("lazy class");
     }
 
     if(d.bug >= 1){
 
       bugCt++;
-      bugArr.push(fileSpan);
+      bugArr.push(classSpan);
     }
 
 		if(bad){
@@ -241,62 +241,62 @@ function generateReport(){
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
       goodCouplingCt++;
-      goodCouplingArr.push(fileSpan);
+      goodCouplingArr.push(classSpan);
     }
     //check for regular coupling
     if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
       regularCouplingCt++;
-     regularCouplingArr.push(fileSpan);
+     regularCouplingArr.push(classSpan);
    }
    //check for bad coupling
    if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
      badCouplingCt++;
-     badCouplingArr.push(fileSpan);
+     badCouplingArr.push(classSpan);
     }
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
      goodInheritanceCt++;
-    goodInheritanceArr.push(fileSpan);
+    goodInheritanceArr.push(classSpan);
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
      regularInheritanceCt++;
-    regularInheritanceArr.push(fileSpan);
+    regularInheritanceArr.push(classSpan);
    }
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
      badInheritanceCt++;
-    badInheritanceArr.push(fileSpan);
+    badInheritanceArr.push(classSpan);
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
      goodCohesionCt++;
-     goodCohesionArr.push(fileSpan);
+     goodCohesionArr.push(classSpan);
    }
    //check for regular cohesion
    if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
      regularCohesionCt++;
-     regularCohesionArr.push(fileSpan);
+     regularCohesionArr.push(classSpan);
    }
    //check for bad cohesion
    if(d.lcom3 > 0.725){
      badCohesionCt++;
-     badCohesionArr.push(fileSpan);
+     badCohesionArr.push(classSpan);
    }
    //check for good Complexity
    if(d.max_cc <= 2 || d.wmc <= 11){
      goodComplexityCt++;
-     goodComplexityArr.push(fileSpan);
+     goodComplexityArr.push(classSpan);
    }
    //check for regular Complexity
    if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
      regularComplexityCt++;
-     regularComplexityArr.push(fileSpan);
+     regularComplexityArr.push(classSpan);
    }
    //check for bad Complexity
    if(d.max_cc > 4 || d.wmc > 34){
      badComplexityCt++;
-     badComplexityArr.push(fileSpan);
+     badComplexityArr.push(classSpan);
    }
   })
 
@@ -529,6 +529,7 @@ function generateReport(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
     // TODO: user p tags instead of br
+    // TODO: change order (everywhere) to comp, coup, coh, inheri
     var coup = '<br><h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
     var comp = '<br><h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
     var coh = '<br><h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
@@ -1037,7 +1038,9 @@ function expandContent(type){
   }
 }
 
+/* ------------------------------------------------------------------------*/
 /* Metric descriptions */
+/* ------------------------------------------------------------------------*/
 
 // TODO: color metric names accordingly
 
@@ -1069,6 +1072,8 @@ function showInheritanceMetricDescription() {
   updateDetailPanel("Cohesion", content);
 }
 
+// TODO: replace linear search
+// TODO: move elsewhere
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".className", function() {
     var className = $(this).text();
@@ -1093,7 +1098,9 @@ $(document).on("mouseover", ".className", function() {
 
  });
 
- /* Util functions */ 
+/* ------------------------------------------------------------------------*/
+/* Util functions */ 
+/* ------------------------------------------------------------------------*/
 
 function createClassSpan(cname) {
   var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
@@ -1133,6 +1140,7 @@ function printList(list){
     return s;
   }
 
+// TODO: use this util function consistently
 function updateDetailPanel(title, content) {
   $("#detailsHeader").text(title);
   $("#detailsContent").empty();
