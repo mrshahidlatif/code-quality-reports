@@ -73,6 +73,10 @@ function parallelplot(data) {
 	"lcom3": {type:"number"},
 	"noc": {type:"number"},
 	"dit": {type:"number"},
+	"loc": {type:"number"},
+	"amc": {type:"number"},
+	"npm": {type:"number"},
+
 };
 
 	var w = (data.columns.length)*32.55;
@@ -154,6 +158,7 @@ function highlightEdge(d){
 }
 
 function parallelfilter(dims) {
+	console.log(dims);
 	for(var dim in dims){
 		var domain = pcz.dimensions()[dim].yscale["domain"]();
 

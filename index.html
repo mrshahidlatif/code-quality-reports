@@ -520,7 +520,7 @@ function generateReport(){
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
     // FIXME: fill in the vars
-    text += ' This document presents the code quality aspects of <i>PROJECTNAME</i><span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has NUMBEROFPACKAGES packages and ClASSCT classes.'
+    text += ' This document presents the code quality aspects of '+ projectName +'<span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+classCt+' classes.';
     return text;
   }
 
