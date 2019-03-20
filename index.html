@@ -525,77 +525,103 @@ function generateReport(){
   }
 
   //general quality report
+
+  function generateCouplingText(){
+    var text = '<p>';
+    var coup = '<h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
+    // coupling quality
+    var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
+    var m = Math.max(...couplingArr);
+    var i  = couplingArr.indexOf(m);
+
+    if(i == 0){
+      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
+    }
+
+    else if(i == 1){
+      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    }
+
+    else if(i == 2){
+      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
+    }
+    text += '</p>';
+    return text;
+
+  }
+  function generateComplexityText(){
+    var comp = '<h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
+    // complextiy quality
+    var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
+    m = Math.max(...complexityArr);
+    i  = complexityArr.indexOf(m);
+    var text = '<p>';
+    if(i == 0){
+      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+    }
+    else if(i == 1){
+      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+    }
+    else if(i == 2){
+      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
+    }
+    return text += '</p>';
+
+  }
+  function generateCohesionText(){
+    var coh = '<h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
+
+    var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
+    m = Math.max(...cohesionArr);
+    i  = cohesionArr.indexOf(m);
+    var text = '<p>';
+    if(i == 0){
+      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+    }
+    else if(i == 1){
+      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+    }
+    else if(i == 2){
+      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
+    }
+
+    return  text += '<p>';
+
+  }
+  function generateInheritanceText(){
+
+    var inher = '<h4><span id="inheritanceLegend" class="inheritanceMetric clickable">Inheritance</span>:</h4>';
+     // inheritance quality
+    var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
+    m = Math.max(...inheritanceArr);
+    i  = inheritanceArr.indexOf(m);
+    var text='<p>';
+    if(i == 0){
+      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+    }
+    else if(i == 1){
+      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+    }
+    else if(i == 2){
+      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
+    }
+
+    return text += '</p>';
+
+  }
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
-    // TODO: user p tags instead of br
+    // TODO: use p tags instead of br
     // TODO: change order (everywhere) to comp, coup, coh, inheri
-    var coup = '<br><h4><span id="couplingLegend" class="couplingMetric clickable">Coupling</span>:</h4>';
-    var comp = '<br><h4><span id="complexityLegend" class="complexityMetric clickable">Complexity</span>:</h4>';
-    var coh = '<br><h4><span id="cohesionLegend" class="cohesionMetric clickable">Cohesion</span>:</h4>';
-    var inher = '<br><h4><span id="inheritanceLegend" class="inheritanceMetric clickable">Inheritance</span>:</h4>';
-    text+='<h3 align="left">General Quality Attributes:</h3>The quality of the project is described in terms of four quality attributes.'
-  // coupling quality
-  var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
-  var m = Math.max(...couplingArr);
-  var i  = couplingArr.indexOf(m);
-
-  if(i == 0){
-    text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>';
-  }
-
-  else if(i == 1){
-    text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
-  }
-
-  else if(i == 2){
-    text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible" onClick="expandContent((\'' + "coupling" + '\'))"></button><div class="content"><div id="samplsl1"></div></div>'
-  }
-
-  // complextiy quality
-  var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
-  m = Math.max(...complexityArr);
-  i  = complexityArr.indexOf(m);
-
-  if(i == 0){
-    text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
-  }
-  else if(i == 1){
-    text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
-  }
-  else if(i == 2){
-    text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible" onClick="expandContent((\'' + "complexity" + '\'))"></button><div class="content"><div id="samplsl2"></div></div>'
-  }
-
-  // cohesion quality
-  var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
-  m = Math.max(...cohesionArr);
-  i  = cohesionArr.indexOf(m);
-
-  if(i == 0){
-    text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
-  }
-  else if(i == 1){
-    text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
-  }
-  else if(i == 2){
-    text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible" onClick="expandContent((\'' + "cohesion" + '\'))"></button><div class="content"><div id="samplsl3"></div></div>'
-  }
-
-  // inheritance quality
-  var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
-  m = Math.max(...inheritanceArr);
-  i  = inheritanceArr.indexOf(m);
-
-  if(i == 0){
-    text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
-  }
-  else if(i == 1){
-    text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
-  }
-  else if(i == 2){
-    text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible" onClick="expandContent((\'' + "inheritance" + '\'))"></button><div class="content"><div id="samplsl4"></div></div>'
-  }
+  
+    text+='<p><h3 align="left">General Quality Attributes:</h3> The quality of the project is described in terms of four quality attributes.'
+      
+    text += generateComplexityText();
+    text += generateCouplingText();
+    text += generateCohesionText();
+    text += generateInheritanceText();
+ 
   return text;
   }
 
