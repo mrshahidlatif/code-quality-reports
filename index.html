@@ -1039,6 +1039,10 @@ function drawBarChart(tagNmae, val){
 	$(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="'+(val/2)+'" height="14"></rect><text x="25" y="11" style="font-size:12px">'+val+'%</text></g></svg>');
 }
 
+/* ------------------------------------------------------------------------*/
+/* Click and hover events */
+/* ------------------------------------------------------------------------*/
+
 // TODO: also show the metric description in the details panel
 $(document).on("click","button.collapsible", function () {
    $(this)[0].classList.toggle("active");
@@ -1049,6 +1053,23 @@ $(document).on("click","button.collapsible", function () {
         content.style.display = "block";
       }
 });
+
+//Highlighting corresponding element of vis on hovering class name in text
+$(document).on("mouseover", ".className", function() {
+    var className = $(this).text();
+    $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
+    $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
+    
+    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+    var d = window.parent.fullData;
+    window.parent._highlightEdge(d[classShortNameToIndex[className]]);
+
+ }).on('mouseout', '.className', function() {
+    $("span.slcls",window.parent.document).css('background','transparent'); 
+    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+    window.parent._unHighlight();
+
+ });
 
 /* ------------------------------------------------------------------------*/
 /* Metric descriptions */
@@ -1083,30 +1104,6 @@ function showInheritanceMetricDescription() {
   `;
   updateDetailPanel("Inheritance", content);
 }
-
-// TODO: replace linear search
-// TODO: move elsewhere
-//Highlighting corresponding element of vis on hovering class name in text
-$(document).on("mouseover", ".className", function() {
-    var className = $(this).text();
-    $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
-    $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
-
-    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
-    var d = window.parent.fullData;
-      for(var i=0; i<d.length;i++){
-          if(d[i] != undefined && d[i].cname.includes(className)){
-              // console.log(d[i]);
-              window.parent._highlightEdge(d[i]);
-          }
-      }
-
- }).on('mouseout', '.className', function() {
-    $("span.slcls",window.parent.document).css('background','transparent'); 
-    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
-    window.parent._unHighlight();
-
- });
 
 /* ------------------------------------------------------------------------*/
 /* Util functions */ 
