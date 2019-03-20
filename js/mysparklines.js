@@ -130,6 +130,27 @@
     }
     return tt;
   }
+  function showClassCodeOnClick(){
+    $(".sl span").on('click', function() {
+      var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
+
+      var idx = classShortNameToIndex[clsName];
+      var str = fullData[idx].cname;
+      var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+      $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
+      $("#detailsContent").empty();
+      $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+      // TODO: replace by asynchronous load
+      var src = $.ajax({
+        url: url,
+        async: false
+      }).responseText;
+      src = src.substring(src.indexOf("package "));   // cut out license text
+      $("#sourcecode").text(src);
+      Prism.highlightElement($("#sourcecode")[0]);
+    });
+
+  }
   function createsls() { //create all graphs
     var maxbars_row = 0,                  //will contain max number of bars in a line
         barwd = 0,                        //will contain the width of a bar
@@ -173,6 +194,7 @@
     $("span.slcls").css("width", settings.slopts[0].barWidth+"px"); //span containing bar for a class cannot exceed bar width
     addHLeffects();
     addLinking();
+    showClassCodeOnClick();
 
   }
   function updateminmax(slidx, a) {  //update the relevant minmax array

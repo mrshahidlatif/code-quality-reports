@@ -823,7 +823,7 @@ function bugText(){
 
 	$(".className").click(function(){
 		var idx = Number($(this).attr("data-index"));
-		var str = data[idx].cname;
+    var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
     $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
     $("#detailsContent").empty();
@@ -897,7 +897,6 @@ function bugText(){
 		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
     NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
     
-  // FIXME: highlight of the bad smells in the PCP doesn't work anymore properly
 
 	$(".badBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
