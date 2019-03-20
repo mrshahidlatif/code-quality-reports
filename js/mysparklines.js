@@ -8,7 +8,7 @@
     settings  = { //default options:
                     csvurl: '',
                     slids: ['sl1', 'sl2'],              //ids for containers 1 and 2
-                    sldef: ['cbo,ca,ce', 'wmc,max_cc'], //fields for graphs 1 and 2
+                    sldef: ['wmc,max_cc', 'cbo,ca,ce'], //fields for graphs 1 and 2
                     slopts: [                           //default Sparklines options
                               {                         //options for all sls
                                 type: 'bar',
@@ -100,8 +100,8 @@
           }
       }
         }).on('mouseout', function(){
-        $("span.varStyle").css( "background-color", "transparent");
-        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
+        $("span.varStyle").css( "background-color", "");
+        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
         window.parent._unHighlight();
       });
       //-----------------------------------------------------------------------------

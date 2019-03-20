@@ -125,6 +125,59 @@ h4{
 }
 
 /* ------------------------------------------------------------------------*/
+/* Color Legends */
+/* ------------------------------------------------------------------------*/
+
+.couplingMetric.clickable{
+    border-bottom: 2px solid #238b45;
+    display: inline-block;
+}
+.complexityMetric.clickable{
+
+    border-bottom: 2px solid #2b8cbe;
+    display: inline-block;
+}
+.cohesionMetric.clickable{
+    border-bottom: 2px solid #c51b8a;
+    display: inline-block;
+}
+.inheritanceMetric.clickable{
+    border-bottom: 2px solid #88419d;
+    display: inline-block;
+}
+.BSLegend{
+    border-bottom: 2px solid black;
+}
+
+.wmc{
+    border-bottom: 2px solid #2b8cbe;
+}
+.max_cc{
+    border-bottom: 2px solid #7bccc4;
+}
+.cbo{
+    border-bottom: 2px solid #238b45;
+}
+.ca{
+    border-bottom: 2px solid #66c2a4;
+}
+.ce{
+    border-bottom: 2px solid #b2e2e2;
+}
+.lcom{
+    border-bottom: 2px solid #c51b8a;
+}
+.lcom3{
+    border-bottom: 2px solid #fa9fb5;
+}
+.noc{
+    border-bottom: 2px solid #8c96c6;
+}
+.dit{
+    border-bottom: 2px solid #88419d;
+}
+
+/* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
 
@@ -342,27 +395,3 @@ outline: 1px solid slategrey;
     cursor: pointer;
     background-color: #ffe68e;
 }
-
-#couplingLegend{
-    border-bottom: 2px solid #238b45;
-    display: inline-block;
-}
-#complexityLegend{
-
-    border-bottom: 2px solid #2b8cbe;
-    display: inline-block;
-}
-#cohesionLegend{
-    border-bottom: 2px solid #c51b8a;
-    display: inline-block;
-}
-#inheritanceLegend{
-    border-bottom: 2px solid #88419d;
-    display: inline-block;
-}
-
-.NoBSCap{
-    border-bottom: 2px solid gray;
-    display: inline-block;
-}
-
