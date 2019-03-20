@@ -295,7 +295,7 @@ margin-top: 2px;
 }
 
 .content p{
-    font-size: 12px;
+    margin: 0px;
 }
 
 .collapsible:after {
@@ -338,7 +338,7 @@ outline: 1px solid slategrey;
     border-bottom: 1px dotted black;
 }
 
-.fileName:hover, .educationalDescriptions:hover {
+.className:hover, .educationalDescriptions:hover {
     cursor: pointer;
     background-color: #ffe68e;
 }

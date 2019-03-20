@@ -50,12 +50,15 @@
     </div>
   </div>
 </body>
+
 <script type="text/javascript">
 window._scatterplot = function(){};
 window._parallelplot = function(){};
 var projectName = "";
 var fullData;
 var badClasses;
+var classFullNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
+var classShortNameToIndex = {} // equivalent dictionary with short class names -- TODO: temporary solution, should be removed
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -169,17 +172,21 @@ function generateReport(){
 	var $reporttext = $("#reporttext"), html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = data.length, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, classesWithBadSmells = [], bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 	data.forEach(function(d, i){
+    classFullNameToIndex[d.cname] = i; 
+    classShortNameToIndex[d.cname.split(".").pop()] = i;
     var s = d.smells;
     var badClass = new Object;
     var badSmellsinClass = [];
 
     var bad = false;
     
-    var classSpan = "<span class='fileName clickable' data-index='" + i + "'>" + d.cname.split(".").pop() + "</span>";
+    var fileSpan = createClassSpan(d.cname);
+
+    // TODO: remove code clones in the following
 
 		if(s.blob){
 			blobCt++;
-      blobArr.push(classSpan);
+      blobArr.push(fileSpan);
       bad = true;
 
       badSmellsinClass.push("blob");
@@ -187,7 +194,7 @@ function generateReport(){
 
     if(s.highblob){
       highblobCt++;
-      highblobArr.push(classSpan);
+      highblobArr.push(fileSpan);
       //bad = true;
 
 
@@ -195,14 +202,14 @@ function generateReport(){
 
 		if(s.decomposition){
       decomCt++;
-      decomArr.push(classSpan);
+      decomArr.push(fileSpan);
 			bad = true;
       badSmellsinClass.push("functional decomposition");
 		}
 
 		if(s.spaghetti){
       spaCt++;
-      spaArr.push(classSpan);
+      spaArr.push(fileSpan);
       bad = true;
 
       badSmellsinClass.push("spaghetti code");
@@ -210,14 +217,14 @@ function generateReport(){
 
     if(s.lazy){
       lazyCt++;
-      lazyArr.push(classSpan);
+      lazyArr.push(fileSpan);
       badSmellsinClass.push("lazy class");
     }
 
     if(d.bug >= 1){
 
       bugCt++;
-      bugArr.push(classSpan);
+      bugArr.push(fileSpan);
     }
 
 		if(bad){
@@ -234,62 +241,62 @@ function generateReport(){
     //check for good coupling
     if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
       goodCouplingCt++;
-      goodCouplingArr.push(classSpan);
+      goodCouplingArr.push(fileSpan);
     }
     //check for regular coupling
     if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
       regularCouplingCt++;
-     regularCouplingArr.push(classSpan);
+     regularCouplingArr.push(fileSpan);
    }
    //check for bad coupling
    if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
      badCouplingCt++;
-     badCouplingArr.push(classSpan);
+     badCouplingArr.push(fileSpan);
     }
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
      goodInheritanceCt++;
-    goodInheritanceArr.push(classSpan);
+    goodInheritanceArr.push(fileSpan);
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
      regularInheritanceCt++;
-    regularInheritanceArr.push(classSpan);
+    regularInheritanceArr.push(fileSpan);
    }
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
      badInheritanceCt++;
-    badInheritanceArr.push(classSpan);
+    badInheritanceArr.push(fileSpan);
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
      goodCohesionCt++;
-     goodCohesionArr.push(classSpan);
+     goodCohesionArr.push(fileSpan);
    }
    //check for regular cohesion
    if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
      regularCohesionCt++;
-     regularCohesionArr.push(classSpan);
+     regularCohesionArr.push(fileSpan);
    }
    //check for bad cohesion
    if(d.lcom3 > 0.725){
      badCohesionCt++;
-     badCohesionArr.push(classSpan);
+     badCohesionArr.push(fileSpan);
    }
    //check for good Complexity
    if(d.max_cc <= 2 || d.wmc <= 11){
      goodComplexityCt++;
-     goodComplexityArr.push(classSpan);
+     goodComplexityArr.push(fileSpan);
    }
    //check for regular Complexity
    if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
      regularComplexityCt++;
-     regularComplexityArr.push(classSpan);
+     regularComplexityArr.push(fileSpan);
    }
    //check for bad Complexity
    if(d.max_cc > 4 || d.wmc > 34){
      badComplexityCt++;
-     badComplexityArr.push(classSpan);
+     badComplexityArr.push(fileSpan);
    }
   })
 
@@ -493,40 +500,6 @@ function generateReport(){
   result = stringify(structurize(paths)).join("\n");
   // console.log(result);
 
-  function printList(list){
-    // array argument
-    var s="";
-    switch(list.length){
-      case 1: s += list[0]; break;
-      case 2: s +=  list[0] + " and " + list[1]; break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += list[i]+ ", ";
-          }
-          else s += " and " + list[i];
-        }
-    }
-    return s;
-  }
-
-  function printItalicList(list){
-    // array argument
-    var s="";
-    switch(list.length){
-      case 1: s += '<span class="fileName clickable">' + list[0] + '</span>'; break;
-      case 2: s += '<span class="fileName clickable">' + list[0] + '</span>'+ ' and ' + '<span class="fileName">' + list[1] + '</span>'; break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += '<span class="fileName clickable">' + list[i] + '</span>' + ", ";
-          }
-          else s += " and " + '<span class="fileName clickable">' + list[i] + '</span>';
-        }
-    }
-    return s;
-  }
-
   //Generate report text
   $(".quality").html(badSmellsText());
 
@@ -622,7 +595,7 @@ function generateReport(){
   return text;
   }
 
-  function NoOfBadSmells(list){
+  function noOfBadSmells(list){
     for(var i=0;i<list.length;i++){
       if(list[i].badSmells.length == 4)
         return list[i];
@@ -681,14 +654,17 @@ function generateReport(){
     if(superSmellsCt > 0){
       text+= ' Some classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
     }
-    var c = NoOfBadSmells(classesWithBadSmells);
-    if (c != undefined){ text += ' For instance, <span class="fileName clickable">'+ c.name + '</span> has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; }
-    if(highblobCt == 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="fileName clickable">HIGHBLOB</span>.';
+    var c = noOfBadSmells(classesWithBadSmells);
+    if (c != undefined){ 
+      text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
+    }
+    // TODO: implement the following correctly
+    /* if(highblobCt == 1){
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.';
     }
     if(highblobCt > 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="fileName clickable">HIGHBLOB</span>.'
-    }
+      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.'
+    } */
     //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
     return text;
   }
@@ -820,7 +796,7 @@ function bugText(){
 
 	$reporttext.html(html);
 
-	$(".fileName").click(function(){
+	$(".className").click(function(){
 		var idx = Number($(this).attr("data-index"));
 		var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
@@ -850,8 +826,6 @@ function bugText(){
     $("#detailsContent").load(curl, function() {
     });   
 	});*/
-
-
 
   var sparklineOptions = {
     type:'bar',
@@ -1083,23 +1057,8 @@ function showInheritanceMetricDescription() {
   updateDetailPanel("Cohesion", content);
 }
 
-/* Util functions */ 
-
-function updateDetailPanel(title, content) {
-  $("#detailsHeader").text(title);
-  $("#detailsContent").empty();
-  $("#detailsContent").append($(content));
-}
-
-function num2word(n){
-  if (numToWord[n] != undefined){
-    return numToWord[n];
-  }
-  else return n;
-}
-
 //Highlighting corresponding element of vis on hovering class name in text
-$(document).on("mouseover", ".fileName", function() {
+$(document).on("mouseover", ".className", function() {
     var className = $(this).text();
     $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
     $("#scatterplot").contents().find("circle#"+className).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
@@ -1113,7 +1072,7 @@ $(document).on("mouseover", ".fileName", function() {
                 }
             }
 
- }).on('mouseout', '.fileName', function() {
+ }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background','transparent'); 
     
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
@@ -1121,6 +1080,59 @@ $(document).on("mouseover", ".fileName", function() {
     window.parent._unHighlight();
 
  });
+
+ /* Util functions */ 
+
+function createClassSpan(cname) {
+  var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
+  return "<span class='className clickable' data-index='" + i + "'>" + cname.split(".").pop() + "</span>";
+}
+
+function printList(list){
+    var s="";
+    switch(list.length){
+      case 1: s += list[0]; break;
+      case 2: s +=  list[0] + " and " + list[1]; break;
+      default:
+        for(var i=0; i<list.length; i++){
+          if (i != list.length-1){
+            s += list[i]+ ", ";
+          }
+          else s += " and " + list[i];
+        }
+    }
+    return s;
+  }
+
+  // TODO: rename and use printList() here instead of a code clone
+  function printItalicList(list){
+    var s="";
+    switch(list.length){
+      case 1: s += createClassSpan(list[0]); break;
+      case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
+      default:
+        for(var i=0; i<list.length; i++){
+          if (i != list.length-1){
+            s += createClassSpan(list[i]) + ", ";
+          }
+          else s += " and " + createClassSpan(list[i]);
+        }
+    }
+    return s;
+  }
+
+function updateDetailPanel(title, content) {
+  $("#detailsHeader").text(title);
+  $("#detailsContent").empty();
+  $("#detailsContent").append($(content));
+}
+
+function num2word(n){
+  if (numToWord[n] != undefined){
+    return numToWord[n];
+  }
+  else return n;
+}
 
 </script>
 </html>
