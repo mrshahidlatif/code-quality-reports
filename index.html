@@ -1067,32 +1067,42 @@ $(document).on("mouseover", ".className", function() {
 /* ------------------------------------------------------------------------*/
 
 // TODO: color metric names accordingly
+function findClassWithMaxValueOfMetricX (X){
+  var max =  Math.max.apply(Math, fullData.map(function(o) { return o[X]; }))
+  var maxClass = fullData.filter(function(d){ return d[X] == max;})[0];
+  
+  return maxClass.cname;
+}
 
 function showCouplingMetricDescription() {
-  const content = `
-    <p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
-  `;
+  var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
+
   updateDetailPanel("Coupling", content);
 }
 
 function showComplexityMetricDescription() {
-  const content = `
-    <p>The metrics weighted method per class (<span class="wmc">wmc</span>) and cyclomatic complexity (<span class="max_cc">cc</span>) contribute towards the code complexity of a class.</p>
-  `;
+  var content = '<p>The metrics weighted method per class (<span class="wmc">wmc</span>) and cyclomatic complexity (<span class="max_cc">cc</span>) contribute towards the code complexity of a class. </p>';
+  
+    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('max_cc')) + ' has high complexity. </p>';
+  
   updateDetailPanel("Complexity", content);
 }
 
 function showCohesionMetricDescription() {
-  const content = `
-    <p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>
-  `;
+  var content = '<p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('lcom')) + ' has maximum cohesion. </p>';
+
   updateDetailPanel("Cohesion", content);
 }
 
 function showInheritanceMetricDescription() {
-  const content = `
-    <p>The metrics depth of inheritance (<span class="dit">dit</span>) and number of children (<span class="noc">noc</span>) are used to assess the quality in terms of inheritance.</p>
-  `;
+  var content = '<p>The metrics depth of inheritance (<span class="dit">dit</span>) and number of children (<span class="noc">noc</span>) are used to assess the quality in terms of inheritance.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('noc')) + ' has high inheritance. </p>';
+
   updateDetailPanel("Inheritance", content);
 }
 

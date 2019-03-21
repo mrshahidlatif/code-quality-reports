@@ -192,8 +192,6 @@ function ScatterPlot(){
             d.y = yMap(d) + margin;
         });
 
-       // place_labels(data, xScale, yScale);
-
         return object;
     };
 
