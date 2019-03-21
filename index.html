@@ -712,9 +712,9 @@ function countClassesHavingBadSmells (data){
 function generatePPCaption(){
   // TODO: color metric names
   var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (wmc, max_cc), <span class="couplingMetric clickable">coupling</span> (cbo, ca, ce), <span class="cohesionMetric clickable">cohesion</span> (lcom, lcom3), and <span class="inheritanceMetric clickable">inheritance</span> (noc, dit).'
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells.';
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells';
 
-  caption += '.';
+  caption += '. ';
 
   return caption;
 }
@@ -1054,12 +1054,19 @@ $(document).on("mouseover", ".className", function() {
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
     window.parent._highlightEdge(d[classShortNameToIndex[className]]);
+    
+    //appending to parcoord caption 
+    var bs = findBadSmellsInClass(className);
+    $('#captionPP').append('<span id="dynamicCaption"></span>');
+    $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
 
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background',''); 
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
     window.parent._unHighlight();
 
+    //reset to original caption
+    $('#dynamicCaption').remove();
  });
 
 /* ------------------------------------------------------------------------*/
@@ -1131,22 +1138,22 @@ function printList(list){
     return s;
   }
 
-  // TODO: rename and use printList() here instead of a code clone
-  function printItalicList(list){
-    var s="";
-    switch(list.length){
-      case 1: s += createClassSpan(list[0]); break;
-      case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += createClassSpan(list[i]) + ", ";
-          }
-          else s += " and " + createClassSpan(list[i]);
+// TODO: rename and use printList() here instead of a code clone
+function printItalicList(list){
+  var s="";
+  switch(list.length){
+    case 1: s += createClassSpan(list[0]); break;
+    case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
+    default:
+      for(var i=0; i<list.length; i++){
+        if (i != list.length-1){
+          s += createClassSpan(list[i]) + ", ";
         }
-    }
-    return s;
+        else s += " and " + createClassSpan(list[i]);
+      }
   }
+  return s;
+}
 
 // TODO: use this util function consistently
 function updateDetailPanel(title, content) {
@@ -1161,6 +1168,16 @@ function num2word(n){
   }
   else return n;
 }
+function findBadSmellsInClass(className){
+   //use global data variable called fullData
+   var bs = [];
+   if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('blob')};
+   if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('functional decomposition')}; 
+   if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('spaghetti class')}; 
+   if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('lazy class')}; 
+
+   return bs;
+ }
 
 </script>
 </html>
