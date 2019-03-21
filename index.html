@@ -751,20 +751,20 @@ function NoOfBugSmells(list){
 
 function bugText(){
   var text = "";
-  text += '<h3 align="left">Bugs:</h3>'
+  text += '<h3 align="left">History of Bugs:</h3>'
   if(bugCt/classCt == 0){
-    text =+ 'None of the classes has bugs.'
+    text =+ 'None of the classes had bugs.'
   }
   else{
     var c = NoOfBugSmells(classesWithBadSmells);
     var d = classesWithBugSmells(classesWithBadSmells);
-    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> classes contain bugs.';
+    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> classes contained bugs at some point.';
     if(d.length > 3){
-      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printList(d) + '</p></div> carry both bugs and bad smells';
+      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printList(d) + '</p></div> had both bugs and bad smells in the past';
     }
     else if (d.length > 0){
-      text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' carries' : ' The classes ' + printItalicList(d) + ' carry' ;
-      text += ' both bugs and bad smells.';
+      text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' carried' : ' The classes ' + printItalicList(d) + ' carried' ;
+      text += ' both bugs and bad smells in the past.';
     }
 
   }

@@ -32,7 +32,7 @@ body {
 }
 .vis{
     grid-area: vis; 
-    width: 70vw;
+    width:70vw;
     height:35vh;
     /* display: inline-block; */
     position: relative;
