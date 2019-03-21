@@ -185,6 +185,12 @@ h4{
     font-size:10pt;
 }
 
+.jqstooltip {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+  }
+
 /* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
