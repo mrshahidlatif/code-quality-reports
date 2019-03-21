@@ -1079,12 +1079,6 @@ $(document).on("mouseover", ".className", function() {
 /* ------------------------------------------------------------------------*/
 
 // TODO: color metric names accordingly
-function findClassWithMaxValueOfMetricX (X){
-  var max =  Math.max.apply(Math, fullData.map(function(o) { return o[X]; }))
-  var maxClass = fullData.filter(function(d){ return d[X] == max;})[0];
-  
-  return maxClass.cname;
-}
 
 function showCouplingMetricDescription() {
   var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
@@ -1121,6 +1115,13 @@ function showInheritanceMetricDescription() {
 /* ------------------------------------------------------------------------*/
 /* Util functions */ 
 /* ------------------------------------------------------------------------*/
+
+function findClassWithMaxValueOfMetricX (X){
+  var max =  Math.max.apply(Math, fullData.map(function(o) { return o[X]; }))
+  var maxClass = fullData.filter(function(d){ return d[X] == max;})[0];
+  
+  return maxClass.cname;
+}
 
 function createClassSpan(cname) {
   var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
