@@ -688,14 +688,14 @@ function generateReport(){
     if (c != undefined){ 
       text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
     }
-    // TODO: implement the following correctly
-    /* if(highblobCt == 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.';
+
+    if(highblobArr.length == 1){
+      text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ highblobArr[0] + 
+      '.';
     }
-    if(highblobCt > 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.'
-    } */
-    //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
+    if(highblobArr.length > 1){
+      text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ printList(highblobArr)+ '.';
+    }
     return text;
   }
 
