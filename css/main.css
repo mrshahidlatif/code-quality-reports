@@ -183,12 +183,17 @@ h4{
 
 .ui-tooltip-content {
     font-size:10pt;
+    color:white;
+}
+.ui-tooltip{
+    background: #666666;
 }
 
 .jqstooltip {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
+    background: #666666;
   }
 
 /* ------------------------------------------------------------------------*/
