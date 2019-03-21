@@ -24,7 +24,8 @@ d3.parcoords = function(config) {
     hideAxis : [],
     flipAxes: [],
     animationTime: 1100, // How long it takes to flip the axis when you double click
-    rotateLabels: false
+    rotateLabels: false,
+    highlightColor: "#ffe68e" // Define custom highlight color
   };
 
   extend(__, config);
@@ -686,7 +687,8 @@ function path_foreground(d, i) {
 };
 
 function path_highlight(d, i) {
-  ctx.highlight.strokeStyle = d3.functor(__.color)(d, i);
+  // ctx.highlight.strokeStyle = d3.functor(__.color)(d, i); //original 
+  ctx.highlight.strokeStyle = d3.functor(__.highlightColor)(d, i); // setting custom highlight color
 	return color_path(d, ctx.highlight);
 };
 pc.clear = function(layer) {
