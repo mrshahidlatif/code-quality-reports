@@ -711,7 +711,7 @@ function countClassesHavingBadSmells (data){
 
 function generatePPCaption(){
   // TODO: color metric names
-  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
+  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
   caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells';
 
   caption += '. ';
@@ -719,9 +719,8 @@ function generatePPCaption(){
   return caption;
 }
 function generateSPCaption(){
- 
-
-  return 'Correlation between X and Y';
+  // Assuming X and Y are the selected dimensions in the scatterplot
+  return 'Correlation between X and Y. ';
 }
 
 //bugs report
@@ -985,10 +984,12 @@ function bugText(){
 
   // TODO: implement the color legends for labels in paracoord
   // $("#parallelplot").contents().find("text.label").attr('text-decoration','underline');
- 
   
-}
+  // FIXME: Not working as iframe loades after the command is executed
+  //  $("#scatterplot").contents().find("select#xSelect :selected").val();
 
+
+}
 function structurize(paths) {
       var items = [];
       for(var i = 0, l = paths.length; i < l; i++) {
