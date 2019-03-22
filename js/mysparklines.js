@@ -96,13 +96,13 @@
       for(var i=0; i<d.length;i++){
           if(d[i] != undefined && d[i].cname.includes(clsName)){
               // console.log(d[i]);
-              window.parent._highlightEdge(d[i]);
+              highlightEdge(d[i]);
           }
       }
         }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "");
         $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-        window.parent._unHighlight();
+        unHighlight();
       });
       //-----------------------------------------------------------------------------
   }

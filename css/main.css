@@ -220,7 +220,7 @@ h4{
     /* position: absolute; */
     float: left;
     width: 68%;
-    top: 80%;
+    top: 100%;
     left:0;
     font-size:12px;
  }
@@ -230,7 +230,7 @@ h4{
     float: right;
     width: 30%;
     left: 68%;
-    top:80;
+    top:100%;
     font-size:12px;
  }
 
@@ -246,24 +246,15 @@ h4{
     padding-left: 2%;
 }
 
-.main-container {
-    padding-top: 55px;
-    margin-left: 5% ;
-    margin-right: 5%;
-    display: flex;
-    width: 90%;
-    height: 100%;
-    background: #fff;
-    visibility: hidden;
-}
 
 #scatterplot {
    width:30%; 
-   height:80%; 
+   height:85%;
 }
 #parallelplot {
     width: 69%; 
-    height: 80%; 
+    height: 85%; 
+    float: left;
 }
 .infoIcon:hover{
     cursor: pointer;
@@ -416,4 +407,25 @@ outline: 1px solid slategrey;
 }
 #dynamicCaption{
     background-color: #ffe68e;
+}
+
+/* ------------------------------------------------------------------------*/
+/* Parallel Coordinates */
+/* ------------------------------------------------------------------------*/
+.text-center {
+	text-align: center;
+	margin: 6px 0;
+}
+
+#example_container {
+    width: 68%; 
+    height: 100%;
+	/* position: relative; */
+	margin: auto;
+}
+
+#example {
+    width: 68%; 
+    height: 100%;
+	position: relative;
 }

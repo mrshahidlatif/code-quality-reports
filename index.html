@@ -9,7 +9,10 @@
     <script type="text/javascript" src="js/mysparklines.js"></script>
     <script type="text/javascript" src="js/dictionary.js"></script>
     <script src="lib//jquery-ui.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="lib/d3.parcoords.js"></script>
     
+    <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
     <link rel="stylesheet" href="lib/jquery-ui.css">
     <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
@@ -38,8 +41,12 @@
       </div>
     </div>
     <div class="vis">
-        <!-- TODO: replace iframes -->         
-        <iframe id="parallelplot"></iframe>
+        <!-- TODO: replace iframes --> 
+        <div id= "parallelplot">
+          <div id="example_container">
+            <div id="example" class="parcoords"></div>
+          </div> 
+        </div>
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
         <div id="captionSP"></div>
@@ -55,7 +62,7 @@
 
 <script type="text/javascript">
 window._scatterplot = function(){};
-window._parallelplot = function(){};
+
 var projectName = "";
 var fullData;
 var badClasses;
@@ -91,9 +98,7 @@ function handleFileSelect(event) {
 
 	$(".text").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
-	$("#parallelplot").attr("src", "");
   $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
-	$("#parallelplot").attr("src", "parallelplot/parallelplot.html");
 
 	var f = event.target.files[0]; // FileList object
 	projectName = f.name.replace('.csv','');
@@ -132,9 +137,9 @@ function handleFileSelect(event) {
 
 function generateReport(){
   var data = clone(_chartdata);
+
   //making data available to all files
   fullData = data;
-  // console.log(fullData);
 
 	data.forEach(function(d, i){
 		d.index = i;
@@ -850,7 +855,6 @@ function bugText(){
   //bug chart
   drawBarChart(".bar_17", Math.round((bugCt/classCt)*1000)/10);
 
-	window._parallelplot(clone(_chartdata));
 
 	//columns
 	var columns = data.columns;
@@ -877,7 +881,7 @@ function bugText(){
 			dims[LOC_S] = [1500, null];
 			dims[AMC_S] = [129, null];
 
-      window._parallelfilter(dims);
+      parallelfilter(dims);
 		}
 	});
 
@@ -896,7 +900,7 @@ function bugText(){
 			var dims = {};
 			dims[NPM_S] = [null, 8];
 			dims[WMC_S] = [16, null];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -914,7 +918,7 @@ function bugText(){
 
 			var dims = {};
 			dims[AMC_S] = [151, null];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -932,7 +936,7 @@ function bugText(){
 
 			var dims = {};
 			dims[WMC_S] = [0, 0.1];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -987,6 +991,12 @@ function bugText(){
   
   // FIXME: Not working as iframe loades after the command is executed
   //  $("#scatterplot").contents().find("select#xSelect :selected").val();
+
+/* ------------------------------------------------------------------------*/
+/* Calling the Visualization functions to draw visualizations */
+/* ------------------------------------------------------------------------*/
+
+  parallelplot(data);
 
 
 }
@@ -1058,7 +1068,7 @@ $(document).on("mouseover", ".className", function() {
     
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
-    window.parent._highlightEdge(d[classShortNameToIndex[className]]);
+    highlightEdge(d[classShortNameToIndex[className]]);
     
     //appending to parcoord caption 
     var bs = findBadSmellsInClass(className);
@@ -1068,7 +1078,7 @@ $(document).on("mouseover", ".className", function() {
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background',''); 
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-    window.parent._unHighlight();
+    unHighlight();
 
     //reset to original caption
     $('#dynamicCaption').remove();
@@ -1184,6 +1194,112 @@ function findBadSmellsInClass(className){
 
    return bs;
  }
+
+/* ------------------------------------------------------------------------*/
+/* Parallel Coordinates */ 
+/* ------------------------------------------------------------------------*/
+ // load csv file and create the chart
+function parallelplot(data) {
+  console.log(data);
+	data.forEach(function(d, i){
+		// delete d.cname;
+		delete d.rfc;
+		delete d.dam;
+		delete d.moa;
+		delete d.mfa;
+		delete d.cam;
+		delete d.ic;
+		delete d.cbm;
+		delete d.avg_cc;
+	});
+	// console.log(data[0]);
+
+	//specify the dimensions and their order
+	var myDimensions = {
+		"wmc": {type:"number"},
+		"max_cc": {type:"number"},
+		"cbo":{type:"number"},
+		"ca": {type:"number"},
+		"ce": {type:"number"},
+		"lcom": {type:"number"},
+		"lcom3": {type:"number"},
+		"noc": {type:"number"},
+		"dit": {type:"number"},
+		"loc": {type:"number"},
+		"amc": {type:"number"},
+		"npm": {type:"number"},
+	};
+
+	var w = (data.columns.length)*32.55;
+	$("#example_container").css({width: w+"px"});
+	$("#example").css({width: w+"px"});
+  pcz = d3.parcoords()("#example")
+    .data(data)
+    .hideAxis(["name"])
+    .composite("darken")
+		.color(function(d) {
+      var class_smells = data[classFullNameToIndex[d.cname]].smells; 
+      if(class_smells['blob'] || class_smells['decomposition'] || class_smells['spaghetti'] || class_smells['lazy']){
+          return 'black'
+      }
+      else return "#d6d6d6";
+    })
+		.hideAxis(['cname'])
+		.dimensions(myDimensions)
+    .render()
+    // .alpha(0.6)
+    .brushMode("1D-axes")  // enable brushing
+		.interactive(); // command line mode
+		
+  // adding axis labels
+  pcz.svg.selectAll(".dimension")
+    .selectAll(".label")
+		.style("font-size", "14px");
+
+}
+function unHighlight(){
+	//clearing the highlighting
+	pcz.unhighlight();
+	// pcz.color(function(d) { return "steelblue"; });
+	// pcz.clear('highlight');
+	// d3.select("canvas.foreground.faded").classed("faded", false);
+}
+function highlightEdge(d){
+	// console.log(d);
+		var classData = {cname:d.cname,
+						amc: d.amc,
+						bug: d.bug,
+						ca: d.ca,
+						cbo: d.cbo,
+						ce: d.ce,
+						dit: d.dit,
+						lcom: d.lcom,
+						lcom3: d.lcom3,
+						loc: d.loc,
+						max_cc: d.max_cc,
+						noc: d.noc,
+						npm: d.npm,
+						wmc: d.wmc};
+	pcz.highlight([classData]);
+}
+
+function parallelfilter(dims) {
+	// console.log(dims);
+	for(var dim in dims){
+		var domain = pcz.dimensions()[dim].yscale["domain"]();
+
+		if(dims[dim][0] == null){
+			dims[dim][0] = Math.min(domain[0], domain[1]);
+		}
+
+		if(dims[dim][1] == null){
+			dims[dim][1] = Math.max(domain[0], domain[1]);
+		}
+	}
+
+	pcz.brushReset();
+	pcz.brushExtents(dims);
+}
 
 </script>
 </html>
