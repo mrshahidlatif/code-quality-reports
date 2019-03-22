@@ -4,6 +4,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     height: 100%; overflow: hidden;
+    text-align: justify;
 }
 
 
@@ -17,7 +18,7 @@ body {
         'main right'
         'vis right';
     grid-gap: 10px;
-    height:100vh; 
+    height: 100vh; 
     background-color: #e8e8e8;
     padding: 10px;
     grid-template-rows: 50px 2fr 1fr; 
@@ -31,30 +32,28 @@ body {
     grid-area: header;
     padding-top: 0px !important;
 }
-#textPanel {
+#textPanel { /*nested grid panel*/
     grid-area: main; 
-    overflow:auto;
-    float: left;
+    display: grid;
+    grid-template-areas: 'textA textB';
+    grid-template-rows: 1fr; 
+    grid-template-columns:30fr 70fr; 
+    grid-gap: 20px;
+    overflow: auto;
+}
+#textAPanel{
+    grid-area: textA;
+    overflow: auto;
+}
+#textBPanel{
+    grid-area: textB;
+    overflow: auto;
 }
 #vis{
     grid-area: vis; 
     position: relative;
 }
-#textAPanel{
-    width: 30vw;
-    height: 100%;
-    margin-left: 0px;
-    padding: 10px;
-    text-align: justify;
-    float: left;
-}
-#textBPanel{
-    width: 55%;
-    left: 30vw;
-    font-size:14px;
-    float:right;
-    padding: 10px;
-}
+
 
 /* Details panel */
 
