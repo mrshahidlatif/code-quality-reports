@@ -9,8 +9,24 @@ body {
 /* ------------------------------------------------------------------------*/
 /* Grid layout */
 /* ------------------------------------------------------------------------*/
-
-.header { 
+#grid-container {
+    display: grid;
+    grid-template-areas:
+      'header header '
+      'main  right'
+      'vis right'
+      'footer footer';
+    grid-gap: 5px;
+    background-color: #e8e8e8;
+    padding: 25px;
+}
+#grid-container > div {
+    background-color: rgb(255, 255, 255);
+    text-align: left;
+    padding: 0px 0;
+    font-size: 14px;
+}
+#header { 
     position: fixed;
     grid-area: header;
     top:0px;
@@ -30,7 +46,7 @@ body {
     overflow:auto;
     float: left;
 }
-.vis{
+#vis{
     grid-area: vis; 
     width:70vw;
     height:35vh;
@@ -80,32 +96,13 @@ body {
 
 /* Footer */
 
-.foot { 
+#foot { 
     grid-area: footer;
     width:100vw;
     height: 10px;
     position:fixed;
     bottom:0px;
  }
-
-.grid-container {
-  display: grid;
-  grid-template-areas:
-    'header header '
-    'main  right'
-    'vis right'
-    'footer footer';
-  grid-gap: 5px;
-  background-color: #e8e8e8;
-  padding: 25px;
-}
-
-.grid-container > div {
-  background-color: rgb(255, 255, 255);
-  text-align: left;
-  padding: 0px 0;
-  font-size: 14px;
-}
 
 /* ------------------------------------------------------------------------*/
 /* Base tags */
