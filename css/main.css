@@ -54,7 +54,7 @@ body {
     position: relative;
 }
 
-#quality{
+#textAPanel{
     width: 30vw;
     height: 100%;
     margin-left: 0px;
@@ -63,7 +63,7 @@ body {
     text-align: justify;
     float: left;
 }
-#generalQuality{
+#textBPanel{
     width: 55%;
     left: 30vw;
     font-size:14px;
