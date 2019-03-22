@@ -132,8 +132,7 @@ function ScatterPlot(){
                 }
                 return "#d6d6d6";
             })
-            .on("mouseover", function(d) {
-                
+            .on("mouseover", function(d) { 
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
                 var x = $("span.className:contains("+ className +")",window.parent.document).html();
@@ -150,13 +149,11 @@ function ScatterPlot(){
 
                 //Highlighting corresponding bar in the sparklines 
                 $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
-                // console.log(xxx);
-                
+
                 //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
                 var d = window.parent.fullData;
                 for(var i=0; i<d.length;i++){
                     if(d[i] != undefined && d[i].cname.includes(className)){
-                        // console.log(d[i]);
                         window.parent._highlightEdge(d[i]);
                     }
                 }
@@ -173,23 +170,27 @@ function ScatterPlot(){
                tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
-            });
-			/*
-			svg.append("rect")
-				.attr("x", 350 + margin)
-				.attr("y", margin)
-				.attr("width", 450)
-				.attr("height", 450)
-				.attr("stroke", "#f00")
-				.style("fill", "transparent");
-			*/
+            }).on("click",function(d){
+                var str = d.cname;
+                // FIXME: fix the relative path problem once this file moves to main project
+                var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+                $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
+                $("#detailsContent").empty();
+                $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+                // TODO: replace by asynchronous load
+                var src = $.ajax({
+                  url: url,
+                  async: false
+                }).responseText;
+                src = src.substring(src.indexOf("package "));   // cut out license text
+                $("#sourcecode").text(src);
+                Prism.highlightElement($("#sourcecode")[0]);
+              });
 
         data.forEach(function(d, i){
             d.x = xMap(d) + margin;
             d.y = yMap(d) + margin;
         });
-
-       // place_labels(data, xScale, yScale);
 
         return object;
     };

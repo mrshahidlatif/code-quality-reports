@@ -6,6 +6,8 @@
 <script src="lib/d3-scale-chromatic.v1.min.js"></script>
 <script src="lib/bboxCollide.js"></script>
 <script src="lib/d3-annotation.js"></script>
+<script type="text/javascript" src="../lib/prism.js"></script>
+<link href="../lib/prism.css" rel="stylesheet" />
 
 <style>
     body {
@@ -30,9 +32,10 @@
         max-width: 250px;
         max-height: 64px;
         padding: 4px;
-        background: #fefff9;
+        background: #666666;
         pointer-events: none;
         font-size: 12px;
+        color:white;
     }
 
     .annotation-note {
@@ -226,7 +229,7 @@
   function scatterfilter(newdata){
 		var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
-			.style("fill", function(d,i) { return newdata[i]? "#ffe68e": "#d6d6d6";} );
+			.style("fill", function(d,i) { return newdata[i]? "black": "#d6d6d6";} );
 
     }
 

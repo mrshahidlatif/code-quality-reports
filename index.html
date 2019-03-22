@@ -7,8 +7,13 @@
     <script type="text/javascript" src="lib/prism.js"></script>
     <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
     <script type="text/javascript" src="js/mysparklines.js"></script>
-    <script type="text/javascript" src="js/dictionary.js"></script>    
-
+    <script type="text/javascript" src="js/dictionary.js"></script>
+    <script src="lib//jquery-ui.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="lib/d3.parcoords.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
+    <link rel="stylesheet" href="lib/jquery-ui.css">
     <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
     <link href="lib/prism.css" rel="stylesheet" />
@@ -36,15 +41,19 @@
       </div>
     </div>
     <div class="vis">
-        <!-- TODO: replace iframes -->         
-        <iframe id="parallelplot"></iframe>
+        <!-- TODO: replace iframes --> 
+        <div id= "parallelplot">
+          <div id="example_container">
+            <div id="example" class="parcoords"></div>
+          </div> 
+        </div>
         <iframe id="scatterplot"></iframe>
         <div id="captionPP"></div>
         <div id="captionSP"></div>
     </div>  
     <div id="details">
       <h3 id="detailsHeader"></h3>
-      <div id="detailsContent"/>
+      <div id="detailsContent">
     </div>
     <div class="foot">
     </div>
@@ -53,7 +62,7 @@
 
 <script type="text/javascript">
 window._scatterplot = function(){};
-window._parallelplot = function(){};
+
 var projectName = "";
 var fullData;
 var badClasses;
@@ -89,9 +98,7 @@ function handleFileSelect(event) {
 
 	$(".text").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
-	$("#parallelplot").attr("src", "");
   $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
-	$("#parallelplot").attr("src", "parallelplot/parallelplot.html");
 
 	var f = event.target.files[0]; // FileList object
 	projectName = f.name.replace('.csv','');
@@ -125,13 +132,14 @@ function handleFileSelect(event) {
                                      }
                  }
   //end of modified
+
 }
 
 function generateReport(){
   var data = clone(_chartdata);
+
   //making data available to all files
   fullData = data;
-  // console.log(fullData);
 
 	data.forEach(function(d, i){
 		d.index = i;
@@ -500,9 +508,11 @@ function generateReport(){
   result = stringify(structurize(paths)).join("\n");
   // console.log(result);
 
+/* ------------------------------------------------------------------------*/
+/* Text Generation */ 
+/* ------------------------------------------------------------------------*/
   //Generate report text
   $(".quality").html(badSmellsText());
-
   $("#subtitle").html(introText());
   html += generalQualtiyText();
   html += bugText();
@@ -519,95 +529,10 @@ function generateReport(){
     if(projectName.includes("log4j")) {
     projInfo =  "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    text += ' This document presents the code quality aspects of '+ projectName +'<span class="infoIcon" title= PROJINFO > &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+classCt+' classes.';
+    text += ' This document presents the code quality aspects of '+ projectName +'<span class="projInfo infoIcon"title=""> &#9432;</span> (Java version)&mdash;it has '+ numberOfPackages + ' packages and '+classCt+' classes.';
     return text;
   }
 
-  //general quality report
-
-  function generateCouplingText(){
-    var text = '<p>';
-    var coup = '<h4><span class="couplingMetric clickable">Coupling</span>:</h4>';
-    // coupling quality
-    var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
-    var m = Math.max(...couplingArr);
-    var i  = couplingArr.indexOf(m);
-
-    if(i == 0){
-      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>';
-    }
-
-    else if(i == 1){
-      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>'
-    }
-
-    else if(i == 2){
-      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div>'
-    }
-    text += '</p>';
-    return text;
-
-  }
-  function generateComplexityText(){
-    var comp = '<h4><span class="complexityMetric clickable">Complexity</span>:</h4>';
-    // complextiy quality
-    var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
-    m = Math.max(...complexityArr);
-    i  = complexityArr.indexOf(m);
-    var text = '<p>';
-    if(i == 0){
-      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
-    }
-    else if(i == 1){
-      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
-    }
-    else if(i == 2){
-      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div>'
-    }
-    return text += '</p>';
-
-  }
-  function generateCohesionText(){
-    var coh = '<h4><span class="cohesionMetric clickable">Cohesion</span>:</h4>';
-
-    var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
-    m = Math.max(...cohesionArr);
-    i  = cohesionArr.indexOf(m);
-    var text = '<p>';
-    if(i == 0){
-      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
-    }
-    else if(i == 1){
-      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
-    }
-    else if(i == 2){
-      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div>'
-    }
-
-    return  text += '<p>';
-
-  }
-  function generateInheritanceText(){
-
-    var inher = '<h4><span class="inheritanceMetric clickable">Inheritance</span>:</h4>';
-     // inheritance quality
-    var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
-    m = Math.max(...inheritanceArr);
-    i  = inheritanceArr.indexOf(m);
-    var text='<p>';
-    if(i == 0){
-      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>. <button class="collapsible" ></button><div class="content"><div id="samplsl4"></div></div>'
-    }
-    else if(i == 1){
-      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div>'
-    }
-    else if(i == 2){
-      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div>'
-    }
-
-    return text += '</p>';
-
-  }
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
@@ -620,6 +545,89 @@ function generateReport(){
     text += generateInheritanceText();
  
     return text;
+  }
+
+  function generateCouplingText(){
+    var text = '<p>';
+    var coup = '<h4><span class="couplingMetric clickable">Coupling</span>:</h4>';
+    // coupling quality
+    var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
+    var m = Math.max(...couplingArr);
+    var i  = couplingArr.indexOf(m);
+
+    if(i == 0){
+      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range';
+    }
+
+    else if(i == 1){
+      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range'
+    }
+
+    else if(i == 2){
+      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range'
+    }
+    text += '<span class="couplingInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div></p>';
+    return text;
+
+  }
+  function generateComplexityText(){
+    var comp = '<h4><span class="complexityMetric clickable">Complexity</span>:</h4>';
+    // complextiy quality
+    var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
+    m = Math.max(...complexityArr);
+    i  = complexityArr.indexOf(m);
+    var text = '<p>';
+    if(i == 0){
+      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity'
+    }
+    else if(i == 1){
+      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity'
+    }
+    else if(i == 2){
+      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity'
+    }
+    return text += '<span class="complexityInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div></p>';
+
+  }
+  function generateCohesionText(){
+    var coh = '<h4><span class="cohesionMetric clickable">Cohesion</span>:</h4>';
+
+    var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
+    m = Math.max(...cohesionArr);
+    i  = cohesionArr.indexOf(m);
+    var text = '<p>';
+    if(i == 0){
+      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality';
+    }
+    else if(i == 1){
+      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality';
+    }
+    else if(i == 2){
+      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality';
+    }
+    return  text += '<span class="cohesionInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div><p>';
+
+  }
+  function generateInheritanceText(){
+
+    var inher = '<h4><span class="inheritanceMetric clickable">Inheritance</span>:</h4>';
+     // inheritance quality
+    var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
+    m = Math.max(...inheritanceArr);
+    i  = inheritanceArr.indexOf(m);
+    var text='<p>';
+    if(i == 0){
+      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>';
+    }
+    else if(i == 1){
+      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>';
+    }
+    else if(i == 2){
+      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>';
+    }
+
+    return text += '<span class="inheritanceInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div></p>';
+
   }
 
   function noOfBadSmells(list){
@@ -685,14 +693,14 @@ function generateReport(){
     if (c != undefined){ 
       text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
     }
-    // TODO: implement the following correctly
-    /* if(highblobCt == 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.';
+
+    if(highblobArr.length == 1){
+      text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ highblobArr[0] + 
+      '.';
     }
-    if(highblobCt > 1){
-      text += ' Comparatively high metric value of lines of code indicates worse quality in <span class="className clickable">HIGHBLOB</span>.'
-    } */
-    //  html+= '<br><br>The BLOBCT blob bad smells are present in BLOBLIST. Based on high metrics values we found few blobs to be more quality deterrent. For instance, HIGHBLOB has high metrics values and probability of quality degradation could be significant in it.<br><br>The DECOMCT functional decomposition bad smells are present in DECOMLIST.<br><br>The SPACT spaghetti code bad smells are present in SPALIST.<br><br>The LAZYCT lazy class bad smells are present in LAZYLIST.'
+    if(highblobArr.length > 1){
+      text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ printList(highblobArr)+ '.';
+    }
     return text;
   }
 
@@ -708,17 +716,16 @@ function countClassesHavingBadSmells (data){
 
 function generatePPCaption(){
   // TODO: color metric names
-  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (wmc, max_cc), <span class="couplingMetric clickable">coupling</span> (cbo, ca, ce), <span class="cohesionMetric clickable">cohesion</span> (lcom, lcom3), and <span class="inheritanceMetric clickable">inheritance</span> (noc, dit).'
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells.';
+  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells';
 
-  caption += '.';
+  caption += '. ';
 
   return caption;
 }
 function generateSPCaption(){
- 
-
-  return 'Correlation between X and Y';
+  // Assuming X and Y are the selected dimensions in the scatterplot
+  return 'Correlation between X and Y. ';
 }
 
 //bugs report
@@ -773,45 +780,6 @@ function bugText(){
   return text;
 }
 
-
-
-  // if((bugCt/classCt) >= 0.15){
-  //   html+= ' Most of the classes in <i>PROJECTNAME</i> carry a large number of bugs. We found BUGCT classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(bugArr) + '.</p></div> having large number of bugs.'
-  // }
-  // if((bugCt/classCt) >= 0.08 && (bugCt/classCt) <= 0.14){
-  //   html+= ' Most of the classes in <i>PROJECTNAME</i> carry a reasonable number of bugs. We found BUGCT classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(bugArr) + '.</p></div> having large number of bugs.'
-  // }
-  // if((bugCt/classCt) <= 0.07 && bugCt !== 1){
-  //   html+= ' Most of the classes in <i>PROJECTNAME</i> do not have a large number of bugs. We found only BUGCT classes <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(bugArr) + '.</p></div> with comparatively large number of bugs.'
-  // }
-  // if((bugCt/classCt) <= 0.07 && bugCt === 1){
-  //   html+= ' Most of the classes in <i>PROJECTNAME</i> do not have a large number of bugs. We found only BUGCT class <button class="collapsible" onClick="expandContent()"></button><div class="content"><p>' + printList(bugArr) + '.</p></div> with comparatively large number of bugs.'
-  // }
-
-  // if(bugBlobCt === 1){
-  //   if(blobTag === true && decomTag === true){
-  //     html+= ' We observe that '+ BBLIST +'carries blob, functional decomposition, and bugs.'
-  //   }
-  //   if(blobTag === true && decomTag !== true){
-  //     html+= ' We observe that BBLIST carries both blob and bugs.'
-  //   }
-  // }
-  // if(bugBlobCt > 1){
-  //   if(blobTag === true && decomTag === true){
-  //     html+= ' We observe that BBLIST carry blob, functional decomposition, and bugs.'
-  //   }
-  //   if(blobTag === true && decomTag !== true){
-  //     html+= ' We observe that BBLIST carry both blob and bugs.'
-  //   }
-  // }
-
-
-  //visualizations
-  // html += '<br><br>The sparklines below are created using values of the metrics respective to these four quality attributes. To add meaningful interpretation, the stacked-bar charts are structured with respect to packages. In addition, a parallel coordinates plot is provided to obtain the overview of the software metrics and explore correlations among them. It is also used for highlighting metrics related to bad smells.'
-  //<br><span class="bad_1">Blob</span> | <span class="bad_2">Functional Decomposition</span> | <span class="bad_3">Spaghetti Code</span> | <span class="bad_4">Lazy Class</span>'
-
-
-
 	html = html.replace(/PROJECTNAME/g, ""+projectName).replace(/ClASSCT/g, ""+classCt).replace(/BADCT/g, ""+badCt).replace(/BUGCT/g, ""+bugCt).replace(/BLOBCT/g, ""+blobCt).replace(/DECOMCT/g, ""+decomCt).replace(/SPACT/g, ""+spaCt).replace(/BLOBLIST/g, ""+blobList).replace(/LAZYCT/g, ""+lazyCt);
   html = html.replace(/DECOMLIST/g, ""+decomList).replace(/SPALIST/g, ""+spaList).replace(/HIGHBLOB/g, ""+highblobList).replace(/LAZYLIST/g, ""+lazyList).replace(/BUGLIST/g, ""+bugList);
   html = html.replace(/GOODCOUPLINGLIST/g, ""+goodCouplingList).replace(/GOODCOUPLINGCT/g, ""+goodCouplingCt).replace(/GOODCOUPLINGPT/g, ""+goodCouplingPercent).replace(/REGULARCOUPLINGLIST/g, ""+regularCouplingList).replace(/REGULARCOUPLINGCT/g, ""+regularCouplingCt).replace(/REGULARCOUPLINGPT/g, ""+regularCouplingPercent).replace(/BADCOUPLINGLIST/g, ""+badCouplingList).replace(/BADCOUPLINGCT/g, ""+badCouplingCt).replace(/BADCOUPLINGPT/g, ""+badCouplingPercent);
@@ -826,7 +794,7 @@ function bugText(){
 
 	$(".className").click(function(){
 		var idx = Number($(this).attr("data-index"));
-		var str = data[idx].cname;
+    var str = data[idx].cname;
 		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
     $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
     $("#detailsContent").empty();
@@ -890,7 +858,6 @@ function bugText(){
   //bug chart
   drawBarChart(".bar_17", Math.round((bugCt/classCt)*1000)/10);
 
-	window._parallelplot(clone(_chartdata));
 
 	//columns
 	var columns = data.columns;
@@ -900,7 +867,6 @@ function bugText(){
 		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
     NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
     
-  // FIXME: highlight of the bad smells in the PCP doesn't work anymore properly
 
 	$(".badBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
@@ -918,7 +884,7 @@ function bugText(){
 			dims[LOC_S] = [1500, null];
 			dims[AMC_S] = [129, null];
 
-      window._parallelfilter(dims);
+      parallelfilter(dims);
 		}
 	});
 
@@ -937,7 +903,7 @@ function bugText(){
 			var dims = {};
 			dims[NPM_S] = [null, 8];
 			dims[WMC_S] = [16, null];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -955,7 +921,7 @@ function bugText(){
 
 			var dims = {};
 			dims[AMC_S] = [151, null];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -973,7 +939,7 @@ function bugText(){
 
 			var dims = {};
 			dims[WMC_S] = [0, 0.1];
-			window._parallelfilter(dims);
+			parallelfilter(dims);
 		}
 	});
 
@@ -995,8 +961,48 @@ function bugText(){
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
 
-}
+/* ------------------------------------------------------------------------*/
+/* Methodological Explainations - Tooltips */ 
+/* ------------------------------------------------------------------------*/
+  var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce 	&#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
 
+  var complexityMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: max_cc &#8804; 2; wmc 	&#8804; 11,  <br> Regular: max_cc &isin; (2,4]; wmc &isin; (11,34) <br> Bad: max_cc > 4; wmc >34";
+
+  var cohesionMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: lcom3 &#8804; 0.167; <br> Regular: lcom3 &isin; (0.167,0.725]; <br> Bad: lcom3 > 0.725";
+
+  var inheritanceMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: dit 	&#8804; 2; noc <= 1 <br> Regular: dit &isin; (2,4]; noc &isin; (1,3]  <br> Bad: dit > 4; noc > 3";
+
+  
+  $( ".projInfo" ).tooltip({
+      content: projInfo
+  });
+  $( ".couplingInfo" ).tooltip({
+      content: couplingMethod
+  });
+  $( ".complexityInfo" ).tooltip({
+      content: complexityMethod
+  });
+  $( ".cohesionInfo" ).tooltip({
+      content: cohesionMethod
+  });
+  $( ".inheritanceInfo" ).tooltip({
+      content: inheritanceMethod
+  });
+
+  // TODO: implement the color legends for labels in paracoord
+  // $("#parallelplot").contents().find("text.label").attr('text-decoration','underline');
+  
+  // FIXME: Not working as iframe loades after the command is executed
+  //  $("#scatterplot").contents().find("select#xSelect :selected").val();
+
+/* ------------------------------------------------------------------------*/
+/* Calling the Visualization functions to draw visualizations */
+/* ------------------------------------------------------------------------*/
+
+  parallelplot(data);
+
+
+}
 function structurize(paths) {
       var items = [];
       for(var i = 0, l = paths.length; i < l; i++) {
@@ -1065,13 +1071,20 @@ $(document).on("mouseover", ".className", function() {
     
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
-    window.parent._highlightEdge(d[classShortNameToIndex[className]]);
+    highlightEdge(d[classShortNameToIndex[className]]);
+    
+    //appending to parcoord caption 
+    var bs = findBadSmellsInClass(className);
+    $('#captionPP').append('<span id="dynamicCaption"></span>');
+    $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
 
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background',''); 
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-    window.parent._unHighlight();
+    unHighlight();
 
+    //reset to original caption
+    $('#dynamicCaption').remove();
  });
 
 /* ------------------------------------------------------------------------*/
@@ -1081,36 +1094,47 @@ $(document).on("mouseover", ".className", function() {
 // TODO: color metric names accordingly
 
 function showCouplingMetricDescription() {
-  const content = `
-    <p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>
-  `;
+  var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
+
   updateDetailPanel("Coupling", content);
 }
 
 function showComplexityMetricDescription() {
-  const content = `
-    <p>The metrics weighted method per class (<span class="wmc">wmc</span>) and cyclomatic complexity (<span class="max_cc">cc</span>) contribute towards the code complexity of a class.</p>
-  `;
+  var content = '<p>The metrics weighted method per class (<span class="wmc">wmc</span>) and cyclomatic complexity (<span class="max_cc">cc</span>) contribute towards the code complexity of a class. </p>';
+  
+    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('max_cc')) + ' has high complexity. </p>';
+  
   updateDetailPanel("Complexity", content);
 }
 
 function showCohesionMetricDescription() {
-  const content = `
-    <p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>
-  `;
+  var content = '<p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('lcom')) + ' has maximum cohesion. </p>';
+
   updateDetailPanel("Cohesion", content);
 }
 
 function showInheritanceMetricDescription() {
-  const content = `
-    <p>The metrics depth of inheritance (<span class="dit">dit</span>) and number of children (<span class="noc">noc</span>) are used to assess the quality in terms of inheritance.</p>
-  `;
+  var content = '<p>The metrics depth of inheritance (<span class="dit">dit</span>) and number of children (<span class="noc">noc</span>) are used to assess the quality in terms of inheritance.</p>';
+
+  content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('noc')) + ' has high inheritance. </p>';
+
   updateDetailPanel("Inheritance", content);
 }
 
 /* ------------------------------------------------------------------------*/
 /* Util functions */ 
 /* ------------------------------------------------------------------------*/
+
+function findClassWithMaxValueOfMetricX (X){
+  var max =  Math.max.apply(Math, fullData.map(function(o) { return o[X]; }))
+  var maxClass = fullData.filter(function(d){ return d[X] == max;})[0];
+  
+  return maxClass.cname;
+}
 
 function createClassSpan(cname) {
   var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
@@ -1133,22 +1157,22 @@ function printList(list){
     return s;
   }
 
-  // TODO: rename and use printList() here instead of a code clone
-  function printItalicList(list){
-    var s="";
-    switch(list.length){
-      case 1: s += createClassSpan(list[0]); break;
-      case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
-      default:
-        for(var i=0; i<list.length; i++){
-          if (i != list.length-1){
-            s += createClassSpan(list[i]) + ", ";
-          }
-          else s += " and " + createClassSpan(list[i]);
+// TODO: rename and use printList() here instead of a code clone
+function printItalicList(list){
+  var s="";
+  switch(list.length){
+    case 1: s += createClassSpan(list[0]); break;
+    case 2: s += createClassSpan(list[0])+ ' and ' + createClassSpan(list[1]); break;
+    default:
+      for(var i=0; i<list.length; i++){
+        if (i != list.length-1){
+          s += createClassSpan(list[i]) + ", ";
         }
-    }
-    return s;
+        else s += " and " + createClassSpan(list[i]);
+      }
   }
+  return s;
+}
 
 // TODO: use this util function consistently
 function updateDetailPanel(title, content) {
@@ -1162,6 +1186,122 @@ function num2word(n){
     return numToWord[n];
   }
   else return n;
+}
+function findBadSmellsInClass(className){
+   //use global data variable called fullData
+   var bs = [];
+   if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('blob')};
+   if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('functional decomposition')}; 
+   if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('spaghetti class')}; 
+   if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('lazy class')}; 
+
+   return bs;
+ }
+
+/* ------------------------------------------------------------------------*/
+/* Parallel Coordinates */ 
+/* ------------------------------------------------------------------------*/
+ // load csv file and create the chart
+function parallelplot(data) {
+  console.log(data);
+	data.forEach(function(d, i){
+		// delete d.cname;
+		delete d.rfc;
+		delete d.dam;
+		delete d.moa;
+		delete d.mfa;
+		delete d.cam;
+		delete d.ic;
+		delete d.cbm;
+		delete d.avg_cc;
+	});
+	// console.log(data[0]);
+
+	//specify the dimensions and their order
+	var myDimensions = {
+		"wmc": {type:"number"},
+		"max_cc": {type:"number"},
+		"cbo":{type:"number"},
+		"ca": {type:"number"},
+		"ce": {type:"number"},
+		"lcom": {type:"number"},
+		"lcom3": {type:"number"},
+		"noc": {type:"number"},
+		"dit": {type:"number"},
+		"loc": {type:"number"},
+		"amc": {type:"number"},
+		"npm": {type:"number"},
+	};
+
+	var w = (data.columns.length)*32.55;
+	$("#example_container").css({width: w+"px"});
+	$("#example").css({width: w+"px"});
+  pcz = d3.parcoords()("#example")
+    .data(data)
+    .hideAxis(["name"])
+    .composite("darken")
+		.color(function(d) {
+      var class_smells = data[classFullNameToIndex[d.cname]].smells; 
+      if(class_smells['blob'] || class_smells['decomposition'] || class_smells['spaghetti'] || class_smells['lazy']){
+          return 'black'
+      }
+      else return "#d6d6d6";
+    })
+		.hideAxis(['cname'])
+		.dimensions(myDimensions)
+    .render()
+    // .alpha(0.6)
+    .brushMode("1D-axes")  // enable brushing
+		.interactive(); // command line mode
+		
+  // adding axis labels
+  pcz.svg.selectAll(".dimension")
+    .selectAll(".label")
+		.style("font-size", "14px");
+
+}
+function unHighlight(){
+	//clearing the highlighting
+	pcz.unhighlight();
+	// pcz.color(function(d) { return "steelblue"; });
+	// pcz.clear('highlight');
+	// d3.select("canvas.foreground.faded").classed("faded", false);
+}
+function highlightEdge(d){
+	// console.log(d);
+		var classData = {cname:d.cname,
+						amc: d.amc,
+						bug: d.bug,
+						ca: d.ca,
+						cbo: d.cbo,
+						ce: d.ce,
+						dit: d.dit,
+						lcom: d.lcom,
+						lcom3: d.lcom3,
+						loc: d.loc,
+						max_cc: d.max_cc,
+						noc: d.noc,
+						npm: d.npm,
+						wmc: d.wmc};
+	pcz.highlight([classData]);
+}
+
+function parallelfilter(dims) {
+	// console.log(dims);
+	for(var dim in dims){
+		var domain = pcz.dimensions()[dim].yscale["domain"]();
+
+		if(dims[dim][0] == null){
+			dims[dim][0] = Math.min(domain[0], domain[1]);
+		}
+
+		if(dims[dim][1] == null){
+			dims[dim][1] = Math.max(domain[0], domain[1]);
+		}
+	}
+
+	pcz.brushReset();
+	pcz.brushExtents(dims);
 }
 
 </script>

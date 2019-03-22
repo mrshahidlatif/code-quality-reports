@@ -96,13 +96,13 @@
       for(var i=0; i<d.length;i++){
           if(d[i] != undefined && d[i].cname.includes(clsName)){
               // console.log(d[i]);
-              window.parent._highlightEdge(d[i]);
+              highlightEdge(d[i]);
           }
       }
         }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "");
         $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-        window.parent._unHighlight();
+        unHighlight();
       });
       //-----------------------------------------------------------------------------
   }
@@ -129,6 +129,27 @@
       slel.data('sltooltip', tt);
     }
     return tt;
+  }
+  function showClassCodeOnClick(){
+    $(".sl span").on('click', function() {
+      var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
+
+      var idx = classShortNameToIndex[clsName];
+      var str = fullData[idx].cname;
+      var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+      $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
+      $("#detailsContent").empty();
+      $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+      // TODO: replace by asynchronous load
+      var src = $.ajax({
+        url: url,
+        async: false
+      }).responseText;
+      src = src.substring(src.indexOf("package "));   // cut out license text
+      $("#sourcecode").text(src);
+      Prism.highlightElement($("#sourcecode")[0]);
+    });
+
   }
   function createsls() { //create all graphs
     var maxbars_row = 0,                  //will contain max number of bars in a line
@@ -173,6 +194,7 @@
     $("span.slcls").css("width", settings.slopts[0].barWidth+"px"); //span containing bar for a class cannot exceed bar width
     addHLeffects();
     addLinking();
+    showClassCodeOnClick();
 
   }
   function updateminmax(slidx, a) {  //update the relevant minmax array
