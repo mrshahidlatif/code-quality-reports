@@ -155,7 +155,7 @@ function ScatterPlot(){
                 var d = window.parent.fullData;
                 for(var i=0; i<d.length;i++){
                     if(d[i] != undefined && d[i].cname.includes(className)){
-                        window.parent.highlightEdge(d[i]);
+                        highlightEdge(d[i]);
                     }
                 }
             })
@@ -164,7 +164,7 @@ function ScatterPlot(){
                 $(this).attr("r","6").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
 
                 $("span.slcls",window.parent.document).css('background','');
-                window.parent.unHighlight();
+                unHighlight();
                 mouseout(d);
 
                //Hiding the tooltip

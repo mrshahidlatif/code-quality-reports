@@ -1305,7 +1305,7 @@ function parallelfilter(dims) {
 }
 
 /* ------------------------------------------------------------------------*/
-/* Parallel Coordinates */ 
+/* Scatter Plot */ 
 /* ------------------------------------------------------------------------*/
 
 function makeScatterPlot(data){
@@ -1313,26 +1313,27 @@ function makeScatterPlot(data){
   var root = d3.select('#controls');
   var tooltip = d3.select('#tooltip').style("opacity", 0);
 
-    var OUTLIER_THRESHOLD = 15, selectData = [], prev_data, excluded_keys = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"], prev_options = {}, dimensions = [];
+    var OUTLIER_THRESHOLD = 15, selectData = [], prev_data, excluded_keys = ["smells","cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"], prev_options = {}, dimensions = [];
+  
+    prev_data = clone(data);
     
-      
-    previous_data = data;
-    chart_data = data;
 
-    setup(data);
-  //TODO: re-implement this part as columns attribute doesn't exist in data anymore
+    var columns = Object.keys(data[0]);
     selectData = [];
-    for(var c in data.columns) {
-        if(excluded_keys.indexOf(data.columns[c]) == -1) {
-            selectData.push({text: data.columns[c]});
+    for(var c in columns) {
+        if(excluded_keys.indexOf(columns[c]) == -1) {
+            selectData.push({text: columns[c]});
         }
     }
-   
+
+    setup(data);
 
     function xChange(){
         prev_options.xSelect = this.value;
         if(prev_data) {
             var chart_data = clone(prev_data);
+            console.log(this.value);
+            console.log(chart_data);
             setup(chart_data);
         }
     }
@@ -1362,7 +1363,7 @@ function makeScatterPlot(data){
 
         var xSpan = root.append('span')
             .text('X-axis: ');
-      console.log(selectData);
+
         var xInput = root.append('select')
             .attr('id','xSelect')
             .on('change', xChange)
@@ -1372,8 +1373,6 @@ function makeScatterPlot(data){
             .append('option')
             .attr('value', function (d) { return d.text })
             .text(function (d) { return d.text ;});
-
-        // root.append('br');
 
         var ySpan = root.append('span')
             .text(' Y-Axis: ')
@@ -1387,9 +1386,6 @@ function makeScatterPlot(data){
             .append('option')
             .attr('value', function (d) { return d.text })
             .text(function (d) { return d.text ;});
-
-        // root.append('br');
-        // root.append('br');
 
         dimensions = [];
         d3.keys(data[0]).map(function(item){
