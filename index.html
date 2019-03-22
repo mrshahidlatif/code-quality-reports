@@ -756,20 +756,23 @@ function NoOfBugSmells(list){
 
 function bugText(){
   var text = "";
-  text += '<h3 align="left">History of Bugs:</h3>'
+  text += '<h3>Bug History</h3>'
   if(bugCt/classCt == 0){
-    text =+ 'None of the classes had bugs.'
+    text =+ 'None of the classes was associated with recorded bugs.'
   }
   else{
     var c = NoOfBugSmells(classesWithBadSmells);
     var d = classesWithBugSmells(classesWithBadSmells);
-    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> classes contained bugs at some point.';
+    // FIXME: 16.1 is not "almost sixteen"
+    // TODO: Write a sentence about the most bug-prone classes
+    // FIXME: Make sentences less repetitive regarding phrasing
+    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> of the classes were associated with recorded bugs.';
     if(d.length > 3){
-      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printList(d) + '</p></div> had both bugs and bad smells in the past';
+      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> were associated with bugs and have identified bad smells';
     }
     else if (d.length > 0){
-      text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' carried' : ' The classes ' + printItalicList(d) + ' carried' ;
-      text += ' both bugs and bad smells in the past.';
+      text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' was ' : ' The classes ' + printItalicList(d) + ' were ' ;
+      text += 'associated with recorded bugs and '+((d.length == 1)?'has':'have')+' identified bad smells.';
     }
 
   }
