@@ -111,7 +111,7 @@ body {
 /* Base tags */
 /* ------------------------------------------------------------------------*/
 
-p {
+p, div.p { /* div.p is required if paragraphs (p) should contain nested div elements*/
     margin-top: 6pt;
     margin-bottom: 6pt;
 }

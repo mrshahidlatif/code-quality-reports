@@ -536,8 +536,8 @@ function generateReport(){
   function generalQualtiyText(){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
-
-    text+='<p><h3 align="left">General Quality Attributes:</h3> The quality of the project is described in terms of four quality attributes.'
+    // TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
+    text+='<p><h3>Software Metrics</h3><p>We analyze the code quality of the project accroding to four groups of software metrics.</p>'
       
     text += generateComplexityText();
     text += generateCouplingText();
@@ -642,58 +642,56 @@ function generateReport(){
   }
   function badSmellsText(){
     var text = "";
-    //bad smells report
-    text += '<h3 align="left">Bad Smells:</h3>';
-    if(badCt == 0){text+= 'There are no bad smells in the project&mdash;the quality is high and no refactoring is required.'
+    text += '<h3>Bad Smells</h3><div class="p">';
+    if(badCt == 0){text+= 'There are no bad smells in the project&mdash;the quality is high.'
     }
-    if(badCt == 1){	text += ' The project has '+ num2word(badCt) +' bad smell: ';
+    if(badCt == 1){	text += 'The project has '+ num2word(badCt) +' bad smell: ';
     }
-    if(badCt > 1){	text += ' The project has '+ num2word(badCt) + ' bad smells: ';
+    if(badCt > 1){	text += 'The project has '+ num2word(badCt) + ' bad smells: ';
     }
     var listOfBadSmellTypes=[];
     if(blobCt == 1){
       var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
-      blobText += ' <button class="collapsible"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
+      blobText += ' <button class="collapsible"></button><div class="content">' + printList(blobArr) + '</div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(blobCt > 1){
       var blobText = num2word(blobCt) +' <span class="badBlob clickable"> blob</span> <span class="bar_1" style="vertical-align: middle;"></span>';
-      blobText+= ' <button class="collapsible"></button><div class="content"><p>' + printList(blobArr) + '</p></div>';
+      blobText+= ' <button class="collapsible"></button><div class="content">' + printList(blobArr) + '</div>';
       listOfBadSmellTypes.push(blobText);
     }
     if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(decomArr) + '</p></div>';
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>';
       listOfBadSmellTypes.push(decomText);
     }
     if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(decomArr) + '</p></div>'
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable"> functional decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>'
       listOfBadSmellTypes.push(decomText);
     }
     if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(spaArr) + '</p></div>'
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>'
       listOfBadSmellTypes.push(spaText);
     }
     if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content"><p>' + printList(spaArr) + '</p></div>';
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable"> spaghetti code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>';
       listOfBadSmellTypes.push(spaText);
     }
     if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
       listOfBadSmellTypes.push(lazyText);
     }
     if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content"><p>' + printList(lazyArr) + '</p></div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable"> lazy class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
       listOfBadSmellTypes.push(lazyText);
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
     if(superSmellsCt > 0){
-      text+= ' Some classes <button class="collapsible"></button><div class="content"><p>' + printList(superSmellsArr) + ' .</p></div> have multiple bad smells.'
+      text+= ' Some classes <button class="collapsible"></button><div class="content">' + printList(superSmellsArr) + '</div> have multiple bad smells.'
     }
     var c = noOfBadSmells(classesWithBadSmells);
     if (c != undefined){ 
       text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
     }
-
     if(highblobArr.length == 1){
       text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ highblobArr[0] + 
       '.';
@@ -701,6 +699,7 @@ function generateReport(){
     if(highblobArr.length > 1){
       text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ printList(highblobArr)+ '.';
     }
+    text += '</div>';
     return text;
   }
 
