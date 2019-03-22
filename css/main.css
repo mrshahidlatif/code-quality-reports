@@ -398,12 +398,17 @@ outline: 1px solid slategrey;
     float: right;
  }
 
-.axis {
-    font: 12px;
+  
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+    stroke-width: 1px;
 }
 
 .label {
-    font: 16px;
+    font: 12px;
 }
 
 .tooltip {
@@ -433,13 +438,13 @@ outline: 1px solid slategrey;
     text-align: left;
     display:inline-block;
     margin: 5px;
-    height: 30px;
-    width: 280px;
+    height: 20px;
+    width: 100%;
 }
 
 #chart_container {
     width: 100%;
-    height: 80%;
+    height: 85%;
     position: relative;
     margin: 0px;
 }

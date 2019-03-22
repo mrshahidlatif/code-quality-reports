@@ -1,5 +1,5 @@
 function ScatterPlot(){
-    var $el = d3.select("body");
+    var $el = d3.select("#chart");
     var size = 0;
     var margin = 5;
     var colorAcessor = null;
@@ -46,7 +46,9 @@ function ScatterPlot(){
 
     var object = {}, prev_data = [];
     object.render = function() {
-        svg = d3.select($el).append("svg").attr('width', "280").attr("height", "250");
+        var w = d3.select($el).style("width");
+        var h = d3.select($el).style("height");
+        svg = d3.select($el).append("svg").attr('width', w).attr("height", h);
         root = svg.append("g")
             .attr("transform", "translate(" + margin + "," + 2 + ")");
         if(prev_data != null && prev_data.length > 0) {
@@ -62,6 +64,7 @@ function ScatterPlot(){
             d.index = i;
             d.neighbors = [];
         });
+       size = size - 20;
 
         var xValue = function(d) {return d[dimensions[0]];}, // data -> value
             xScale = d3.scale.linear().range([0, size]),     // value -> display
@@ -73,11 +76,13 @@ function ScatterPlot(){
 
         xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
         yScale.domain([-1, d3.max(data, yValue)+1]);
-        
-        //TODO: make the axis according to version v3 of d3
+
+        var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(4);
+        var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4);
         root.append("g")
             .attr("class", "axis x-axis")
             .attr("transform", "translate( 0, " +size+")") // move axis to bottom of chart
+            .call(xAxis);
         //     .call(d3.axis(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
         //   }));
 
@@ -85,7 +90,7 @@ function ScatterPlot(){
         root.append("text")
             .attr("class", "label")
             .attr("x", size/2)
-            .attr("y", 0-(margin*-7))
+            .attr("y", size+ 25)
             .style("text-anchor", "middle")
             .text(dimensions[0]);
 
@@ -93,6 +98,7 @@ function ScatterPlot(){
         root.append("g")
             .attr("class", "axis y-axis")
             .attr("transform", "translate("+ 0 + ",0)") // move axis to bottom of chart
+            .call(yAxis);
         //     .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
         //   }));
 
@@ -173,7 +179,6 @@ function ScatterPlot(){
                 .style("opacity", 0);
             }).on("click",function(d){
                 var str = d.cname;
-                // FIXME: fix the relative path problem once this file moves to main project
                 var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
                 $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
                 $("#detailsContent").empty();
