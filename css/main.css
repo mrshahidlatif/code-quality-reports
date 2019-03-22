@@ -37,7 +37,7 @@ body {
     padding-right: 5%; */
 
 }
-.text {grid-area: main; 
+#textPanel {grid-area: main; 
     background: #fff;
     /* visibility: hidden; */
     width: 70vw;
@@ -54,7 +54,7 @@ body {
     position: relative;
 }
 
-.quality{
+#quality{
     width: 30vw;
     height: 100%;
     margin-left: 0px;
@@ -63,7 +63,7 @@ body {
     text-align: justify;
     float: left;
 }
-.generalQuality{
+#generalQuality{
     width: 55%;
     left: 30vw;
     font-size:14px;
@@ -352,10 +352,6 @@ font-size: 12px;
 overflow: auto;
 border: 1px solid gray;
 margin-top: 2px;
-}
-
-.content p{
-    margin: 0px;
 }
 
 .collapsible:after {

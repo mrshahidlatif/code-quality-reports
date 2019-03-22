@@ -30,13 +30,11 @@
     <div id="header">
       <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
       <div id="title">Code Quality Documents </div>
-      <div id="subtitle" ></div>
+      <div id="subtitle"></div>
     </div>
-    <div class="text">
-      <div class="quality">
-          
-      </div>
-      <div class="generalQuality">
+    <div id="textPanel">
+      <div id="quality"></div>
+      <div id="generalQuality">
           <p id="reporttext"></p>
       </div>
     </div>
@@ -96,7 +94,8 @@ function handleFileSelect(event) {
 		alert('The File APIs are not fully supported in this browser.');
 	}
 
-	$(".text").css({visibility: "hidden"});
+  // hide text until sparklines are loaded
+	$("#textPanel").css({visibility: "hidden"});
 	$("#scatterplot").attr("src", "");
   $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
 
@@ -128,7 +127,7 @@ function handleFileSelect(event) {
                   //HLclass: 'hl',                       //pass class used to high  //function to run on success, null by defaultlight linked bar, defaults to 'hl'
                   fn_wrapup: function() {   //function to run on success, null by default
                                       $(".content").hide();
-                                      $(".text").css({visibility: "visible"});
+                                      $("#textPanel").css({visibility: "visible"});
                                      }
                  }
   //end of modified
@@ -512,7 +511,7 @@ function generateReport(){
 /* Text Generation */ 
 /* ------------------------------------------------------------------------*/
   //Generate report text
-  $(".quality").html(badSmellsText());
+  $("#quality").html(badSmellsText());
   $("#subtitle").html(introText());
   html += generalQualtiyText();
   html += bugText();
