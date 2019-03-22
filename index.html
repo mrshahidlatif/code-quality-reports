@@ -11,6 +11,9 @@
     <script src="lib//jquery-ui.js"></script>
     <script src="lib/d3.min.js"></script>
     <script src="lib/d3.parcoords.js"></script>
+    <script src="lib/bboxCollide.js"></script>
+    <script src="lib/d3-annotation.js"></script>
+    <script type="text/javascript" src="js/scatterplot.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
     <link rel="stylesheet" href="lib/jquery-ui.css">
@@ -41,13 +44,18 @@
       </div>
     </div>
     <div class="vis">
-        <!-- TODO: replace iframes --> 
         <div id= "parallelplot">
           <div id="example_container">
             <div id="example" class="parcoords"></div>
           </div> 
         </div>
-        <iframe id="scatterplot"></iframe>
+        <div id="scatterplot">
+            <div id="controls" ></div>
+            <div id="chart_container">
+                <div id="chart"></div>
+                <div id="tooltip" class="tooltip"></div>
+            </div>
+        </div>
         <div id="captionPP"></div>
         <div id="captionSP"></div>
     </div>  
@@ -61,7 +69,6 @@
 </body>
 
 <script type="text/javascript">
-window._scatterplot = function(){};
 
 var projectName = "";
 var fullData;
@@ -97,15 +104,15 @@ function handleFileSelect(event) {
 	}
 
 	$(".text").css({visibility: "hidden"});
-	$("#scatterplot").attr("src", "");
-  $("#scatterplot").attr("src", "scatterplot/scatterplot.html");
 
 	var f = event.target.files[0]; // FileList object
 	projectName = f.name.replace('.csv','');
 	var reader = new FileReader();
 	reader.onload = function(event) {
 		setTimeout(function(){
-			window._scatterplot(event.target.result);
+      d3.csv(event.target.result, function(data) {
+        generateReport(data);
+      });
 		}, 2000);
 	};
 
@@ -135,12 +142,10 @@ function handleFileSelect(event) {
 
 }
 
-function generateReport(){
-  var data = clone(_chartdata);
+function generateReport(data){
 
   //making data available to all files
   fullData = data;
-
 	data.forEach(function(d, i){
 		d.index = i;
 		d.smells = {
@@ -856,13 +861,14 @@ function bugText(){
   drawBarChart(".bar_17", Math.round((bugCt/classCt)*1000)/10);
 
 
-	//columns
-	var columns = data.columns;
+  //columns
+  // console.log(data);
+	// var columns = data.columns;
 
-	var LOC_S = (columns.indexOf("LOC") >= 0)? "LOC" : "loc",
-		AMC_S = (columns.indexOf("AMC") >= 0)? "AMC" : "amc",
-		WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
-    NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+	// var LOC_S = (columns.indexOf("LOC") >= 0)? "LOC" : "loc",
+	// 	AMC_S = (columns.indexOf("AMC") >= 0)? "AMC" : "amc",
+	// 	WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
+  //   NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
     
 
 	$(".badBlob").on("click", function(){
@@ -997,7 +1003,7 @@ function bugText(){
 /* ------------------------------------------------------------------------*/
 
   parallelplot(data);
-
+  makeScatterPlot(data);
 
 }
 function structurize(paths) {
@@ -1230,7 +1236,8 @@ function parallelplot(data) {
 		"npm": {type:"number"},
 	};
 
-	var w = (data.columns.length)*32.55;
+  // TODO: replace this 12 with number of dimensions variable
+	var w = (12)*52.55;
 	$("#example_container").css({width: w+"px"});
 	$("#example").css({width: w+"px"});
   pcz = d3.parcoords()("#example")
@@ -1299,6 +1306,134 @@ function parallelfilter(dims) {
 
 	pcz.brushReset();
 	pcz.brushExtents(dims);
+}
+
+/* ------------------------------------------------------------------------*/
+/* Parallel Coordinates */ 
+/* ------------------------------------------------------------------------*/
+
+function makeScatterPlot(data){
+  
+  var root = d3.select('#controls');
+  var tooltip = d3.select('#tooltip').style("opacity", 0);
+
+    var OUTLIER_THRESHOLD = 15, selectData = [], prev_data, excluded_keys = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"], prev_options = {}, dimensions = [];
+    
+      
+    previous_data = data;
+    chart_data = data;
+
+    setup(data);
+  //TODO: re-implement this part as columns attribute doesn't exist in data anymore
+    selectData = [];
+    for(var c in data.columns) {
+        if(excluded_keys.indexOf(data.columns[c]) == -1) {
+            selectData.push({text: data.columns[c]});
+        }
+    }
+   
+
+    function xChange(){
+        prev_options.xSelect = this.value;
+        if(prev_data) {
+            var chart_data = clone(prev_data);
+            setup(chart_data);
+        }
+    }
+
+    function yChange(){
+        prev_options.ySelect = this.value;
+        if(prev_data) {
+            var chart_data = clone(prev_data);
+            setup(chart_data);
+        }
+    }
+
+    function updateThreshold(){
+        const thresh = OUTLIER_THRESHOLD;
+        try {OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value);} catch(e){}
+        if(thresh != OUTLIER_THRESHOLD) {
+            var chart_data = clone(prev_data);
+            setup(chart_data);
+        }
+    }
+
+    function setup(data){
+        // console.log(data);
+        try {OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value);} catch(e){}
+
+        d3.selectAll('#controls>*').remove();
+
+        var xSpan = root.append('span')
+            .text('X-axis: ');
+      console.log(selectData);
+        var xInput = root.append('select')
+            .attr('id','xSelect')
+            .on('change', xChange)
+            .selectAll('option')
+            .data(selectData)
+            .enter()
+            .append('option')
+            .attr('value', function (d) { return d.text })
+            .text(function (d) { return d.text ;});
+
+        // root.append('br');
+
+        var ySpan = root.append('span')
+            .text(' Y-Axis: ')
+
+        var yInput = root.append('select')
+            .attr('id','ySelect')
+            .on('change',yChange)
+            .selectAll('option')
+            .data(selectData)
+            .enter()
+            .append('option')
+            .attr('value', function (d) { return d.text })
+            .text(function (d) { return d.text ;});
+
+        // root.append('br');
+        // root.append('br');
+
+        dimensions = [];
+        d3.keys(data[0]).map(function(item){
+            try {if(item != "cname" && !isNaN(parseFloat(data[0][item]))) {
+                dimensions.push(item);
+            }} catch(e){}
+        });
+
+        var dims = {};
+        var dimension = [dimensions[0], dimensions[0]];
+        try {if(prev_options.xSelect != null) {
+            document.getElementById("xSelect").value = prev_options.xSelect;
+            dimension[0] = prev_options.xSelect;
+            dims[dimension[0]] = [null, 0];
+        }} catch(e){}
+        try {if(prev_options.ySelect != null) {
+            document.getElementById("ySelect").value = prev_options.ySelect;
+            dimension[1] = prev_options.ySelect;
+            dims[dimension[1]] = [null, 0];
+        }} catch(e){}
+        
+
+        d3.selectAll("#chart>*").remove();
+        var scatterplot = ScatterPlot().$el("#chart").size(200).threshold(12).margin(35).threshold(OUTLIER_THRESHOLD)
+            .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
+                tooltip.style("opacity", 1)
+                    .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))
+                    .style("left", (d3.event.pageX - 155) + "px")  // specify x location
+                    .style("top", (d3.event.pageY - 110) + "px");  // specify y location
+            }).mouseout(function(d){
+                tooltip.style("opacity", 0);
+            });
+        scatterplot.render();
+    }
+  function scatterfilter(newdata){
+		var g = d3.select("#chart svg g");
+		g.selectAll(".dot")
+			.style("fill", function(d,i) { return newdata[i]? "black": "#d6d6d6";} );
+
+    }
 }
 
 </script>

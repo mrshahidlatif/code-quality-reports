@@ -3,7 +3,7 @@ function ScatterPlot(){
     var size = 0;
     var margin = 5;
     var colorAcessor = null;
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+    var colorScale = d3.scale.ordinal(d3.schemeCategory10);
     var data;
     //not used parameters :
     var dimensions = [], excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"];
@@ -12,7 +12,7 @@ function ScatterPlot(){
     var mouseover = function(d,i){};
     var threshold = 12;
     var dotOpacity = 0.4;
-    var colorScaleDimensions = d3.scaleOrdinal(d3.schemeDark2);
+    var colorScaleDimensions = d3.scale.ordinal(d3.schemeDark2);
 
     // Intern variables
     var svg, x, y, root;
@@ -64,21 +64,22 @@ function ScatterPlot(){
         });
 
         var xValue = function(d) {return d[dimensions[0]];}, // data -> value
-            xScale = d3.scaleLinear().range([0, size]),     // value -> display
+            xScale = d3.scale.linear().range([0, size]),     // value -> display
             xMap = function(d) { return xScale(xValue(d));}; // data -> display
 
         var yValue = function(d) { return d[dimensions[1]];}, // data -> value
-            yScale = d3.scaleLinear().range([size, 0]),			// value -> display
+            yScale = d3.scale.linear().range([size, 0]),			// value -> display
             yMap = function(d) { return yScale(yValue(d));}; // data -> display
 
         xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
         yScale.domain([-1, d3.max(data, yValue)+1]);
-
+        
+        //TODO: make the axis according to version v3 of d3
         root.append("g")
             .attr("class", "axis x-axis")
             .attr("transform", "translate( 0, " +size+")") // move axis to bottom of chart
-            .call(d3.axisBottom(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
-          }));
+        //     .call(d3.axis(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
+        //   }));
 
         // x-axis label
         root.append("text")
@@ -92,8 +93,8 @@ function ScatterPlot(){
         root.append("g")
             .attr("class", "axis y-axis")
             .attr("transform", "translate("+ 0 + ",0)") // move axis to bottom of chart
-            .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
-          }));
+        //     .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
+        //   }));
 
         // y-axis label
         root.append("text")
@@ -154,7 +155,7 @@ function ScatterPlot(){
                 var d = window.parent.fullData;
                 for(var i=0; i<d.length;i++){
                     if(d[i] != undefined && d[i].cname.includes(className)){
-                        window.parent._highlightEdge(d[i]);
+                        window.parent.highlightEdge(d[i]);
                     }
                 }
             })
@@ -163,7 +164,7 @@ function ScatterPlot(){
                 $(this).attr("r","6").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
 
                 $("span.slcls",window.parent.document).css('background','');
-                window.parent._unHighlight();
+                window.parent.unHighlight();
                 mouseout(d);
 
                //Hiding the tooltip
