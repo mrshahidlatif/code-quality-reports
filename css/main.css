@@ -14,8 +14,7 @@ body {
     grid-template-areas:
       'header header '
       'main  right'
-      'vis right'
-      'footer footer';
+      'vis right';
     grid-gap: 5px;
     background-color: #e8e8e8;
     padding: 25px;
@@ -93,16 +92,6 @@ body {
 #sourcecode {
     font-size: 11px;
 }
-
-/* Footer */
-
-#foot { 
-    grid-area: footer;
-    width:100vw;
-    height: 10px;
-    position:fixed;
-    bottom:0px;
- }
 
 /* ------------------------------------------------------------------------*/
 /* Base tags */
