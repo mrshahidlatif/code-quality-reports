@@ -168,6 +168,11 @@ function ScatterPlot(){
                         highlightEdge(d[i]);
                     }
                 }
+                //appending to parcoord caption 
+                var bs = findBadSmellsInClass(className);
+                $('#captionPP').append('<span id="dynamicCaption"></span>');
+                $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
+
             })
             .on("mouseout", function(d) {
                 $("span.className",window.parent.document).css( "background-color", "");
@@ -181,6 +186,10 @@ function ScatterPlot(){
                tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
+
+                //reset to original caption
+                $('#dynamicCaption').remove();
+                
             }).on("click",function(d){
                 var str = d.cname;
                 var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
@@ -195,6 +204,8 @@ function ScatterPlot(){
                 src = src.substring(src.indexOf("package "));   // cut out license text
                 $("#sourcecode").text(src);
                 Prism.highlightElement($("#sourcecode")[0]);
+
+                
               });
 
         data.forEach(function(d, i){
