@@ -65,6 +65,10 @@ var fullData;
 var badClasses;
 var classFullNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
 var classShortNameToIndex = {} // equivalent dictionary with short class names -- TODO: temporary solution, should be removed
+var xVal; //variables to store active values of scatterplot dimensions
+var yVal; //variables to store active values of scatterplot dimensions
+var classesWithBadSmells = []
+
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -173,7 +177,7 @@ function generateReport(data){
     }
 	});
 
-	var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = data.length, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, classesWithBadSmells = [], bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+	var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = data.length, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 	data.forEach(function(d, i){
     classFullNameToIndex[d.cname] = i; 
@@ -512,8 +516,6 @@ function generateReport(data){
   $("#subtitle").html(introText());
   html += generalQualityText();
   html += bugText();
-  $("#captionPP").html(generatePPCaption());
-  $("#captionSP").html(generateSPCaption());
   
 
   function introText(){
@@ -682,30 +684,6 @@ function generateReport(data){
     text += '</div>';
     return text;
   }
-
-function countClassesHavingBadSmells (data){
-  var count = 0;
-  for (var i=0;i<data.length;i++){
-    if (data[i].badSmells.length != 0){
-        count++;
-    }
-  }
-  return count;
-}
-
-function generatePPCaption(){
-  // TODO: color metric names
-  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
-  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells';
-
-  caption += '. ';
-
-  return caption;
-}
-function generateSPCaption(){
-  // Assuming X and Y are the selected dimensions in the scatterplot
-  return 'Correlation between X and Y. ';
-}
 
 //bugs report
 function NoOfBugSmells(list){
@@ -969,12 +947,6 @@ function bugText(){
       content: inheritanceMethod
   });
 
-  // TODO: implement the color legends for labels in paracoord
-  // $("#parallelplot").contents().find("text.label").attr('text-decoration','underline');
-  
-  // FIXME: Not working as iframe loades after the command is executed
-  //  $("#scatterplot").contents().find("select#xSelect :selected").val();
-
 /* ------------------------------------------------------------------------*/
 /* Calling the Visualization functions to draw visualizations */
 /* ------------------------------------------------------------------------*/
@@ -982,6 +954,39 @@ function bugText(){
   parallelplot(data);
   makeScatterPlot(data);
 
+  // displaying the captions to screen.
+  $("#captionPP").html(generatePPCaption());
+  $("#captionSP").html(generateSPCaption());
+
+}
+function countClassesHavingBadSmells (data){
+  var count = 0;
+  for (var i=0;i<data.length;i++){
+    if (data[i].badSmells.length != 0){
+        count++;
+    }
+  }
+  return count;
+}
+
+function generatePPCaption(){
+  // TODO: color metric names
+  var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
+  caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) +' <span class="BSLegend">Classes</span> contain bad smells';
+
+  caption += '. ';
+
+  return caption;
+}
+function generateSPCaption(){
+  if (xVal == undefined || yVal == undefined){
+    xVal = $("#xSelect :selected").val();
+    yVal = $("#ySelect :selected").val();
+    return 'Correlation between ' + xVal + ' and ' + yVal + '.';
+  }
+  else{
+    return 'Correlation between ' + xVal + ' and ' + yVal + '.';
+  }
 }
 function structurize(paths) {
       var items = [];
@@ -1315,9 +1320,8 @@ function makeScatterPlot(data){
         prev_options.xSelect = this.value;
         if(prev_data) {
             var chart_data = clone(prev_data);
-            console.log(this.value);
-            console.log(chart_data);
-            setup(chart_data);
+            xVal = this.value;
+            $("#captionSP").html(generateSPCaption());
         }
     }
 
@@ -1325,6 +1329,8 @@ function makeScatterPlot(data){
         prev_options.ySelect = this.value;
         if(prev_data) {
             var chart_data = clone(prev_data);
+            yVal = this.value;
+            $("#captionSP").html(generateSPCaption());
             setup(chart_data);
         }
     }
@@ -1393,7 +1399,7 @@ function makeScatterPlot(data){
 
         d3.selectAll("#chart>*").remove();
         var w = d3.select("#chart").style("width");
-        var scatterplot = ScatterPlot().$el("#chart").size(145).threshold(12).margin(40).threshold(OUTLIER_THRESHOLD)
+        var scatterplot = ScatterPlot().$el("#chart").size(140).threshold(12).margin(30).threshold(OUTLIER_THRESHOLD)
             .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
                 tooltip.style("opacity", 1)
                     .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))

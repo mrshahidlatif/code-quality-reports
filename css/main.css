@@ -289,7 +289,7 @@ width: 0.5em;
 height: 0.5em;
 }
 ::-webkit-scrollbar-track {
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -332,6 +332,9 @@ outline: 1px solid slategrey;
     shape-rendering: crispEdges;
     stroke-width: 1px;
 }
+.x.axis{
+    font-size: 10px;
+}
 
 .label {
     font: 12px;
@@ -352,13 +355,13 @@ outline: 1px solid slategrey;
     cursor: pointer;
 }
 
-.text-center {
+/* .text-center {
     text-align: center;
     margin: 5px;
     height: 10px;
     width: 280px;
    
-}
+} */
 #controls{
     z-index: 10;
     text-align: left;
@@ -366,6 +369,7 @@ outline: 1px solid slategrey;
     margin: 5px;
     height: 20px;
     width: 100%;
+    font-size: 12px;
 }
 
 #chart_container {
