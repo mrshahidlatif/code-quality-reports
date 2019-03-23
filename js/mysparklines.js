@@ -91,18 +91,26 @@
       // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
-      //Highlight corresponding edge in parallel coordinates
-      var d = window.parent.fullData;
-      for(var i=0; i<d.length;i++){
-          if(d[i] != undefined && d[i].cname.includes(clsName)){
-              // console.log(d[i]);
-              highlightEdge(d[i]);
-          }
-      }
+        //Highlight corresponding edge in parallel coordinates
+        var d = window.parent.fullData;
+        for(var i=0; i<d.length;i++){
+            if(d[i] != undefined && d[i].cname.includes(clsName)){
+                // console.log(d[i]);
+                highlightEdge(d[i]);
+            }
+        }
+         //appending to parcoord caption 
+          var bs = findBadSmellsInClass(clsName);
+          $('#captionPP').append('<span id="dynamicCaption"></span>');
+          $('#dynamicCaption').append(createClassSpan(clsName) + ' contains ' + printList(bs) + ' bad smells.');
+
         }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "");
         $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
         unHighlight();
+
+        //reset to original caption
+        $('#dynamicCaption').remove();
       });
       //-----------------------------------------------------------------------------
   }
