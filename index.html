@@ -93,7 +93,8 @@ function handleFileSelect(event) {
 		alert('The File APIs are not fully supported in this browser.');
 	}
 
-	$(".text").css({visibility: "hidden"});
+  // hide text until bar charts are completely loaded
+	$("#textPanel > div").css({visibility: "hidden"});
 
 	var f = event.target.files[0]; // FileList object
 	projectName = f.name.replace('.csv','');
@@ -125,7 +126,7 @@ function handleFileSelect(event) {
                   //HLclass: 'hl',                       //pass class used to high  //function to run on success, null by defaultlight linked bar, defaults to 'hl'
                   fn_wrapup: function() {   //function to run on success, null by default
                                       $(".content").hide();
-                                      $("#textPanel").css({visibility: "visible"});
+                                      $("#textPanel > div").css({visibility: "visible"});
                                      }
                  }
   //end of modified
