@@ -751,39 +751,7 @@ function bugText(){
   html = html.replace(/SUPERSMELLSLIST/g, ""+superSmellsList)
    html = html.replace(/PROJINFO/g,""+projInfo).replace(/NUMBEROFPACKAGES/g, ""+numberOfPackages);
 
-	$("#textBPanel").html(html);
-
-	$(".className").click(function(){
-		var idx = Number($(this).attr("data-index"));
-    var str = data[idx].cname;
-		var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-    $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
-    $("#detailsContent").empty();
-    $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-    // TODO: replace by asynchronous load
-    var src = $.ajax({
-      url: url,
-      async: false
-    }).responseText;
-    src = src.substring(src.indexOf("package "));   // cut out license text
-    $("#sourcecode").text(src);
-    Prism.highlightElement($("#sourcecode")[0]);
-	});
-
-  /* TODO: reimplement a proper package details page
-  $(".pack").click(function(){
-    var idx = Number($(this).attr("data-index"));
-		var str = data[idx].cname;
-    var classUrl = str.replace(/[.]/g, "/");
-    var n = classUrl.search(str.split(".").pop());
-    var curl = classUrl.substring(0,n);
-	//	var url = "http://svn.apache.org/viewvc/xerces/java/branches/xerces_j_1/src/"+curl;
-    var url = "https://svn.apache.org/repos/asf/xerces/java/branches/xerces_j_1/src/"+curl;
-    $("#detailsHeader").text("Package "+url);
-    $("#detailsContent").empty();
-    $("#detailsContent").load(curl, function() {
-    });   
-	});*/
+  $("#textBPanel").html(html);
 
   var sparklineOptions = {
     type:'bar',
@@ -1072,6 +1040,21 @@ $(document).on("mouseover", ".className", function() {
     //reset to original caption
     $('#dynamicCaption').remove();
  });
+
+$(document).on("click", ".className", function() {
+  var idx = Number($(this).attr("data-index"));
+  var str = fullData[idx].cname;
+  var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+  updateDetailPanel("File "+str.split(".").pop()+ ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+  // TODO: replace by asynchronous load
+  var src = $.ajax({
+    url: url,
+    async: false
+  }).responseText;
+  src = src.substring(src.indexOf("package "));   // cut out license text
+  $("#sourcecode").text(src);
+  Prism.highlightElement($("#sourcecode")[0]);
+});
 
 /* ------------------------------------------------------------------------*/
 /* Metric descriptions */
