@@ -1095,7 +1095,7 @@ function showComplexityMetricDescription() {
   if (maxClassWmc === maxClassMaxCc) {
     content+= '<p>Within the analyzed classes, '+createClassSpan(maxClassWmc)+' has the highest values with respect to both metrics.</p>';
   } else {
-    content+= '<p>Within the analyzed classes, '+createClassSpan(maxClassMaxCc)+' has the highest value with respect to <span class="wmc">wmc</span> and '+createClassSpan(maxClassMaxCc)+' the highest value with respect to <span class="max_cc">max_cc</span>.</p>';
+    content+= '<p>Within the analyzed classes, '+createClassSpan(maxClassWmc)+' has the highest value with respect to <span class="wmc">wmc</span> and '+createClassSpan(maxClassMaxCc)+' the highest value with respect to <span class="max_cc">max_cc</span>.</p>';
   }
   updateDetailPanel("Complexity", content);
 }
