@@ -1087,11 +1087,16 @@ function showCouplingMetricDescription() {
   updateDetailPanel("Coupling", content);
 }
 
+// TODO: which metric is used as a basis for wmc? Also cyclomatic complexity? -> Explain cyclomatic complexity
 function showComplexityMetricDescription() {
-  var content = '<p>The metrics weighted method per class (<span class="wmc">wmc</span>) and cyclomatic complexity (<span class="max_cc">cc</span>) contribute towards the code complexity of a class. </p>';
-  
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('max_cc')) + ' has high complexity. </p>';
-  
+  var content = '<p>Complexity metrics estimate how difficult it is to understand the respective code (not to be confused with "computational complexity", which refers to the runtime resources an algorithm consumes). Based on a complexity computation on method level, we consider two perspectives: First, <span class="wmc">weighted methods per class (wmc)</span> sum all method complexity values for a class. Second, to also hightlight classes that contain few high-complexity methods but many low-complexity ones, the <span class="max_cc">maximal cyclomatic complexity (max_cc)</span> takes into consideration the maximum of all the method-level complexity values of class.</p>';
+  var maxClassWmc = findClassWithMaxValueOfMetricX('wmc');
+  var maxClassMaxCc = findClassWithMaxValueOfMetricX('max_cc');
+  if (maxClassWmc === maxClassMaxCc) {
+    content+= '<p>Within the analyzed classes, '+createClassSpan(maxClassWmc)+' has the highest values with respect to both metrics.</p>';
+  } else {
+    content+= '<p>Within the analyzed classes, '+createClassSpan(maxClassMaxCc)+' has the highest value with respect to <span class="wmc">wmc</span> and '+createClassSpan(maxClassMaxCc)+' the highest value with respect to <span class="max_cc">max_cc</span>.</p>';
+  }
   updateDetailPanel("Complexity", content);
 }
 
