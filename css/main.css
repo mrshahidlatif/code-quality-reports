@@ -223,7 +223,11 @@ h4{
     color: #666666;
 }
 
-.bar_1 .bar {
+.barSpan {
+    vertical-align: middle;
+}
+
+.barSpan .bar {
     fill: #969696;
 }
 
