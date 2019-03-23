@@ -21,7 +21,7 @@ body {
     height: 100vh; 
     background-color: #e8e8e8;
     padding: 10px;
-    grid-template-rows: 50px 2fr 1fr; 
+    grid-template-rows: 50px 2fr 1.2fr; 
     grid-template-columns:70fr 30fr; 
 }
 #grid-container > div {
@@ -38,7 +38,7 @@ body {
     grid-template-areas: 'textA textB';
     grid-template-rows: 1fr; 
     grid-template-columns:30fr 70fr; 
-    grid-gap: 20px;
+    grid-gap: 30px;
     overflow: auto;
 }
 #textAPanel{
@@ -49,8 +49,25 @@ body {
     grid-area: textB;
     overflow: auto;
 }
-#vis{
+#vis{ /*nested grid panel*/
     grid-area: vis; 
+    display: grid;
+    grid-template-areas: 'pcpPanel spPanel' 'pcpCaption spCaption';
+    grid-template-rows: 1fr 30px; 
+    grid-template-columns: 70fr 30fr; 
+    grid-gap: 5px 30px;
+}
+#parallelplot {
+    grid-area: pcpPanel;
+}
+#scatterplot{
+    grid-area: spPanel;
+}
+#captionPP{
+    grid-area: pcpCaption;
+}
+#captionSC{
+    grid-area: spCaption;
 }
 #details { 
     grid-area: right; 
@@ -179,28 +196,11 @@ h4{
     color: black;
 }
 
-/* .vis div {
-    position: absolute;
-    width: 68%;
-    top: 80%;
-    left:0;
- } */
-
  #captionPP{
-    /* position: absolute; */
-    float: left;
-    width: 68%;
-    top: 100%;
-    left:0;
     font-size:12px;
  }
 
  #captionSP{
-    /* position: absolute; */
-    float: right;
-    width: 30%;
-    left: 68%;
-    top:100%;
     font-size:12px;
  }
 
@@ -212,11 +212,6 @@ h4{
 #subtitle{
     font-size: 15px;
     font-style: italic;
-}
-#parallelplot {
-    width: 69%; 
-    height: 85%; 
-    float: left;
 }
 .infoIcon:hover{
     cursor: pointer;
@@ -327,14 +322,13 @@ outline: 1px solid slategrey;
 }
 
 #example_container {
-    width: 68%; 
+    width: 100%; 
     height: 100%;
-	/* position: relative; */
 	margin: auto;
 }
 
 #example {
-    width: 68%; 
+    width: 100%; 
     height: 100%;
 	position: relative;
 }
@@ -342,13 +336,6 @@ outline: 1px solid slategrey;
 /* ------------------------------------------------------------------------*/
 /* Scatter plot */
 /* ------------------------------------------------------------------------*/
-
-#scatterplot {
-    width:30%; 
-    height:85%;
-    float: right;
- }
-
   
 .axis path,
 .axis line {
