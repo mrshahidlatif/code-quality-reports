@@ -69,6 +69,9 @@ var xVal; //variables to store active values of scatterplot dimensions
 var yVal; //variables to store active values of scatterplot dimensions
 var classesWithBadSmells = []
 
+var LOC, AMC, WMC, NPM;
+    
+
 function clone(obj) {
 	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
 		return obj;
@@ -149,12 +152,12 @@ function generateReport(data){
 			spaghetti: false,
       highblob : false,
       lazy: false,
-		};
+		};  
 
-		var LOC = d["LOC"] || d["loc"],
+    LOC = d["LOC"] || d["loc"],
 			AMC = d["AMC"] || d["amc"],
 			WMC = d["WMC"] || d["wmc"],
-			NPM = d["NPM"] || d["npm"];
+      NPM = d["NPM"] || d["npm"];
 
 		if(LOC >= 1500 && AMC >= 129){
 			d.smells.blob = true;
@@ -820,10 +823,7 @@ function bugText(){
   // console.log(data);
 	// var columns = data.columns;
 
-	// var LOC_S = (columns.indexOf("LOC") >= 0)? "LOC" : "loc",
-	// 	AMC_S = (columns.indexOf("AMC") >= 0)? "AMC" : "amc",
-	// 	WMC_S = (columns.indexOf("WMC") >= 0)? "WMC" : "wmc",
-  //   NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
+	
     
 
 	$(".smellBlob").on("click", function(){
@@ -836,11 +836,11 @@ function bugText(){
 			data.forEach(function(d, i){
 				newdata.push(!!d.smells.blob);
 			});
-			window._scatterfilter(newdata);
+			scatterfilter(newdata);
 
 			var dims = {};
-			dims[LOC_S] = [1500, null];
-			dims[AMC_S] = [129, null];
+			dims[LOC] = [1500, null];
+			dims[AMC] = [129, null];
 
       parallelfilter(dims);
 		}
@@ -856,11 +856,11 @@ function bugText(){
 			data.forEach(function(d, i){
 				newdata.push(!!d.smells.decomposition);
 			});
-			window._scatterfilter(newdata);
+			scatterfilter(newdata);
 
 			var dims = {};
-			dims[NPM_S] = [null, 8];
-			dims[WMC_S] = [16, null];
+			dims[NPM] = [null, 8];
+			dims[WMC] = [16, null];
 			parallelfilter(dims);
 		}
 	});
@@ -875,10 +875,10 @@ function bugText(){
 			data.forEach(function(d, i){
 				newdata.push(!!d.smells.spaghetti);
 			});
-			window._scatterfilter(newdata);
+			scatterfilter(newdata);
 
 			var dims = {};
-			dims[AMC_S] = [151, null];
+			dims[AMC] = [151, null];
 			parallelfilter(dims);
 		}
 	});
@@ -893,10 +893,10 @@ function bugText(){
 			data.forEach(function(d, i){
 				newdata.push(!!d.smells.lazy);
 			});
-			window._scatterfilter(newdata);
+			scatterfilter(newdata);
 
 			var dims = {};
-			dims[WMC_S] = [0, 0.1];
+			dims[WMC] = [0, 0.1];
 			parallelfilter(dims);
 		}
 	});
@@ -1275,7 +1275,8 @@ function highlightEdge(d){
 }
 
 function parallelfilter(dims) {
-	// console.log(dims);
+  // FIXME: This function is broken now, needs fixing
+  // console.log(dims);
 	for(var dim in dims){
 		var domain = pcz.dimensions()[dim].yscale["domain"]();
 
@@ -1410,12 +1411,13 @@ function makeScatterPlot(data){
             });
         scatterplot.render();
     }
-  function scatterfilter(newdata){
+  
+}
+function scatterfilter(newdata){
 		var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
 			.style("fill", function(d,i) { return newdata[i]? "black": "#d6d6d6";} );
 
-    }
 }
 
 </script>
