@@ -129,29 +129,56 @@ h4{
 .wmc{
     border-bottom: 2px solid #2b8cbe;
 }
+svg .wmc rect {
+    fill: #2b8cbe;
+}
 .max_cc{
     border-bottom: 2px solid #7bccc4;
+}
+svg .max_cc rect {
+    fill: #7bccc4;
 }
 .cbo{
     border-bottom: 2px solid #238b45;
 }
+svg .cbo rect {
+    fill: #238b45;
+}
 .ca{
     border-bottom: 2px solid #66c2a4;
+}
+svg .ca rect {
+    fill: #66c2a4;
 }
 .ce{
     border-bottom: 2px solid #b2e2e2;
 }
+svg .ce rect {
+    fill: #b2e2e2;
+}
 .lcom{
     border-bottom: 2px solid #c51b8a;
+}
+svg .lcom rect {
+    fill: #c51b8a;
 }
 .lcom3{
     border-bottom: 2px solid #fa9fb5;
 }
+svg .lcom3 rect {
+    fill: #fa9fb5;
+}
 .noc{
     border-bottom: 2px solid #8c96c6;
 }
+svg .noc rect {
+    fill: #8c96c6;
+}
 .dit{
     border-bottom: 2px solid #88419d;
+}
+svg .dit rect {
+    fill: #88419d;
 }
 
 /* ------------------------------------------------------------------------*/
