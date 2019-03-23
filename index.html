@@ -196,7 +196,7 @@ function generateReport(data){
       blobArr.push(classSpan);
       bad = true;
 
-      badSmellsinClass.push("blob");
+      badSmellsinClass.push("God Class");
 		}
 
     if(s.highblob){
@@ -211,7 +211,7 @@ function generateReport(data){
       decomCt++;
       decomArr.push(classSpan);
 			bad = true;
-      badSmellsinClass.push("functional decomposition");
+      badSmellsinClass.push("Functional Decomposition");
 		}
 
 		if(s.spaghetti){
@@ -219,13 +219,13 @@ function generateReport(data){
       spaArr.push(classSpan);
       bad = true;
 
-      badSmellsinClass.push("spaghetti code");
+      badSmellsinClass.push("Spaghetti Code");
 		}
 
     if(s.lazy){
       lazyCt++;
       lazyArr.push(classSpan);
-      badSmellsinClass.push("lazy class");
+      badSmellsinClass.push("Lazy Class");
     }
 
     if(d.bug >= 1){
@@ -639,50 +639,41 @@ function generateReport(data){
       return list[i];
     }
   }
+
+  // TODO: eliminate interfaces from analysis (throw them out entirely)
+  // TODO: info icon after "analysis of software metrics"
+  // TODO: reorder list of bad smells based on their frequency
+  // TODO: mention the number of classes affected by smells, not just the number of smells
   function badSmellsText(){
     var text = "";
     text += '<h3>Code Smells</h3><div class="p">Based on an analysis of software metrics, we have ';
-    if(badCt == 0){text+= 'not detected any class-level code smells in the project&mdash;congratulations, the quality is high.'
-    }
-    if(badCt == 1){	text += 'detected one class-level code smell: ';
-    }
-    if(badCt > 1){	text += 'detected '+ num2word(badCt) + ' class-level code smells: ';
+    if(badCt == 0){
+      text+= 'not detected any class-level code smells in the project&mdash;congratulations, the quality is high.'
+    } else if(badCt == 1){	
+      text += 'detected one class-level code smell: ';
+    } else if(badCt > 1){	
+      text += 'detected '+ num2word(badCt) + ' class-level code smells, among them ';
     }
     var listOfBadSmellTypes=[];
     if(blobCt > 0){
-      listOfBadSmellTypes.push(((blobCt===1)?'one':num2word(blobCt)) +' <span class="badBlob clickable">God Class'+((blobCt===1)?'':'es')+'</span> <span class="barSpan" id="bar_1"></span> '+createCollapsibleClassList(blobArr));
+      listOfBadSmellTypes.push(((blobCt===1)?'one':num2word(blobCt)) +' <span class="smellBlob clickable">God Class'+((blobCt===1)?'':'es')+'</span> <span class="barSpan" id="barBlob"></span> '+createCollapsibleClassList(blobArr));
     }
-    if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span id="bar_2" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>';
-      listOfBadSmellTypes.push(decomText);
+    if(decomCt > 0){
+      listOfBadSmellTypes.push(((decomCt===1)?'one case':num2word(decomCt)+' cases') +' of <span class="smellFc clickable">Functional Decomposition</span> <span class="barSpan" id="barFc"></span> '+createCollapsibleClassList(decomArr));
     }
-    if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span id="bar_2" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>'
-      listOfBadSmellTypes.push(decomText);
+    if(spaCt > 0){
+      listOfBadSmellTypes.push(((spaCt===1)?'one case':num2word(spaCt)+' cases') +' of <span class="smellSpa clickable">Spaghetti Code</span> <span class="barSpan" id="barSpa"></span> '+createCollapsibleClassList(spaArr));
     }
-    if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span id="bar_3" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>'
-      listOfBadSmellTypes.push(spaText);
-    }
-    if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span id="bar_3" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>';
-      listOfBadSmellTypes.push(spaText);
-    }
-    if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Class</span> <span id="bar_4" class="barSpan"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
-      listOfBadSmellTypes.push(lazyText);
-    }
-    if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Classes</span> <span id="bar_4" class="barSpan"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
-      listOfBadSmellTypes.push(lazyText);
+    if(lazyCt > 0){
+      listOfBadSmellTypes.push(((lazyCt===1)?'one':num2word(lazyCt)) +' <span class="smellLazy clickable">Lazy Class'+((lazyCt===1)?'':'es')+'</span> <span class="barSpan" id="barLazy"></span> '+createCollapsibleClassList(lazyArr));
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
     if(superSmellsCt > 0){
-      text+= ' Some classes <button class="collapsible"></button><div class="content">' + printList(superSmellsArr) + '</div> have multiple bad smells.'
+      text+= ' Some classes <button class="collapsible"></button><div class="content">' + printList(superSmellsArr) + '</div> carry multiple smells.'
     }
     var c = noOfBadSmells(classesWithBadSmells);
     if (c != undefined){ 
-      text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' bad smells: ' + printList(c.badSmells) + '.'; 
+      text += ' For instance, '+createClassSpan(c.name)+' has ' + num2word(c.badSmells.length) + ' smells: ' + printList(c.badSmells) + '.'; 
     }
     if(highblobArr.length == 1){
       text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in '+ highblobArr[0] + 
@@ -825,10 +816,10 @@ function bugText(){
 
 
   //bad smells charts
-	drawBarChart("#bar_1", Math.round((blobCt/badCt)*1000)/10);
-	drawBarChart("#bar_2", Math.round((decomCt/badCt)*1000)/10);
-	drawBarChart("#bar_3", Math.round((spaCt/badCt)*1000)/10);
-  drawBarChart("#bar_4", Math.round((lazyCt/badCt)*1000)/10);
+	drawBarChart("#barBlob", Math.round((blobCt/badCt)*1000)/10);
+	drawBarChart("#barFc", Math.round((decomCt/badCt)*1000)/10);
+	drawBarChart("#barSpa", Math.round((spaCt/badCt)*1000)/10);
+  drawBarChart("#barLazy", Math.round((lazyCt/badCt)*1000)/10);
   // coupling charts
   drawBarChart("#bar_5", Math.round((goodCouplingCt/classCt)*1000)/10);
   drawBarChart("#bar_6", Math.round((regularCouplingCt/classCt)*1000)/10);
@@ -860,7 +851,7 @@ function bugText(){
   //   NPM_S = (columns.indexOf("NPM") >= 0)? "NPM" : "npm";
     
 
-	$(".badBlob").on("click", function(){
+	$(".smellBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
     $("#detailsHeader").text("The 'God Class' Bad Smell");
     $("#detailsContent").empty();
@@ -880,7 +871,7 @@ function bugText(){
 		}
 	});
 
-	$(".badFc").on("click", function(){
+	$(".smellFc").on("click", function(){
     var url = "bad_smell_descriptions/fd.htm";
     $("#detailsHeader").text("The 'Functional Decomposition' Bad Smell");
     $("#detailsContent").empty();
@@ -899,7 +890,7 @@ function bugText(){
 		}
 	});
 
-	$(".badSc").on("click", function(){
+	$(".smellSpa").on("click", function(){
     var url = "bad_smell_descriptions/sc.htm";
     $("#detailsHeader").text("The 'Spaghetti Code' Bad Smell");
     $("#detailsContent").empty();
@@ -917,7 +908,7 @@ function bugText(){
 		}
 	});
 
-  $(".badLazy").on("click", function(){
+  $(".smellLazy").on("click", function(){
     var url = "bad_smell_descriptions/lazy.htm";
     $("#detailsHeader").text("The 'Lazy Class' Bad Smell");
     $("#detailsContent").empty();
@@ -1183,10 +1174,10 @@ function num2word(n){
 function findBadSmellsInClass(className){
   //use global data variable called fullData
   var bs = [];
-  if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('blob')};
-  if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('functional decomposition')}; 
-  if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('spaghetti class')}; 
-  if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('lazy class')}; 
+  if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('God Class')};
+  if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 
+  if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('Spaghetti Code')}; 
+  if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('Lazy Class')}; 
 
   return bs;
 }
