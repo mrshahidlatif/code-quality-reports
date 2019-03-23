@@ -555,15 +555,15 @@ function generateReport(data){
     var i  = couplingArr.indexOf(m);
 
     if(i == 0){
-      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span class="bar_5" style="vertical-align: middle;"></span> have coupling metrics in a good range';
+      text+= coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span id="bar_5" class="barSpan"></span> have coupling metrics in a good range';
     }
 
     else if(i == 1){
-      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span class="bar_6" style="vertical-align: middle;">have coupling metrics in an acceptable range'
+      text+= coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span id="bar_6" class="barSpan">have coupling metrics in an acceptable range'
     }
 
     else if(i == 2){
-      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span class="bar_7" style="vertical-align: middle;"></span> have coupling metrics in an undersired range'
+      text+= coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span id="bar_7" class="barSpan"></span> have coupling metrics in an undersired range'
     }
     text += '<span class="couplingInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div></p>';
     return text;
@@ -577,13 +577,13 @@ function generateReport(data){
     i  = complexityArr.indexOf(m);
     var text = '<p>';
     if(i == 0){
-      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span class="bar_14" style="vertical-align: middle;"></span> have low complexity'
+      text+= comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span id="bar_14" class="barSpan"></span> have low complexity'
     }
     else if(i == 1){
-      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span class="bar_15" style="vertical-align: middle;"></span> have regular complexity'
+      text+= comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span id="bar_15" class="barSpan"></span> have regular complexity'
     }
     else if(i == 2){
-      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span class="bar_16" style="vertical-align: middle;"></span> have  high complexity'
+      text+= comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span id="bar_16" class="barSpan"></span> have  high complexity'
     }
     return text += '<span class="complexityInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div></p>';
 
@@ -596,13 +596,13 @@ function generateReport(data){
     i  = cohesionArr.indexOf(m);
     var text = '<p>';
     if(i == 0){
-      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span class="bar_11" style="vertical-align: middle;"></span> reflect good project quality';
+      text+= coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span id="bar_11" class="barSpan"></span> reflect good project quality';
     }
     else if(i == 1){
-      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span class="bar_12" style="vertical-align: middle;"></span> reflect regular quality';
+      text+= coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span id="bar_12" class="barSpan"></span> reflect regular quality';
     }
     else if(i == 2){
-      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span class="bar_13" style="vertical-align: middle;"></span> reflect bad proejct quality';
+      text+= coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span id="bar_13" class="barSpan"></span> reflect bad proejct quality';
     }
     return  text += '<span class="cohesionInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div><p>';
 
@@ -616,13 +616,13 @@ function generateReport(data){
     i  = inheritanceArr.indexOf(m);
     var text='<p>';
     if(i == 0){
-      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span class="bar_8" style="vertical-align: middle;"></span>';
+      text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span id="bar_8" class="barSpan"></span>';
     }
     else if(i == 1){
-      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span class="bar_9" style="vertical-align: middle;"></span>';
+      text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span id="bar_9" class="barSpan"></span>';
     }
     else if(i == 2){
-      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span class="bar_10" style="vertical-align: middle;"></span>';
+      text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span id="bar_10" class="barSpan"></span>';
     }
 
     return text += '<span class="inheritanceInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div></p>';
@@ -653,27 +653,27 @@ function generateReport(data){
       listOfBadSmellTypes.push(((blobCt===1)?'one':num2word(blobCt)) +' <span class="badBlob clickable">God Class'+((blobCt===1)?'':'es')+'</span> <span class="barSpan" id="bar_1"></span> '+createCollapsibleClassList(blobArr));
     }
     if(decomCt == 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>';
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span id="bar_2" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>';
       listOfBadSmellTypes.push(decomText);
     }
     if(decomCt > 1){
-      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span class="bar_2" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>'
+      var decomText = num2word(decomCt) + ' <span class="badFc clickable">Functional Decomposition</span> <span id="bar_2" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(decomArr) + '</div>'
       listOfBadSmellTypes.push(decomText);
     }
     if(spaCt == 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>'
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span id="bar_3" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>'
       listOfBadSmellTypes.push(spaText);
     }
     if(spaCt > 1){
-      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span class="bar_3" style="vertical-align: middle;"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>';
+      var spaText = num2word(spaCt) + ' <span class="badSc clickable">Spaghetti Code</span> <span id="bar_3" class="barSpan"></span> <button class="collapsible"></button><div class="content">' + printList(spaArr) + '</div>';
       listOfBadSmellTypes.push(spaText);
     }
     if(lazyCt == 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Class</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Class</span> <span id="bar_4" class="barSpan"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
       listOfBadSmellTypes.push(lazyText);
     }
     if(lazyCt > 1){
-      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Classes</span> <span class="bar_4" style="vertical-align: middle;"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
+      var lazyText = num2word(lazyCt) + ' <span class="badLazy clickable">Lazy Classes</span> <span id="bar_4" class="barSpan"></span> bad smells <button class="collapsible"></button><div class="content">' + printList(lazyArr) + '</div>';
       listOfBadSmellTypes.push(lazyText);
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
@@ -757,7 +757,7 @@ function bugText(){
     // FIXME: 16.1 is not "almost sixteen"
     // TODO: Write a sentence about the most bug-prone classes
     // FIXME: Make sentences less repetitive regarding phrasing
-    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span class="bar_17" style="vertical-align: middle;"></span> of the classes were associated with recorded bugs.';
+    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span id="bar_17" class="barSpan"></span> of the classes were associated with recorded bugs.';
     if(d.length > 3){
       text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> were associated with bugs and have identified bad smells';
     }
@@ -826,28 +826,28 @@ function bugText(){
 
   //bad smells charts
 	drawBarChart("#bar_1", Math.round((blobCt/badCt)*1000)/10);
-	drawBarChart(".bar_2", Math.round((decomCt/badCt)*1000)/10);
-	drawBarChart(".bar_3", Math.round((spaCt/badCt)*1000)/10);
-  drawBarChart(".bar_4", Math.round((lazyCt/badCt)*1000)/10);
+	drawBarChart("#bar_2", Math.round((decomCt/badCt)*1000)/10);
+	drawBarChart("#bar_3", Math.round((spaCt/badCt)*1000)/10);
+  drawBarChart("#bar_4", Math.round((lazyCt/badCt)*1000)/10);
   // coupling charts
-  drawBarChart(".bar_5", Math.round((goodCouplingCt/classCt)*1000)/10);
-  drawBarChart(".bar_6", Math.round((regularCouplingCt/classCt)*1000)/10);
-  drawBarChart(".bar_7", Math.round((badCouplingCt/classCt)*1000)/10);
+  drawBarChart("#bar_5", Math.round((goodCouplingCt/classCt)*1000)/10);
+  drawBarChart("#bar_6", Math.round((regularCouplingCt/classCt)*1000)/10);
+  drawBarChart("#bar_7", Math.round((badCouplingCt/classCt)*1000)/10);
   //Inheritance charts
-  drawBarChart(".bar_8", Math.round((goodInheritanceCt/classCt)*1000)/10);
-  drawBarChart(".bar_9", Math.round((regularInheritanceCt/classCt)*1000)/10);
-  drawBarChart(".bar_10", Math.round((badInheritanceCt/classCt)*1000)/10);
+  drawBarChart("#bar_8", Math.round((goodInheritanceCt/classCt)*1000)/10);
+  drawBarChart("#bar_9", Math.round((regularInheritanceCt/classCt)*1000)/10);
+  drawBarChart("#bar_10", Math.round((badInheritanceCt/classCt)*1000)/10);
   // Cohesion charts
-  drawBarChart(".bar_11", Math.round((goodCohesionCt/classCt)*1000)/10);
-  drawBarChart(".bar_12", Math.round((regularCohesionCt/classCt)*1000)/10);
-  drawBarChart(".bar_13", Math.round((badCohesionCt/classCt)*1000)/10);
+  drawBarChart("#bar_11", Math.round((goodCohesionCt/classCt)*1000)/10);
+  drawBarChart("#bar_12", Math.round((regularCohesionCt/classCt)*1000)/10);
+  drawBarChart("#bar_13", Math.round((badCohesionCt/classCt)*1000)/10);
   // Complexity charts
-  drawBarChart(".bar_14", Math.round((goodComplexityCt/classCt)*1000)/10);
-  drawBarChart(".bar_15", Math.round((regularComplexityCt/classCt)*1000)/10);
-  drawBarChart(".bar_16", Math.round((badComplexityCt/classCt)*1000)/10);
+  drawBarChart("#bar_14", Math.round((goodComplexityCt/classCt)*1000)/10);
+  drawBarChart("#bar_15", Math.round((regularComplexityCt/classCt)*1000)/10);
+  drawBarChart("#bar_16", Math.round((badComplexityCt/classCt)*1000)/10);
 
   //bug chart
-  drawBarChart(".bar_17", Math.round((bugCt/classCt)*1000)/10);
+  drawBarChart("#bar_17", Math.round((bugCt/classCt)*1000)/10);
 
 
   //columns
