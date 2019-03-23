@@ -119,7 +119,7 @@ h4{
     display: inline-block;
 }
 .inheritanceMetric.clickable{
-    border-bottom: 2px solid #88419d;
+    border-bottom: 2px solid #8b5400;
     display: inline-block;
 }
 .BSLegend{
@@ -133,10 +133,10 @@ svg .wmc rect {
     fill: #2b8cbe;
 }
 .max_cc{
-    border-bottom: 2px solid #7bccc4;
+    border-bottom: 2px solid #56baec;
 }
 svg .max_cc rect {
-    fill: #7bccc4;
+    fill: #56baec;
 }
 .cbo{
     border-bottom: 2px solid #238b45;
@@ -145,16 +145,16 @@ svg .cbo rect {
     fill: #238b45;
 }
 .ca{
-    border-bottom: 2px solid #66c2a4;
+    border-bottom: 2px solid #3dc56b;
 }
 svg .ca rect {
-    fill: #66c2a4;
+    fill: #3dc56b;
 }
 .ce{
-    border-bottom: 2px solid #b2e2e2;
+    border-bottom: 2px solid #65e48f;
 }
 svg .ce rect {
-    fill: #b2e2e2;
+    fill: #65e48f;
 }
 .lcom{
     border-bottom: 2px solid #c51b8a;
@@ -169,16 +169,16 @@ svg .lcom3 rect {
     fill: #fa9fb5;
 }
 .noc{
-    border-bottom: 2px solid #8c96c6;
+    border-bottom: 2px solid #8b5400;
 }
 svg .noc rect {
-    fill: #8c96c6;
+    fill: #8b5400;
 }
 .dit{
-    border-bottom: 2px solid #88419d;
+    border-bottom: 2px solid #cf891f;;
 }
 svg .dit rect {
-    fill: #88419d;
+    fill: #cf891f;
 }
 
 /* ------------------------------------------------------------------------*/

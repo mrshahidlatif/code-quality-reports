@@ -125,10 +125,10 @@ function handleFileSelect(event) {
                   slopts: [
                             {height: 25}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
                             //pass options specfic to each sl if required, in order
-                            {stackedBarColor: ['#2b8cbe','#7bccc4']},
-                            {stackedBarColor: ['#238b45','#66c2a4','#b2e2e2']},
+                            {stackedBarColor: ['#2b8cbe','#56baec']},
+                            {stackedBarColor: ['#238b45','#3dc56b','#65e48f']},
                             {stackedBarColor: ['#c51b8a','#fa9fb5']},
-                            {stackedBarColor: ['#88419d','#8c96c6']},
+                            {stackedBarColor: ['#8b5400','#cf891f']},
                           ],
                   //HLclass: 'hl',                       //pass class used to high  //function to run on success, null by defaultlight linked bar, defaults to 'hl'
                   fn_wrapup: function() {   //function to run on success, null by default
@@ -538,6 +538,7 @@ function generateReport(data){
     var text = '';
     // TODO: expand details (bar chart) when clicking on the metrics
     // TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
+    // TODO: Add a fifth group that summarizes the size-related metrics
     text+='<h3>Software Metrics</h3><p>The code quality analysis works with four groups of software metrics.</p>'
       
     text += generateComplexityText();
