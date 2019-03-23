@@ -321,18 +321,6 @@ outline: 1px solid slategrey;
 	margin: 6px 0;
 }
 
-#example_container {
-    width: 100%; 
-    height: 100%;
-	margin: auto;
-}
-
-#example {
-    width: 100%; 
-    height: 100%;
-	position: relative;
-}
-
 /* ------------------------------------------------------------------------*/
 /* Scatter plot */
 /* ------------------------------------------------------------------------*/

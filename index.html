@@ -40,13 +40,9 @@
       <div id="textBPanel"></div>
     </div>
     <div id="vis">
-        <div id= "parallelplot">
-          <div id="example_container">
-            <div id="example" class="parcoords"></div>
-          </div> 
-        </div>
+        <div id="parallelplot" class="parcoords"></div>
         <div id="scatterplot">
-            <div id="controls" ></div>
+            <div id="controls"></div>
             <div id="chart_container">
                 <div id="chart"></div>
                 <div id="tooltip" class="tooltip"></div>
@@ -1222,11 +1218,7 @@ function parallelplot(data) {
 		"npm": {type:"number"},
 	};
 
-  // TODO: replace this 12 with number of dimensions variable
-	//var w = (12)*52.55;
-	//$("#example_container").css({width: w+"px"});
-	//$("#example").css({width: w+"px"});
-  pcz = d3.parcoords()("#example")
+  pcz = d3.parcoords()("#parallelplot")
     .data(data)
     .hideAxis(["name"])
     .composite("darken")
