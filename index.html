@@ -200,7 +200,7 @@ function generateReport(data){
       blobArr.push(classSpan);
       bad = true;
 
-      badSmellsinClass.push("God Class");
+      badSmellsinClass.push("Large Class");
 		}
 
     if(s.highblob){
@@ -659,7 +659,7 @@ function generateReport(data){
     }
     var listOfBadSmellTypes=[];
     if(blobCt > 0){
-      listOfBadSmellTypes.push(((blobCt===1)?'one':num2word(blobCt)) +' <span class="smellBlob clickable">God Class'+((blobCt===1)?'':'es')+'</span> <span class="barSpan" id="barBlob"></span> '+createCollapsibleClassList(blobArr));
+      listOfBadSmellTypes.push(((blobCt===1)?'one':num2word(blobCt)) +' <span class="smellBlob clickable">Large Class'+((blobCt===1)?'':'es')+'</span> <span class="barSpan" id="barBlob"></span> '+createCollapsibleClassList(blobArr));
     }
     if(decomCt > 0){
       listOfBadSmellTypes.push(((decomCt===1)?'one case':num2word(decomCt)+' cases') +' of <span class="smellFc clickable">Functional Decomposition</span> <span class="barSpan" id="barFc"></span> '+createCollapsibleClassList(decomArr));
@@ -790,13 +790,13 @@ function bugText(){
 
   //columns
   // console.log(data);
-	// var columns = data.columns; 
+  // var columns = data.columns; 
+  
+  // TODO: give for each pattern an example (maybe one for high, medium and low).
+  // TODO: integrate links to the respective metrics
 
 	$(".smellBlob").on("click", function(){
-    var url = "bad_smell_descriptions/blob.htm";
-    $("#detailsHeader").text("Background: The 'God Class' Bad Smell");
-    $("#detailsContent").empty();
-    $("#detailsContent").load(url);
+    updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
 		if(blobCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -813,10 +813,7 @@ function bugText(){
 	});
 
 	$(".smellFc").on("click", function(){
-    var url = "bad_smell_descriptions/fd.htm";
-    $("#detailsHeader").text("Background: The 'Functional Decomposition' Bad Smell");
-    $("#detailsContent").empty();
-    $("#detailsContent").load(url);
+    updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
 		if(decomCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -832,10 +829,7 @@ function bugText(){
 	});
 
 	$(".smellSpa").on("click", function(){
-    var url = "bad_smell_descriptions/sc.htm";
-    $("#detailsHeader").text("Background: The 'Spaghetti Code' Bad Smell");
-    $("#detailsContent").empty();
-    $("#detailsContent").load(url);
+    updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
 		if(spaCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -850,10 +844,7 @@ function bugText(){
 	});
 
   $(".smellLazy").on("click", function(){
-    var url = "bad_smell_descriptions/lazy.htm";
-    $("#detailsHeader").text("Background: The 'Lazy Class' Bad Smell");
-    $("#detailsContent").empty();
-    $("#detailsContent").load(url);
+    updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
 		if(lazyCt > 0){
 			var newdata = [];
 			data.forEach(function(d, i){
@@ -897,7 +888,7 @@ function bugText(){
   var inheritanceMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: dit 	&#8804; 2; noc <= 1 <br> Regular: dit &isin; (2,4]; noc &isin; (1,3]  <br> Bad: dit > 4; noc > 3";
 
   // TODO: add the full names of metrics here
-  var codeSmellsMethod = 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> God Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
+  var codeSmellsMethod = 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
 
   
   $( ".projInfo" ).tooltip({
@@ -1168,7 +1159,7 @@ function num2word(n){
 function findBadSmellsInClass(className){
   //use global data variable called fullData
   var bs = [];
-  if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('God Class')};
+  if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('Large Class')};
   if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 
   if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('Spaghetti Code')}; 
   if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('Lazy Class')}; 
