@@ -792,87 +792,7 @@ function bugText(){
   // console.log(data);
   // var columns = data.columns; 
   
-  // TODO: give for each pattern an example (maybe one for high, medium and low).
-  // TODO: integrate links to the respective metrics
-
-	$(".smellBlob").on("click", function(){
-    updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
-		if(blobCt > 0){
-			var newdata = [];
-			data.forEach(function(d, i){
-				newdata.push(!!d.smells.blob);
-			});
-			scatterfilter(newdata);
-
-			var dims = {};
-			dims['loc'] = [1500, null];
-			dims['amc'] = [129, null];
-
-      parallelfilter(dims);
-		}
-	});
-
-	$(".smellFc").on("click", function(){
-    updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
-		if(decomCt > 0){
-			var newdata = [];
-			data.forEach(function(d, i){
-				newdata.push(!!d.smells.decomposition);
-			});
-			scatterfilter(newdata);
-
-			var dims = {};
-			dims['npm'] = [null, 8];
-			dims['wmc'] = [16, null];
-			parallelfilter(dims);
-		}
-	});
-
-	$(".smellSpa").on("click", function(){
-    updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
-		if(spaCt > 0){
-			var newdata = [];
-			data.forEach(function(d, i){
-				newdata.push(!!d.smells.spaghetti);
-			});
-			scatterfilter(newdata);
-
-			var dims = {};
-			dims['amc'] = [151, null];
-			parallelfilter(dims);
-		}
-	});
-
-  $(".smellLazy").on("click", function(){
-    updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
-		if(lazyCt > 0){
-			var newdata = [];
-			data.forEach(function(d, i){
-				newdata.push(!!d.smells.lazy);
-			});
-			scatterfilter(newdata);
-
-			var dims = {};
-			dims['wmc'] = [0, 0.1];
-			parallelfilter(dims);
-		}
-	});
-
-  $(".couplingMetric").on("click", function(){
-    showCouplingMetricDescription();
-  });
-
-  $(".complexityMetric").on("click", function(){
-    showComplexityMetricDescription();
-  });
-
-  $(".cohesionMetric").on("click", function(){
-    showCohesionMetricDescription();
-  });
-
-  $(".inheritanceMetric").on("click", function(){
-    showInheritanceMetricDescription();
-  });
+  
 
   if(linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
 
@@ -1050,6 +970,88 @@ $(document).on("click", ".className", function() {
   src = src.substring(src.indexOf("package "));   // cut out license text
   $("#sourcecode").text(src);
   Prism.highlightElement($("#sourcecode")[0]);
+});
+
+
+// TODO: give for each pattern an example (maybe one for high, medium and low).
+// TODO: integrate links to the respective metrics
+$(document).on("click", ".smellBlob", function() {
+  updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
+  if(blobCt > 0){
+    var newdata = [];
+    data.forEach(function(d, i){
+      newdata.push(!!d.smells.blob);
+    });
+    scatterfilter(newdata);
+
+    var dims = {};
+    dims['loc'] = [1500, null];
+    dims['amc'] = [129, null];
+
+    parallelfilter(dims);
+  }
+});
+
+$(document).on("click", ".smellFc", function() {
+  updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
+  if(decomCt > 0){
+    var newdata = [];
+    data.forEach(function(d, i){
+      newdata.push(!!d.smells.decomposition);
+    });
+    scatterfilter(newdata);
+
+    var dims = {};
+    dims['npm'] = [null, 8];
+    dims['wmc'] = [16, null];
+    parallelfilter(dims);
+  }
+});
+
+$(document).on("click", ".smellSpa", function() {
+  updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
+  if(spaCt > 0){
+    var newdata = [];
+    data.forEach(function(d, i){
+      newdata.push(!!d.smells.spaghetti);
+    });
+    scatterfilter(newdata);
+
+    var dims = {};
+    dims['amc'] = [151, null];
+    parallelfilter(dims);
+  }
+});
+
+$(document).on("click", ".smellLazy", function() {
+  updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
+  if(lazyCt > 0){
+    var newdata = [];
+    data.forEach(function(d, i){
+      newdata.push(!!d.smells.lazy);
+    });
+    scatterfilter(newdata);
+
+    var dims = {};
+    dims['wmc'] = [0, 0.1];
+    parallelfilter(dims);
+  }
+});
+
+$(document).on("click", ".couplingMetric", function() {
+  showCouplingMetricDescription();
+});
+
+$(document).on("click", ".complexityMetric", function() {
+  showComplexityMetricDescription();
+});
+
+$(document).on("click", ".cohesionMetric", function() {
+  showCohesionMetricDescription();
+});
+
+$(document).on("click", ".inheritanceMetric", function() {
+  showInheritanceMetricDescription();
 });
 
 /* ------------------------------------------------------------------------*/
