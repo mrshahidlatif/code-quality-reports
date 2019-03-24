@@ -168,10 +168,7 @@ function ScatterPlot(){
                         highlightEdge(d[i]);
                     }
                 }
-                //appending to parcoord caption 
-                var bs = findBadSmellsInClass(className);
-                $('#captionPP').append('<span id="dynamicCaption"></span>');
-                $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
+                showClassCaption(className);
 
             })
             .on("mouseout", function(d) {

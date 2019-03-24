@@ -99,10 +99,7 @@
                 highlightEdge(d[i]);
             }
         }
-         //appending to parcoord caption 
-          var bs = findBadSmellsInClass(clsName);
-          $('#captionPP').append('<span id="dynamicCaption"></span>');
-          $('#dynamicCaption').append(createClassSpan(clsName) + ' contains ' + printList(bs) + ' bad smells.');
+        showClassCaption(clsName);
 
         }).on('mouseout', function(){
         $("span.varStyle").css( "background-color", "");
