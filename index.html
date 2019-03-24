@@ -790,10 +790,7 @@ function bugText(){
 
   //columns
   // console.log(data);
-	// var columns = data.columns;
-
-	
-    
+	// var columns = data.columns; 
 
 	$(".smellBlob").on("click", function(){
     var url = "bad_smell_descriptions/blob.htm";
@@ -808,8 +805,8 @@ function bugText(){
 			scatterfilter(newdata);
 
 			var dims = {};
-			dims[LOC] = [1500, null];
-			dims[AMC] = [129, null];
+			dims['loc'] = [1500, null];
+			dims['amc'] = [129, null];
 
       parallelfilter(dims);
 		}
@@ -828,8 +825,8 @@ function bugText(){
 			scatterfilter(newdata);
 
 			var dims = {};
-			dims[NPM] = [null, 8];
-			dims[WMC] = [16, null];
+			dims['npm'] = [null, 8];
+			dims['wmc'] = [16, null];
 			parallelfilter(dims);
 		}
 	});
@@ -847,7 +844,7 @@ function bugText(){
 			scatterfilter(newdata);
 
 			var dims = {};
-			dims[AMC] = [151, null];
+			dims['amc'] = [151, null];
 			parallelfilter(dims);
 		}
 	});
@@ -865,7 +862,7 @@ function bugText(){
 			scatterfilter(newdata);
 
 			var dims = {};
-			dims[WMC] = [0, 0.1];
+			dims['wmc'] = [0, 0.1];
 			parallelfilter(dims);
 		}
 	});
@@ -1264,8 +1261,6 @@ function highlightEdge(d){
 }
 
 function parallelfilter(dims) {
-  // FIXME: This function is broken now, needs fixing
-  // console.log(dims);
 	for(var dim in dims){
 		var domain = pcz.dimensions()[dim].yscale["domain"]();
 
