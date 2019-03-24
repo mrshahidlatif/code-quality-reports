@@ -140,7 +140,11 @@ function handleFileSelect(event) {
 
 }
 
+var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+
 function generateReport(data){
+
+  classCt = data.length;
 
   //making data available to all files
   fullData = data;
@@ -179,8 +183,6 @@ function generateReport(data){
       d.smells.lazy = true;
     }
 	});
-
-	var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = data.length, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 	data.forEach(function(d, i){
     classFullNameToIndex[d.cname] = i; 
@@ -976,7 +978,7 @@ $(document).on("click", ".smellBlob", function() {
   updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
   if(blobCt > 0){
     var newdata = [];
-    data.forEach(function(d, i){
+    fullData.forEach(function(d, i){
       newdata.push(!!d.smells.blob);
     });
     scatterfilter(newdata);
@@ -993,7 +995,7 @@ $(document).on("click", ".smellFc", function() {
   updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
   if(decomCt > 0){
     var newdata = [];
-    data.forEach(function(d, i){
+    fullData.forEach(function(d, i){
       newdata.push(!!d.smells.decomposition);
     });
     scatterfilter(newdata);
@@ -1009,7 +1011,7 @@ $(document).on("click", ".smellSpa", function() {
   updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
   if(spaCt > 0){
     var newdata = [];
-    data.forEach(function(d, i){
+    fullData.forEach(function(d, i){
       newdata.push(!!d.smells.spaghetti);
     });
     scatterfilter(newdata);
@@ -1024,7 +1026,7 @@ $(document).on("click", ".smellLazy", function() {
   updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
   if(lazyCt > 0){
     var newdata = [];
-    data.forEach(function(d, i){
+    fullData.forEach(function(d, i){
       newdata.push(!!d.smells.lazy);
     });
     scatterfilter(newdata);
