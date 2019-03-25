@@ -1238,7 +1238,7 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
-      return "#6f6f70";
+      return "#8d8e8e";
     })
 		.hideAxis(['cname'])
 		.dimensions(myDimensions)
@@ -1416,7 +1416,7 @@ function makeScatterPlot(data){
 function scatterfilter(newdata){
 		var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
-			.style("fill", function(d,i) { return newdata[i]? "black": "#d6d6d6";} );
+			.style("fill", function(d,i) { return newdata[i]? "black": "#8d8e8e";} );
 
 }
 
