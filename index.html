@@ -1243,9 +1243,9 @@ function parallelplot(data) {
 		.hideAxis(['cname'])
 		.dimensions(myDimensions)
     .render()
-    // .alpha(0.6)
     .brushMode("1D-axes")  // enable brushing
-		.interactive(); // command line mode
+    .interactive() // command line mode
+    .brushedColor("black");
 		
   // adding axis labels
   pcz.svg.selectAll(".dimension")
@@ -1283,12 +1283,10 @@ function parallelfilter(dims) {
 		if(dims[dim][0] == null){
 			dims[dim][0] = Math.min(domain[0], domain[1]);
 		}
-
 		if(dims[dim][1] == null){
 			dims[dim][1] = Math.max(domain[0], domain[1]);
 		}
 	}
-
 	pcz.brushReset();
 	pcz.brushExtents(dims);
 }
