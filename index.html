@@ -67,7 +67,9 @@ var classFullNameToIndex = {}; // dictionary to retrieve idicies by class name e
 var classShortNameToIndex = {} // equivalent dictionary with short class names -- TODO: temporary solution, should be removed
 var xVal; //variables to store active values of scatterplot dimensions
 var yVal; //variables to store active values of scatterplot dimensions
-var classesWithBadSmells = []
+var classesWithBadSmells = [];
+var haveClassToPersist = false;
+var persistentClass = "";
 
 var LOC, AMC, WMC, NPM;
     
@@ -948,16 +950,23 @@ $(document).on("mouseover", ".className", function() {
     showClassCaption(className);
 
  }).on('mouseout', '.className', function() {
-    $("span.slcls",window.parent.document).css('background',''); 
-    $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-    unHighlight();
-    
-    $('.clickable').css('background','none');
-    //reset to original caption
-    $('#dynamicCaption').remove();
+  var className = $(this).text();
+    if(haveClassToPersist){
+      console.log(haveClassToPersist);
+      removeHoverHighlighting(className); 
+    }
+    else {
+      console.log(haveClassToPersist);
+      removePersistentHighlighting(className);
+    }
+
+ }).on('mouseup', '.className', function(){
+    // haveClassToPersist = true;
  });
 
 $(document).on("click", ".className", function() {
+
+  var className = $(this).text();
   var idx = Number($(this).attr("data-index"));
   var str = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
@@ -970,6 +979,7 @@ $(document).on("click", ".className", function() {
   src = src.substring(src.indexOf("package "));   // cut out license text
   $("#sourcecode").text(src);
   Prism.highlightElement($("#sourcecode")[0]);
+  makeSelectionPersistent(className);
 });
 
 
@@ -1075,6 +1085,61 @@ function highlightCodeSmell(className){
     $(".smellLazy").css('background','#ffe68e');
   }
   
+}
+
+function makeSelectionPersistent(className){
+  //Already a class selected then clear highlighting first
+  removePersistentHighlighting();
+
+  //make the highlight persistent now
+  $("span.slcls."+className+"").css('background','black');
+  $("#scatterplot").contents().find("circle#"+className).css("fill","black");
+
+  highlightEdge(fullData[classShortNameToIndex[className]]);
+
+  //make code smell name persistent
+  var cSmells = fullData[classShortNameToIndex[className]].smells;
+  if (cSmells.blob == true){
+    $(".smellBlob").css('font-weight','bold');
+  }
+  if (cSmells.decomposition == true){
+    $(".smellFc").css('font-weight','bold');
+  }
+  if (cSmells.spaghetti == true){
+    $(".smellSpa").css('font-weight','bold');
+  }
+  if (cSmells.lazy == true){
+    $(".smellLazy").css('font-weight','bold');
+  }
+  haveClassToPersist= true;
+  persistentClass = className;
+
+}
+function removePersistentHighlighting(className){
+  $(".smellBlob").css('font-weight','normal');
+  $(".smellFc").css('font-weight','normal');
+  $(".smellSpa").css('font-weight','normal');
+  $(".smellLazy").css('font-weight','normal');
+
+  $("span.slcls").css('background',''); 
+  $("#scatterplot").contents().find("circle").css('fill', '#8d8e8e');
+  unHighlight();
+  $('.clickable').css('background','none');
+
+  haveClassToPersist = false;
+  persistentClass = "";
+}
+function removeHoverHighlighting(className){
+  $("span.slcls."+className+"",window.parent.document).css('background','');
+  if (persistentClass != '') $("span.slcls."+persistentClass+"",window.parent.document).css('background','black');
+  
+  $("#scatterplot").contents().find("circle#"+className).attr("r","3").attr("stroke", "").attr("stroke-width","0px");
+  if (persistentClass != '') $("#scatterplot").contents().find("circle#"+persistentClass).css('fill', 'black');
+  unHighlight();  
+  $('.clickable').css('background','none');
+  //reset to original caption
+  $('#dynamicCaption').remove();
+
 }
 
 
