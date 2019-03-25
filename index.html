@@ -944,14 +944,15 @@ $(document).on("mouseover", ".className", function() {
     //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
     var d = window.parent.fullData;
     highlightEdge(d[classShortNameToIndex[className]]);
-    
+    highlightCodeSmell(className);
     showClassCaption(className);
 
  }).on('mouseout', '.className', function() {
     $("span.slcls",window.parent.document).css('background',''); 
     $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
     unHighlight();
-
+    
+    $('.clickable').css('background','none');
     //reset to original caption
     $('#dynamicCaption').remove();
  });
@@ -1057,6 +1058,23 @@ function showClassCaption(className) {
   var bs = findBadSmellsInClass(className);
   $('#captionPP').append('<span id="dynamicCaption"></span>');
   $('#dynamicCaption').append(createClassSpan(className) + ' carries '+ (bs.length === 1?'a ':'') + (bs.length > 0?printList(bs):'no') + ' code smell'+(bs.length === 1?'':'s')+'.');
+}
+
+function highlightCodeSmell(className){
+  var cSmells = fullData[classShortNameToIndex[className]].smells;
+  if (cSmells.blob == true){
+    $(".smellBlob").css('background','#ffe68e');
+  }
+  if (cSmells.decomposition == true){
+    $(".smellFc").css('background','#ffe68e');
+  }
+  if (cSmells.spaghetti == true){
+    $(".smellSpa").css('background','#ffe68e');
+  }
+  if (cSmells.lazy == true){
+    $(".smellLazy").css('background','#ffe68e');
+  }
+  
 }
 
 
