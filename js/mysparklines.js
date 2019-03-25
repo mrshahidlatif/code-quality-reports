@@ -78,6 +78,8 @@
      //linking bar in sparkline to corresponding dot in scatterplot
       //----------------------------------------------------------------------------
       $(".sl span").on('mouseover', function() {
+        //getting the class name of hovered bar
+        // console.log($(this));
 
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
         // console.log($(".sl span[data-bar="+$(this).attr('data-bar')+"]"));
@@ -86,26 +88,29 @@
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#ffe68e");
 
         //Highlighting dot of the class in scatter plot
+      // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
         //Highlight corresponding edge in parallel coordinates
-        for(var i=0; i<data.length;i++){
-            if(data[i] != undefined && data[i].cname.includes(clsName)){
+        var d = window.parent.fullData;
+        for(var i=0; i<d.length;i++){
+            if(d[i] != undefined && d[i].cname.includes(clsName)){
                 // console.log(d[i]);
-                highlightEdge(data[i]);
+                highlightEdge(d[i]);
             }
         }
-        showClassCaption(clsName);
-        highlightCodeSmell(clsName);
+         //appending to parcoord caption 
+          var bs = findBadSmellsInClass(clsName);
+          $('#captionPP').append('<span id="dynamicCaption"></span>');
+          $('#dynamicCaption').append(createClassSpan(clsName) + ' contains ' + printList(bs) + ' bad smells.');
 
         }).on('mouseout', function(){
-          $("span.varStyle").css( "background-color", "");
-          $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-          unHighlight();
+        $("span.varStyle").css( "background-color", "");
+        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
+        unHighlight();
 
-          //reset to original caption
-          $('#dynamicCaption').remove();
-          $('.clickable').css('background','none');
+        //reset to original caption
+        $('#dynamicCaption').remove();
       });
       //-----------------------------------------------------------------------------
   }
@@ -138,7 +143,7 @@
       var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
 
       var idx = classShortNameToIndex[clsName];
-      var str = data[idx].cname;
+      var str = fullData[idx].cname;
       var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
       $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
       $("#detailsContent").empty();

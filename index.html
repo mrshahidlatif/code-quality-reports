@@ -508,10 +508,161 @@ function analyzeData(data){
 }
 
 /* ------------------------------------------------------------------------*/
-/* Text Generation */ 
+/* Click and hover events */
 /* ------------------------------------------------------------------------*/
 
+// TODO: also show the metric description in the details panel
+$(document).on("click", "button.collapsible", function () {
+    $(this)[0].classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
+});
 
+//Highlighting corresponding element of vis on hovering class name in text
+$(document).on("mouseover", ".className", function () {
+    var className = $(this).text();
+    $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
+    $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
+
+    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+    var d = window.parent.fullData;
+    highlightEdge(d[classShortNameToIndex[className]]);
+    highlightCodeSmell(className);
+    showClassCaption(className);
+
+}).on('mouseout', '.className', function () {
+    $("span.slcls", window.parent.document).css('background', '');
+    $("#scatterplot").contents().find("circle").attr("r", "3").attr("stroke", "").attr("stroke-width", "0px");
+    unHighlight();
+
+    $('.clickable').css('background', 'none');
+    //reset to original caption
+    $('#dynamicCaption').remove();
+});
+
+$(document).on("click", ".className", function () {
+    var idx = Number($(this).attr("data-index"));
+    var str = fullData[idx].cname;
+    var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+    updateDetailPanel("File " + str.split(".").pop() + ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+    // TODO: replace by asynchronous load
+    var src = $.ajax({
+        url: url,
+        async: false
+    }).responseText;
+    src = src.substring(src.indexOf("package "));   // cut out license text
+    $("#sourcecode").text(src);
+    Prism.highlightElement($("#sourcecode")[0]);
+});
+
+
+// TODO: give for each pattern an example (maybe one for high, medium and low).
+// TODO: integrate links to the respective metrics
+$(document).on("click", ".smellBlob", function () {
+    updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
+    if (blobCt > 0) {
+        var newdata = [];
+        fullData.forEach(function (d, i) {
+            newdata.push(!!d.smells.blob);
+        });
+        scatterfilter(newdata);
+
+        var dims = {};
+        dims['loc'] = [1500, null];
+        dims['amc'] = [129, null];
+
+        parallelfilter(dims);
+    }
+});
+
+$(document).on("click", ".smellFc", function () {
+    updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
+    if (decomCt > 0) {
+        var newdata = [];
+        fullData.forEach(function (d, i) {
+            newdata.push(!!d.smells.decomposition);
+        });
+        scatterfilter(newdata);
+
+        var dims = {};
+        dims['npm'] = [null, 8];
+        dims['wmc'] = [16, null];
+        parallelfilter(dims);
+    }
+});
+
+$(document).on("click", ".smellSpa", function () {
+    updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
+    if (spaCt > 0) {
+        var newdata = [];
+        fullData.forEach(function (d, i) {
+            newdata.push(!!d.smells.spaghetti);
+        });
+        scatterfilter(newdata);
+
+        var dims = {};
+        dims['amc'] = [151, null];
+        parallelfilter(dims);
+    }
+});
+
+$(document).on("click", ".smellLazy", function () {
+    updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
+    if (lazyCt > 0) {
+        var newdata = [];
+        fullData.forEach(function (d, i) {
+            newdata.push(!!d.smells.lazy);
+        });
+        scatterfilter(newdata);
+
+        var dims = {};
+        dims['wmc'] = [0, 0.1];
+        parallelfilter(dims);
+    }
+});
+
+$(document).on("click", ".couplingMetric", function () {
+    showCouplingMetricDescription();
+});
+
+$(document).on("click", ".complexityMetric", function () {
+    showComplexityMetricDescription();
+});
+
+$(document).on("click", ".cohesionMetric", function () {
+    showCohesionMetricDescription();
+});
+
+$(document).on("click", ".inheritanceMetric", function () {
+    showInheritanceMetricDescription();
+});
+
+function showClassCaption(className) {
+    var bs = findBadSmellsInClass(className);
+    $('#captionPP').append('<span id="dynamicCaption"></span>');
+    $('#dynamicCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
+}
+
+function highlightCodeSmell(className) {
+    var cSmells = fullData[classShortNameToIndex[className]].smells;
+    if (cSmells.blob == true) {
+        $(".smellBlob").css('background', '#ffe68e');
+    }
+    if (cSmells.decomposition == true) {
+        $(".smellFc").css('background', '#ffe68e');
+    }
+    if (cSmells.spaghetti == true) {
+        $(".smellSpa").css('background', '#ffe68e');
+    }
+    if (cSmells.lazy == true) {
+        $(".smellLazy").css('background', '#ffe68e');
+    }
+
+}
 
 /* ------------------------------------------------------------------------*/
 /* Util functions */ 

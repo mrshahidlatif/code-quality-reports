@@ -9,18 +9,7 @@ function generateText(data) {
     html = html.replace(/BADCOHESIONLIST/g, "" + badCohesionList).replace(/BADCOHESIONCT/g, "" + badCohesionCt).replace(/REGULARCOHESIONLIST/g, "" + regularCohesionList).replace(/REGULARCOHESIONCT/g, "" + regularCohesionCt).replace(/GOODCOHESIONLIST/g, "" + goodCohesionList).replace(/GOODCOHESIONCT/g, "" + goodCohesionCt);
     html = html.replace(/GOODCOMPLEXITYLIST/g, "" + goodComplexityList).replace(/GOODCOMPLEXITYCT/g, "" + goodComplexityCt).replace(/REGULARCOMPLEXITYLIST/g, "" + regularComplexityList).replace(/REGULARCOMPLEXITYCT/g, "" + regularComplexityCt).replace(/BADCOMPLEXITYLIST/g, "" + badComplexityList).replace(/BADCOMPLEXITYCT/g, "" + badComplexityCt);
     html = html.replace(/BBLIST/g, "" + bugBlobArr[0]).replace(/BDLIST/g, "" + bugDecomList).replace(/BLOBDECOMSMELLSLIST/g, "" + blobDecomArr[0]).replace(/BLOBSPASMELLSLIST/g, "" + blobSpaArr[0]).replace(/BLOBLAZYSMELLSLIST/g, "" + blobLazyArr[0]);
-    html = html.replace(/SUPERSMELLSLIST/g, "" + superSmellsList)
-    html = html.replace(/PROJINFO/g, "" + projInfo).replace(/NUMBEROFPACKAGES/g, "" + numberOfPackages);
     $("#textBPanel").html(html);
-
-    var sparklineOptions = {
-        type: 'bar',
-        width: '30px',
-        height: '30px',
-        highlightLighten: 1.1,
-        highlightColor: 'black',
-    }
-
 
     //bad smells charts
     drawBarChart("#barBlob", Math.round((blobCt / badCt) * 1000) / 10);
@@ -47,53 +36,13 @@ function generateText(data) {
     //bug chart
     drawBarChart("#bar_17", Math.round((bugCt / classCt) * 1000) / 10);
 
-
-    //columns
-    // console.log(data);
-    // var columns = data.columns; 
-
-
-
     if (linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
-
-    /* ------------------------------------------------------------------------*/
-    /* Methodological Explainations - Tooltips */
-    /* ------------------------------------------------------------------------*/
-    var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce 	&#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
-
-    var complexityMethod = "We use thresholds values of wmc and max_cc for categorizing coupling as good, regular, or bad.<br><br> Good: max_cc &#8804; 2; wmc 	&#8804; 11,  <br> Regular: max_cc &isin; (2,4]; wmc &isin; (11,34) <br> Bad: max_cc > 4; wmc > 34";
-
-    var cohesionMethod = "We use thresholds values of lcom3 for categorizing coupling as good, regular, or bad.<br><br> Good: lcom3 &#8804; 0.167; <br> Regular: lcom3 &isin; (0.167,0.725]; <br> Bad: lcom3 > 0.725";
-
-    var inheritanceMethod = "We use thresholds values of dit and noc for categorizing coupling as good, regular, or bad.<br><br> Good: dit 	&#8804; 2; noc <= 1 <br> Regular: dit &isin; (2,4]; noc &isin; (1,3]  <br> Bad: dit > 4; noc > 3";
-
-    // TODO: add the full names of metrics here
-    var codeSmellsMethod = 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
-
-
-    $(".projInfo").tooltip({
-        content: projInfo
-    });
-    $(".couplingInfo").tooltip({
-        content: couplingMethod
-    });
-    $(".complexityInfo").tooltip({
-        content: complexityMethod
-    });
-    $(".cohesionInfo").tooltip({
-        content: cohesionMethod
-    });
-    $(".inheritanceInfo").tooltip({
-        content: inheritanceMethod
-    });
-
-    $(".codeSmellsInfo").tooltip({
-        content: codeSmellsMethod
-    });
 
     // displaying the captions to screen.
     $("#captionPP").html(generatePPCaption());
     $("#captionSP").html(generateSPCaption());
+
+    generateTooltipTexts();
 
 }
 
@@ -106,7 +55,7 @@ function introText() {
     if (projectName.includes("log4j")) {
         projInfo = "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
-    text += ' This document presents the code quality aspects of ' + projectName + '<span class="projInfo infoIcon"title=""> &#9432;</span> (Java version)&mdash;it has ' + numberOfPackages + ' packages and ' + classCt + ' classes.';
+    text += ' This document presents the code quality aspects of ' + projectName + '<span class="projInfo infoIcon"title=""> &#9432;</span>&mdash;it has ' + numberOfPackages + ' packages and ' + classCt + ' classes.';
     return text;
 }
 
@@ -304,163 +253,6 @@ function drawBarChart(tagNmae, val) {
     $(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="' + (val / 2) + '" height="14"></rect><text x="25" y="11" style="font-size:12px">' + val + '%</text></g></svg>');
 }
 
-/* ------------------------------------------------------------------------*/
-/* Click and hover events */
-/* ------------------------------------------------------------------------*/
-
-// TODO: also show the metric description in the details panel
-$(document).on("click", "button.collapsible", function () {
-    $(this)[0].classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-        content.style.display = "none";
-    } else {
-        content.style.display = "block";
-    }
-});
-
-//Highlighting corresponding element of vis on hovering class name in text
-$(document).on("mouseover", ".className", function () {
-    var className = $(this).text();
-    $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
-    $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
-
-    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
-    var d = window.parent.fullData;
-    highlightEdge(d[classShortNameToIndex[className]]);
-    highlightCodeSmell(className);
-    showClassCaption(className);
-
-}).on('mouseout', '.className', function () {
-    $("span.slcls", window.parent.document).css('background', '');
-    $("#scatterplot").contents().find("circle").attr("r", "3").attr("stroke", "").attr("stroke-width", "0px");
-    unHighlight();
-
-    $('.clickable').css('background', 'none');
-    //reset to original caption
-    $('#dynamicCaption').remove();
-});
-
-$(document).on("click", ".className", function () {
-    var idx = Number($(this).attr("data-index"));
-    var str = fullData[idx].cname;
-    var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-    updateDetailPanel("File " + str.split(".").pop() + ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-    // TODO: replace by asynchronous load
-    var src = $.ajax({
-        url: url,
-        async: false
-    }).responseText;
-    src = src.substring(src.indexOf("package "));   // cut out license text
-    $("#sourcecode").text(src);
-    Prism.highlightElement($("#sourcecode")[0]);
-});
-
-
-// TODO: give for each pattern an example (maybe one for high, medium and low).
-// TODO: integrate links to the respective metrics
-$(document).on("click", ".smellBlob", function () {
-    updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
-    if (blobCt > 0) {
-        var newdata = [];
-        fullData.forEach(function (d, i) {
-            newdata.push(!!d.smells.blob);
-        });
-        scatterfilter(newdata);
-
-        var dims = {};
-        dims['loc'] = [1500, null];
-        dims['amc'] = [129, null];
-
-        parallelfilter(dims);
-    }
-});
-
-$(document).on("click", ".smellFc", function () {
-    updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
-    if (decomCt > 0) {
-        var newdata = [];
-        fullData.forEach(function (d, i) {
-            newdata.push(!!d.smells.decomposition);
-        });
-        scatterfilter(newdata);
-
-        var dims = {};
-        dims['npm'] = [null, 8];
-        dims['wmc'] = [16, null];
-        parallelfilter(dims);
-    }
-});
-
-$(document).on("click", ".smellSpa", function () {
-    updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
-    if (spaCt > 0) {
-        var newdata = [];
-        fullData.forEach(function (d, i) {
-            newdata.push(!!d.smells.spaghetti);
-        });
-        scatterfilter(newdata);
-
-        var dims = {};
-        dims['amc'] = [151, null];
-        parallelfilter(dims);
-    }
-});
-
-$(document).on("click", ".smellLazy", function () {
-    updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
-    if (lazyCt > 0) {
-        var newdata = [];
-        fullData.forEach(function (d, i) {
-            newdata.push(!!d.smells.lazy);
-        });
-        scatterfilter(newdata);
-
-        var dims = {};
-        dims['wmc'] = [0, 0.1];
-        parallelfilter(dims);
-    }
-});
-
-$(document).on("click", ".couplingMetric", function () {
-    showCouplingMetricDescription();
-});
-
-$(document).on("click", ".complexityMetric", function () {
-    showComplexityMetricDescription();
-});
-
-$(document).on("click", ".cohesionMetric", function () {
-    showCohesionMetricDescription();
-});
-
-$(document).on("click", ".inheritanceMetric", function () {
-    showInheritanceMetricDescription();
-});
-
-function showClassCaption(className) {
-    var bs = findBadSmellsInClass(className);
-    $('#captionPP').append('<span id="dynamicCaption"></span>');
-    $('#dynamicCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
-}
-
-function highlightCodeSmell(className) {
-    var cSmells = fullData[classShortNameToIndex[className]].smells;
-    if (cSmells.blob == true) {
-        $(".smellBlob").css('background', '#ffe68e');
-    }
-    if (cSmells.decomposition == true) {
-        $(".smellFc").css('background', '#ffe68e');
-    }
-    if (cSmells.spaghetti == true) {
-        $(".smellSpa").css('background', '#ffe68e');
-    }
-    if (cSmells.lazy == true) {
-        $(".smellLazy").css('background', '#ffe68e');
-    }
-
-}
-
 
 /* ------------------------------------------------------------------------*/
 /* Metric descriptions */
@@ -501,4 +293,40 @@ function showInheritanceMetricDescription() {
     content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('noc')) + ' has high inheritance. </p>';
 
     updateDetailPanel("Background: Inheritance Metrics", content);
+}
+
+function generateTooltipTexts() {
+
+    var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce &#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
+
+    var complexityMethod = "We use thresholds values of wmc and max_cc for categorizing coupling as good, regular, or bad.<br><br> Good: max_cc &#8804; 2; wmc 	&#8804; 11,  <br> Regular: max_cc &isin; (2,4]; wmc &isin; (11,34) <br> Bad: max_cc > 4; wmc > 34";
+
+    var cohesionMethod = "We use thresholds values of lcom3 for categorizing coupling as good, regular, or bad.<br><br> Good: lcom3 &#8804; 0.167; <br> Regular: lcom3 &isin; (0.167,0.725]; <br> Bad: lcom3 > 0.725";
+
+    var inheritanceMethod = "We use thresholds values of dit and noc for categorizing coupling as good, regular, or bad.<br><br> Good: dit 	&#8804; 2; noc <= 1 <br> Regular: dit &isin; (2,4]; noc &isin; (1,3]  <br> Bad: dit > 4; noc > 3";
+
+    // TODO: add the full names of metrics here
+    var codeSmellsMethod = 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
+
+
+    $(".projInfo").tooltip({
+        content: projInfo
+    });
+    $(".couplingInfo").tooltip({
+        content: couplingMethod
+    });
+    $(".complexityInfo").tooltip({
+        content: complexityMethod
+    });
+    $(".cohesionInfo").tooltip({
+        content: cohesionMethod
+    });
+    $(".inheritanceInfo").tooltip({
+        content: inheritanceMethod
+    });
+
+    $(".codeSmellsInfo").tooltip({
+        content: codeSmellsMethod
+    });
+
 }
