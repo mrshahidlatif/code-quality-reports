@@ -1388,8 +1388,10 @@ function makeScatterPlot(data){
         
 
         d3.selectAll("#chart>*").remove();
-        var w = d3.select("#chart").style("width");
-        var scatterplot = ScatterPlot().$el("#chart").size(140).threshold(12).margin(30).threshold(OUTLIER_THRESHOLD)
+        var h = d3.select("#chart").style("height");
+        var size = +h.substring(0,h.length -2);
+
+        var scatterplot = ScatterPlot().$el("#chart").size(size).threshold(12).margin(30).threshold(OUTLIER_THRESHOLD)
             .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
                 tooltip.style("opacity", 1)
                     .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))
