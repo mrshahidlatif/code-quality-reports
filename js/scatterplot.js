@@ -129,19 +129,7 @@ function ScatterPlot(){
                 return cName;
             })
             .style("fill", function(d) {
-                // console.log(d);
-                var className = d.cname.split(".").pop();
-                // console.log(className);
-                var data = window.parent.badClasses;
-                for (var i=0;i<data.length;i++){
-                    if (data[i].name === className){
-                        // console.log(className);
-                        if (data[i].badSmells.length != 0){
-                            return 'black';
-                        }
-                    }
-                }
-                return "#d6d6d6";
+                return "#6f6f70";
             })
             .on("mouseover", function(d) { 
                 var lst = d.cname.split(".");

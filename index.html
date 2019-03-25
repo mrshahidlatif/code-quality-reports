@@ -1184,7 +1184,6 @@ function num2word(n){
 
 function findBadSmellsInClass(className){
   //use global data variable called fullData
-  console.log(fullData);
   var bs = [];
   if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('Large Class')};
   if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 
@@ -1239,11 +1238,7 @@ function parallelplot(data) {
     .hideAxis(["name"])
     .composite("darken")
 		.color(function(d) {
-      var class_smells = data[classFullNameToIndex[d.cname]].smells; 
-      if(class_smells['blob'] || class_smells['decomposition'] || class_smells['spaghetti'] || class_smells['lazy']){
-          return 'black'
-      }
-      else return "#d6d6d6";
+      return "#6f6f70";
     })
 		.hideAxis(['cname'])
 		.dimensions(myDimensions)
@@ -1261,9 +1256,6 @@ function parallelplot(data) {
 function unHighlight(){
 	//clearing the highlighting
 	pcz.unhighlight();
-	// pcz.color(function(d) { return "steelblue"; });
-	// pcz.clear('highlight');
-	// d3.select("canvas.foreground.faded").classed("faded", false);
 }
 function highlightEdge(d){
 	// console.log(d);
