@@ -169,6 +169,7 @@ function ScatterPlot(){
                     }
                 }
                 showClassCaption(className);
+                highlightCodeSmell(className);
 
             })
             .on("mouseout", function(d) {
@@ -186,6 +187,7 @@ function ScatterPlot(){
 
                 //reset to original caption
                 $('#dynamicCaption').remove();
+                $('.clickable').css('background','none');
                 
             }).on("click",function(d){
                 var str = d.cname;

@@ -1184,6 +1184,7 @@ function num2word(n){
 
 function findBadSmellsInClass(className){
   //use global data variable called fullData
+  console.log(fullData);
   var bs = [];
   if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('Large Class')};
   if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 

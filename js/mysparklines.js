@@ -78,8 +78,6 @@
      //linking bar in sparkline to corresponding dot in scatterplot
       //----------------------------------------------------------------------------
       $(".sl span").on('mouseover', function() {
-        //getting the class name of hovered bar
-        // console.log($(this));
 
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
         // console.log($(".sl span[data-bar="+$(this).attr('data-bar')+"]"));
@@ -88,7 +86,6 @@
         $("span.varStyle:contains("+ clsName +")").css( "background-color", "#ffe68e");
 
         //Highlighting dot of the class in scatter plot
-      // var dotID = $("#scatterplot").contents().find("circle#"+clsName);
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
         //Highlight corresponding edge in parallel coordinates
@@ -100,14 +97,16 @@
             }
         }
         showClassCaption(clsName);
+        highlightCodeSmell(clsName);
 
         }).on('mouseout', function(){
-        $("span.varStyle").css( "background-color", "");
-        $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-        unHighlight();
+          $("span.varStyle").css( "background-color", "");
+          $("#scatterplot").contents().find("circle").attr("r","3").attr("stroke", "").attr("stroke-width","0px");
+          unHighlight();
 
-        //reset to original caption
-        $('#dynamicCaption').remove();
+          //reset to original caption
+          $('#dynamicCaption').remove();
+          $('.clickable').css('background','none');
       });
       //-----------------------------------------------------------------------------
   }
