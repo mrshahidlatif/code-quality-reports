@@ -1,37 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <header>
-    <meta charset="utf-8">
-    <script src="lib/jquery-2.2.2.min.js"></script>
-    <script src="lib/jquery.sparkline.js"></script>
-    <script type="text/javascript" src="lib/prism.js"></script>
-    <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
-    <script type="text/javascript" src="js/mysparklines.js"></script>
-    <script type="text/javascript" src="js/dictionary.js"></script>
-    <script src="lib//jquery-ui.js"></script>
-    <script src="lib/d3.min.js"></script>
-    <script src="lib/d3.parcoords.js"></script>
-    <script src="lib/bboxCollide.js"></script>
-    <script src="lib/d3-annotation.js"></script>
-    <script type="text/javascript" src="js/scatterplot.js"></script>
-    
-    <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
-    <link rel="stylesheet" href="lib/jquery-ui.css">
-    <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
-    <link href="lib/prism.css" rel="stylesheet" />
-  </header>
-
-<!-- <div class="heading">
-    <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
-    <div id="title" style="margin-top:0px;">Code Quality Documents </div>
-    <div id="subtitle" style="margin-top:0px;"></div>
-</div> -->
-
+<header>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="lib/jquery-2.2.2.min.js"></script>
+  <script type="text/javascript" src="lib/jquery.sparkline.js"></script>
+  <script type="text/javascript" src="lib/prism.js"></script>
+  <script type="text/javascript" src="lib/jquery.sparkline.min.js"></script>
+  <script type="text/javascript" src="lib/jquery-ui.js"></script>
+  <script type="text/javascript" src="lib/d3.min.js"></script>
+  <script type="text/javascript" src="lib/bboxCollide.js"></script>
+  <script type="text/javascript" src="lib/d3-annotation.js"></script>
+  <script type="text/javascript" src="js/parcoords.js"></script>
+  <script type="text/javascript" src="js/mysparklines.js"></script>
+  <script type="text/javascript" src="js/scatterplot.js"></script>
+  <link rel="stylesheet" href="lib/jquery-ui.css"  type='text/css' media='all'>
+  <link rel="stylesheet" href="lib/prism.css"  type='text/css' media='all' />
+  <link rel="stylesheet" href="css/parcoords.css"  type='text/css' media='all'>
+  <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
+  <title>Code Quality Documents</title>
+</header>
 <body>
   <div id="grid-container">
     <div id="header">
-      <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)"/>
+      <input id="file-upload" type="file" value="Upload" onchange="handleFileSelect(event)" />
       <div id="title">Code Quality Documents </div>
       <div id="subtitle"></div>
     </div>
@@ -40,17 +32,17 @@
       <div id="textBPanel"></div>
     </div>
     <div id="vis">
-        <div id="parallelplot" class="parcoords"></div>
-        <div id="scatterplot">
-            <div id="controls"></div>
-            <div id="chart_container">
-                <div id="chart"></div>
-                <div id="tooltip" class="tooltip"></div>
-            </div>
+      <div id="parallelplot" class="parcoords"></div>
+      <div id="scatterplot">
+        <div id="controls"></div>
+        <div id="chart_container">
+          <div id="chart"></div>
+          <div id="tooltip" class="tooltip"></div>
         </div>
-        <div id="captionPP"></div>
-        <div id="captionSP"></div>
-    </div>  
+      </div>
+      <div id="captionPP"></div>
+      <div id="captionSP"></div>
+    </div>
     <div id="details">
       <h3 id="detailsHeader"></h3>
       <div id="detailsContent"></div>
@@ -1176,6 +1168,36 @@ function updateDetailPanel(title, content) {
 }
 
 function num2word(n){
+  var numToWord = {
+    1: "one",
+    2: "two",
+    3: "three",
+    4: "four",
+    5: "five",
+    6: "six",
+    7: "seven",
+    8: "eight",
+    9: "nine",
+    10: "ten",
+    11: "eleven",
+    12: "twelve",
+    13: "thirteen",
+    14: "fourteen",
+    15: "fifteen",
+    16: "sixteen",
+    17: "seventeen",
+    18: "eighteen",
+    19: "nineteen",
+    20: "twenty",
+    30: "thirty",
+    40: "forty",
+    50: "fifty",
+    60: "sixty",
+    70: "seventy",
+    80: "eighty",
+    90: "ninety",
+    100: "hundred",
+  };
   if (numToWord[n] != undefined){
     return numToWord[n];
   }
