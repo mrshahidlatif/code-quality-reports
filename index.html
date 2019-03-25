@@ -70,7 +70,7 @@ var LOC, AMC, WMC, NPM;
     
 var linkedSLopts = null;    //added
 
-var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+var badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 /* ------------------------------------------------------------------------*/
 /* Load data and generate report */ 
@@ -641,46 +641,92 @@ function createCollapsibleClassList(list) {
    return '<button class="collapsible"></button><div class="content">' + printList(list) + '</div>';
 }
 
-  function structurize(paths) {
-    var items = [];
-    for (var i = 0, l = paths.length; i < l; i++) {
-      var path = paths[i];
-      var name = path[0];
-      var rest = path.slice(1);
-      var item = null;
-      for (var j = 0, m = items.length; j < m; j++) {
-        if (items[j].name === name) {
-          item = items[j];
-          break;
-        }
-      }
-      if (item === null) {
-        item = { name: name, children: [] };
-        items.push(item);
-      }
-      if (rest.length > 0) {
-        item.children.push(rest);
+function structurize(paths) {
+  var items = [];
+  for (var i = 0, l = paths.length; i < l; i++) {
+    var path = paths[i];
+    var name = path[0];
+    var rest = path.slice(1);
+    var item = null;
+    for (var j = 0, m = items.length; j < m; j++) {
+      if (items[j].name === name) {
+        item = items[j];
+        break;
       }
     }
-    for (i = 0, l = items.length; i < l; i++) {
-      item = items[i];
-      item.children = structurize(item.children);
+    if (item === null) {
+      item = { name: name, children: [] };
+      items.push(item);
     }
-    return items;
+    if (rest.length > 0) {
+      item.children.push(rest);
+    }
   }
+  for (i = 0, l = items.length; i < l; i++) {
+    item = items[i];
+    item.children = structurize(item.children);
+  }
+  return items;
+}
 
-  function stringify(items) {
-    var lines = [];
-    for (var i = 0, l = items.length; i < l; i++) {
-      var item = items[i];
-      lines.push(item.name);
-      var subLines = stringify(item.children);
-      for (var j = 0, m = subLines.length; j < m; j++) {
-        lines.push("  " + subLines[j]);
-      }
+function stringify(items) {
+  var lines = [];
+  for (var i = 0, l = items.length; i < l; i++) {
+    var item = items[i];
+    lines.push(item.name);
+    var subLines = stringify(item.children);
+    for (var j = 0, m = subLines.length; j < m; j++) {
+      lines.push("  " + subLines[j]);
     }
-    return lines;
   }
+  return lines;
+}
+
+function noOfBadSmells(list) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].badSmells.length == 4)
+      return list[i];
+    else if (list[i].badSmells.length == 3)
+      return list[i];
+    else if (list[i].badSmells.length == 2)
+      return list[i];
+  }
+}
+
+//bugs report
+function NoOfBugSmells(list) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].badSmells.length == 4 && list[i].bug != "0")
+      return list[i];
+    else if (list[i].badSmells.length == 3 && list[i].bug != "0")
+      return list[i];
+    else if (list[i].badSmells.length == 2 && list[i].bug != "0")
+      return list[i];
+  }
+}
+
+function classesWithBugSmells(list) {
+  var c = [];
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].badSmells.length == 4 && list[i].bug != "0")
+      c.push(list[i].name);
+    else if (list[i].badSmells.length == 3 && list[i].bug != "0")
+      c.push(list[i].name);
+    else if (list[i].badSmells.length == 2 && list[i].bug != "0")
+      c.push(list[i].name);
+  }
+  return c;
+}
+
+function countClassesHavingBadSmells(data) {
+  var count = 0;
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].badSmells.length != 0) {
+      count++;
+    }
+  }
+  return count;
+}
 
 /* ------------------------------------------------------------------------*/
 /* Parallel Coordinates */ 
