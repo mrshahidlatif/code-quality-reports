@@ -52,6 +52,10 @@
 
 <script type="text/javascript">
 
+/* ------------------------------------------------------------------------*/
+/* Global variables */
+/* ------------------------------------------------------------------------*/
+
 var projectName = "";
 var fullData;
 var badClasses;
@@ -63,27 +67,14 @@ var classesWithBadSmells = []
 
 var LOC, AMC, WMC, NPM;
     
-
-function clone(obj) {
-	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
-		return obj;
-
-	if (obj instanceof Date)
-		var temp = new obj.constructor(); //or new Date(obj);
-	else
-		var temp = obj.constructor();
-
-	for (var key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
-			obj['isActiveClone'] = null;
-			temp[key] = clone(obj[key]);
-			delete obj['isActiveClone'];
-		}
-	}
-	return temp;
-}
-
 var linkedSLopts = null;    //added
+
+var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+
+/* ------------------------------------------------------------------------*/
+/* Load data and generate report */ 
+/* ------------------------------------------------------------------------*/
+
 function handleFileSelect(event) {
 	// Check for the various File API support.
 	if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -106,9 +97,9 @@ function handleFileSelect(event) {
 		}, 2000);
 	};
 
-  document.getElementById("subtitle").innerHTML = projectName;
 	// Read in the file as a data URL.
-	reader.readAsDataURL(f);
+  reader.readAsDataURL(f);
+  
 	//modified
 	linkedSLopts = {
                   csvurl: encodeURI("csv/"+f.name),
@@ -129,12 +120,20 @@ function handleFileSelect(event) {
                                      }
                  }
   //end of modified
-
 }
 
-var html = "", badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
-
 function generateReport(data){
+  analyzeData(data);
+  generateText(data);
+  parallelplot(data);
+  makeScatterPlot(data);
+}
+
+/* ------------------------------------------------------------------------*/
+/* Analyze data */ 
+/* ------------------------------------------------------------------------*/
+
+function analyzeData(data){
 
   classCt = data.length;
 
@@ -505,9 +504,13 @@ function generateReport(data){
   result = stringify(structurize(paths)).join("\n");
   // console.log(result);
 
+}
+
 /* ------------------------------------------------------------------------*/
 /* Text Generation */ 
 /* ------------------------------------------------------------------------*/
+
+function generateText(data) {
   //Generate report text
   $("#textAPanel").html(badSmellsText());
   $("#subtitle").html(introText());
@@ -709,31 +712,30 @@ function NoOfBugSmells(list){
   }
 
 
-function bugText(){
-  var text = "";
-  text += '<h3>Bug History</h3>'
-  if(bugCt/classCt == 0){
-    text =+ 'None of the classes was associated with recorded bugs.'
-  }
-  else{
-    var c = NoOfBugSmells(classesWithBadSmells);
-    var d = classesWithBugSmells(classesWithBadSmells);
-    // FIXME: 16.1 is not "almost sixteen"
-    // TODO: Write a sentence about the most bug-prone classes
-    // FIXME: Make sentences less repetitive regarding phrasing
-    text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span id="bar_17" class="barSpan"></span> of the classes were associated with recorded bugs.';
-    if(d.length > 3){
-      text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> were associated with bugs and have identified bad smells';
+  function bugText(){
+    var text = "";
+    text += '<h3>Bug History</h3>'
+    if(bugCt/classCt == 0){
+      text =+ 'None of the classes was associated with recorded bugs.'
     }
-    else if (d.length > 0){
-      text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' was ' : ' The classes ' + printItalicList(d) + ' were ' ;
-      text += 'associated with recorded bugs and '+((d.length == 1)?'has':'have')+' identified bad smells.';
+    else{
+      var c = NoOfBugSmells(classesWithBadSmells);
+      var d = classesWithBugSmells(classesWithBadSmells);
+      // FIXME: 16.1 is not "almost sixteen"
+      // TODO: Write a sentence about the most bug-prone classes
+      // FIXME: Make sentences less repetitive regarding phrasing
+      text+= 'Almost ' + num2word(Math.round((bugCt/classCt)*100)) + ' percent <span id="bar_17" class="barSpan"></span> of the classes were associated with recorded bugs.';
+      if(d.length > 3){
+        text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> were associated with bugs and have identified bad smells';
+      }
+      else if (d.length > 0){
+        text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' was ' : ' The classes ' + printItalicList(d) + ' were ' ;
+        text += 'associated with recorded bugs and '+((d.length == 1)?'has':'have')+' identified bad smells.';
+      }
+
     }
-
+    return text;
   }
-
-  return text;
-}
 
 	html = html.replace(/PROJECTNAME/g, ""+projectName).replace(/ClASSCT/g, ""+classCt).replace(/BADCT/g, ""+badCt).replace(/BUGCT/g, ""+bugCt).replace(/BLOBCT/g, ""+blobCt).replace(/DECOMCT/g, ""+decomCt).replace(/SPACT/g, ""+spaCt).replace(/BLOBLIST/g, ""+blobList).replace(/LAZYCT/g, ""+lazyCt);
   html = html.replace(/DECOMLIST/g, ""+decomList).replace(/SPALIST/g, ""+spaList).replace(/HIGHBLOB/g, ""+highblobList).replace(/LAZYLIST/g, ""+lazyList).replace(/BUGLIST/g, ""+bugList);
@@ -825,19 +827,12 @@ function bugText(){
       content: codeSmellsMethod
   });
 
-
-/* ------------------------------------------------------------------------*/
-/* Calling the Visualization functions to draw visualizations */
-/* ------------------------------------------------------------------------*/
-
-  parallelplot(data);
-  makeScatterPlot(data);
-
   // displaying the captions to screen.
   $("#captionPP").html(generatePPCaption());
   $("#captionSP").html(generateSPCaption());
 
 }
+
 function countClassesHavingBadSmells (data){
   var count = 0;
   for (var i=0;i<data.length;i++){
@@ -1115,6 +1110,25 @@ function showInheritanceMetricDescription() {
 /* Util functions */ 
 /* ------------------------------------------------------------------------*/
 
+function clone(obj) {
+	if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+		return obj;
+
+	if (obj instanceof Date)
+		var temp = new obj.constructor(); //or new Date(obj);
+	else
+		var temp = obj.constructor();
+
+	for (var key in obj) {
+		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+			obj['isActiveClone'] = null;
+			temp[key] = clone(obj[key]);
+			delete obj['isActiveClone'];
+		}
+	}
+	return temp;
+}
+
 function findClassWithMaxValueOfMetricX (X){
   var max =  Math.max.apply(Math, fullData.map(function(o) { return o[X]; }))
   var maxClass = fullData.filter(function(d){ return d[X] == max;})[0];
@@ -1316,6 +1330,7 @@ function parallelfilter(dims) {
 /* ------------------------------------------------------------------------*/
 /* Scatter Plot */ 
 /* ------------------------------------------------------------------------*/
+
 // TODO: Fix size and layout of scatterplot 
 function makeScatterPlot(data){
   

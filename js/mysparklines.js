@@ -89,11 +89,10 @@
         $("#scatterplot").contents().find("circle#"+clsName).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
 
         //Highlight corresponding edge in parallel coordinates
-        var d = window.parent.fullData;
-        for(var i=0; i<d.length;i++){
-            if(d[i] != undefined && d[i].cname.includes(clsName)){
+        for(var i=0; i<data.length;i++){
+            if(data[i] != undefined && data[i].cname.includes(clsName)){
                 // console.log(d[i]);
-                highlightEdge(d[i]);
+                highlightEdge(data[i]);
             }
         }
         showClassCaption(clsName);
@@ -139,7 +138,7 @@
       var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
 
       var idx = classShortNameToIndex[clsName];
-      var str = fullData[idx].cname;
+      var str = data[idx].cname;
       var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
       $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
       $("#detailsContent").empty();

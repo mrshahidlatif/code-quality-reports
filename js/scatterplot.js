@@ -129,7 +129,19 @@ function ScatterPlot(){
                 return cName;
             })
             .style("fill", function(d) {
-                return "#6f6f70";
+                // console.log(d);
+                var className = d.cname.split(".").pop();
+                // console.log(className);
+                var data = window.parent.badClasses;
+                for (var i=0;i<data.length;i++){
+                    if (data[i].name === className){
+                        // console.log(className);
+                        if (data[i].badSmells.length != 0){
+                            return 'black';
+                        }
+                    }
+                }
+                return "#d6d6d6";
             })
             .on("mouseover", function(d) { 
                 var lst = d.cname.split(".");
@@ -156,8 +168,10 @@ function ScatterPlot(){
                         highlightEdge(d[i]);
                     }
                 }
-                showClassCaption(className);
-                highlightCodeSmell(className);
+                //appending to parcoord caption 
+                var bs = findBadSmellsInClass(className);
+                $('#captionPP').append('<span id="dynamicCaption"></span>');
+                $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
 
             })
             .on("mouseout", function(d) {
@@ -175,7 +189,6 @@ function ScatterPlot(){
 
                 //reset to original caption
                 $('#dynamicCaption').remove();
-                $('.clickable').css('background','none');
                 
             }).on("click",function(d){
                 var str = d.cname;
