@@ -339,6 +339,9 @@ outline: 1px solid slategrey;
 #dynamicCaption{
     background-color: #ffe68e;
 }
+#adaptiveCaption{
+    font-weight: bold;
+}
 
 /* ------------------------------------------------------------------------*/
 /* Parallel Coordinates */

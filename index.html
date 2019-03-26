@@ -577,6 +577,9 @@ $(document).on("click", ".smellBlob", function () {
         dims['amc'] = [129, null];
 
         parallelfilter(dims);
+
+        var caption = 'The <span class="BSLegend">Classes</span> containing Large Class smell have <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
+        updateCaption(caption);
     }
 });
 
@@ -593,6 +596,9 @@ $(document).on("click", ".smellFc", function () {
         dims['npm'] = [null, 8];
         dims['wmc'] = [16, null];
         parallelfilter(dims);
+
+        var caption = 'The <span class="BSLegend">Classes</span> containing Functional Decomposition smell have <span class="wmc">loc</span> > 16 and <span class="npm">amc</span> < 8';
+        updateCaption(caption);
     }
 });
 
@@ -608,6 +614,9 @@ $(document).on("click", ".smellSpa", function () {
         var dims = {};
         dims['amc'] = [151, null];
         parallelfilter(dims);
+
+        var caption = 'The <span class="BSLegend">Classes</span> containing Spaghetti Class smell have <span class="amc">amc</span> > 151';
+        updateCaption(caption);
     }
 });
 
@@ -623,6 +632,9 @@ $(document).on("click", ".smellLazy", function () {
         var dims = {};
         dims['wmc'] = [0, 0.1];
         parallelfilter(dims);
+
+        var caption = 'The <span class="BSLegend">Classes</span> containing Lazy Class smell have <span class="wmc">wmc</span> = 0';
+        updateCaption(caption);
     }
 });
 
@@ -642,15 +654,20 @@ $(document).on("click", ".inheritanceMetric", function () {
     showInheritanceMetricDescription();
 });
 
-function showClassCaption(className) {
-    var bs = findBadSmellsInClass(className);
-    $('#captionPP').append('<span id="dynamicCaption"></span>');
-    $('#dynamicCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
-}
-function showPersistentClassCaption(className) {
-    var bs = findBadSmellsInClass(className);
-    $('#captionPP').append('<span id="dynamicPersistentCaption"></span>');
-    $('#dynamicPersistentCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
+// function showClassCaption(className) {
+//     var bs = findBadSmellsInClass(className);
+//     $('#captionPP').append('<span id="dynamicCaption"></span>');
+//     $('#dynamicCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
+// }
+// function showPersistentClassCaption(className) {
+//     var bs = findBadSmellsInClass(className);
+//     $('#captionPP').append('<span id="dynamicPersistentCaption"></span>');
+//     $('#dynamicPersistentCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
+// }
+function updateCaption(content){
+  $('#adaptiveCaption').remove();
+  $('#captionPP').append('<span id="adaptiveCaption"></span>');
+  $('#adaptiveCaption').append(content); 
 }
 
 function highlightCodeSmell(className) {
@@ -678,7 +695,7 @@ function showHoverHighlighting(className){
   var d = window.parent.fullData;
   highlightEdge(d[classShortNameToIndex[className]]);
   highlightCodeSmell(className);
-  showClassCaption(className);
+  // showClassCaption(className);
 }
 
 function makeSelectionPersistent(className){

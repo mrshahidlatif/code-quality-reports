@@ -231,7 +231,7 @@ function bugText() {
 function generatePPCaption() {
     // TODO: color metric names
     var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>).';
-    caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' <span class="BSLegend">Classes</span> contain bad smells';
+    // caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' <span class="BSLegend">Classes</span> contain bad smells';
 
     caption += '. ';
 
