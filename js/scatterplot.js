@@ -147,7 +147,13 @@ function ScatterPlot(){
             .on("mouseout", function(d) {
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
-                removeHoverHighlighting(className);
+                if(haveClassToPersist){
+                    removeHoverHighlighting(className); 
+                  }
+                else {
+                    removePersistentHighlighting(className);
+                    removeHoverHighlighting(className); 
+                }
                 mouseout(d);
 
                //Hiding the tooltip
@@ -170,7 +176,7 @@ function ScatterPlot(){
                 src = src.substring(src.indexOf("package "));   // cut out license text
                 $("#sourcecode").text(src);
                 Prism.highlightElement($("#sourcecode")[0]);
-
+                makeSelectionPersistent(str.split('.').pop());
                 
               });
 

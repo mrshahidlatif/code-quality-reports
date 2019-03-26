@@ -82,7 +82,13 @@
 
         }).on('mouseout', function(){
           var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-          removeHoverHighlighting(clsName);
+          if(haveClassToPersist){
+            removeHoverHighlighting(clsName); 
+          }
+          else {
+            removePersistentHighlighting(clsName);
+            removeHoverHighlighting(clsName); 
+        }
       });
   }
   function addHLeffects() {  //add and remove highlight on corresponding bars
@@ -130,6 +136,7 @@
       src = src.substring(src.indexOf("package "));   // cut out license text
       $("#sourcecode").text(src);
       Prism.highlightElement($("#sourcecode")[0]);
+      makeSelectionPersistent(str.split('.').pop());
     });
 
   }
