@@ -707,7 +707,8 @@ function makeSelectionPersistent(className){
   $("span.slcls."+className+"").css('background','black');
   $("#scatterplot").contents().find("circle#"+className).css("fill","black");
 
-  highlightEdge(fullData[classShortNameToIndex[className]]);
+  // highlightEdge(fullData[classShortNameToIndex[className]]);
+  makeEdgePersistent(className);
 
   //make code smell name persistent
   var cSmells = fullData[classShortNameToIndex[className]].smells;
@@ -1042,7 +1043,6 @@ function unHighlight(){
 	pcz.unhighlight();
 }
 function highlightEdge(d){
-	// console.log(d);
   var classData = {cname:d.cname,
           amc: d.amc,
           bug: d.bug,
@@ -1059,6 +1059,16 @@ function highlightEdge(d){
           wmc: d.wmc};
 	pcz.highlight([classData]);
 }
+function makeEdgePersistent(className){
+  //TODO: maybe find a better way of doing it. 
+  pcz.brushReset();
+  pcz.color(function(d){
+    if(d.cname.split('.').pop() == className){
+      return 'black';
+    }
+    return '#8d8e8e';
+  }).render();
+}
 
 function parallelfilter(dims) {
 	for(var dim in dims){
@@ -1070,7 +1080,7 @@ function parallelfilter(dims) {
 		if(dims[dim][1] == null){
 			dims[dim][1] = Math.max(domain[0], domain[1]);
 		}
-	}
+  }
 	pcz.brushReset();
 	pcz.brushExtents(dims);
 }
