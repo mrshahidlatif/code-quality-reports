@@ -1,16 +1,11 @@
 function generateText(data) {
     $("#subtitle").html(introText());
-    $("#textAPanel").html(badSmellsText());
+    $("#textAPanel").html(badSmellsText() + bugText());
+    $("#textBPanel").html(generalQualityText());
 
-    var html = generalQualityText();
-    html += bugText();
-    html = html.replace(/GOODCOUPLINGLIST/g, "" + goodCouplingList).replace(/GOODCOUPLINGCT/g, "" + goodCouplingCt).replace(/GOODCOUPLINGPT/g, "" + goodCouplingPercent).replace(/REGULARCOUPLINGLIST/g, "" + regularCouplingList).replace(/REGULARCOUPLINGCT/g, "" + regularCouplingCt).replace(/REGULARCOUPLINGPT/g, "" + regularCouplingPercent).replace(/BADCOUPLINGLIST/g, "" + badCouplingList).replace(/BADCOUPLINGCT/g, "" + badCouplingCt).replace(/BADCOUPLINGPT/g, "" + badCouplingPercent);
-    html = html.replace(/GOODINHERITANCELIST/g, "" + goodInheritanceList).replace(/GOODINHERITANCECT/g, "" + goodInheritanceCt).replace(/REGULARINHERITANCELIST/g, "" + regularInheritanceList).replace(/REGULARINHERITANCECT/g, "" + regularInheritanceCt).replace(/BADINHERITANCELIST/g, "" + badInheritanceList).replace(/BADINHERITANCECT/g, "" + badInheritanceCt);
-    html = html.replace(/BADCOHESIONLIST/g, "" + badCohesionList).replace(/BADCOHESIONCT/g, "" + badCohesionCt).replace(/REGULARCOHESIONLIST/g, "" + regularCohesionList).replace(/REGULARCOHESIONCT/g, "" + regularCohesionCt).replace(/GOODCOHESIONLIST/g, "" + goodCohesionList).replace(/GOODCOHESIONCT/g, "" + goodCohesionCt);
-    html = html.replace(/GOODCOMPLEXITYLIST/g, "" + goodComplexityList).replace(/GOODCOMPLEXITYCT/g, "" + goodComplexityCt).replace(/REGULARCOMPLEXITYLIST/g, "" + regularComplexityList).replace(/REGULARCOMPLEXITYCT/g, "" + regularComplexityCt).replace(/BADCOMPLEXITYLIST/g, "" + badComplexityList).replace(/BADCOMPLEXITYCT/g, "" + badComplexityCt);
-    html = html.replace(/BBLIST/g, "" + bugBlobArr[0]).replace(/BDLIST/g, "" + bugDecomList).replace(/BLOBDECOMSMELLSLIST/g, "" + blobDecomArr[0]).replace(/BLOBSPASMELLSLIST/g, "" + blobSpaArr[0]).replace(/BLOBLAZYSMELLSLIST/g, "" + blobLazyArr[0]);
-    $("#textBPanel").html(html);
-
+    // displaying the captions to screen.
+    $("#captionPP").html(generatePPCaption());
+    $("#captionSP").html(generateSPCaption());
 
     drawBarChart("#barBlob", Math.round((blobCt / badCt) * 1000) / 10);
     drawBarChart("#barFc", Math.round((decomCt / badCt) * 1000) / 10);
@@ -22,16 +17,11 @@ function generateText(data) {
     drawBarChart("#barInheritance", Math.round((badInheritanceCt / classCt) * 1000) / 10);
 
     //bug chart
-    drawBarChart("#bar_17", Math.round((bugCt / classCt) * 1000) / 10);
+    drawBarChart("#barBug", Math.round((bugCt / classCt) * 1000) / 10);
 
-    if (linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);  //added
-
-    // displaying the captions to screen.
-    $("#captionPP").html(generatePPCaption());
-    $("#captionSP").html(generateSPCaption());
+    if (linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);
 
     generateTooltipTexts();
-
 }
 
 function introText() {
@@ -98,7 +88,7 @@ function generalQualityText() {
     // TODO: expand details (bar chart) when clicking on the metrics
     // TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
     // TODO: Add a fifth group that summarizes the size-related metrics
-    text += '<h3>Software Metrics</h3><p>The code quality analysis works with four groups of software metrics.</p>'
+    text += '<h3>Quality Attributes</h3><p>The code quality analysis works with four groups of software metrics.</p>'
 
     text += attributeText("complexity", goodComplexityCt, regularComplexityCt, badComplexityCt);
     text += attributeText("coupling", goodCouplingCt, regularCouplingCt, badCouplingCt);
@@ -159,16 +149,15 @@ function bugText() {
     else {
         var c = NoOfBugSmells(classesWithBadSmells);
         var d = classesWithBugSmells(classesWithBadSmells);
-        // FIXME: 16.1 is not "almost sixteen"
         // TODO: Write a sentence about the most bug-prone classes
         // FIXME: Make sentences less repetitive regarding phrasing
-        text += 'Almost ' + num2word(Math.round((bugCt / classCt) * 100)) + ' percent <span id="bar_17" class="barSpan"></span> of the classes were associated with recorded bugs.';
+        text += 'With respect to past and present bugs, ' + num2word(bugCt) + ' of the classes <span id="barBug" class="barSpan"></span> have been associated with bugs.';
         if (d.length > 3) {
-            text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> were associated with bugs and have identified bad smells';
+            text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> habe both associated bugs and identified code smells';
         }
         else if (d.length > 0) {
-            text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' was ' : ' The classes ' + printItalicList(d) + ' were ';
-            text += 'associated with recorded bugs and ' + ((d.length == 1) ? 'has' : 'have') + ' identified bad smells.';
+            text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' has ' : ' The classes ' + printItalicList(d) + ' have ';
+            text += 'both associated bugs and identified code smells.';
         }
 
     }
@@ -285,10 +274,51 @@ function generateClassDescription(className) {
     return text;
 }
 
+/* ------------------------------------------------------------------------*/
+/* Text util functions */
+/* ------------------------------------------------------------------------*/
+
 function captitalize(str) {
     // https://stackoverflow.com/questions/5122402/uppercase-first-letter-of-variable
     str = str.toLowerCase().replace(/\b[a-z]/g, function (letter) {
         return letter.toUpperCase();
     });
     return str;
+}
+
+function num2word(n) {
+    var numToWord = {
+        1: "one",
+        2: "two",
+        3: "three",
+        4: "four",
+        5: "five",
+        6: "six",
+        7: "seven",
+        8: "eight",
+        9: "nine",
+        10: "ten",
+        11: "eleven",
+        12: "twelve",
+        13: "thirteen",
+        14: "fourteen",
+        15: "fifteen",
+        16: "sixteen",
+        17: "seventeen",
+        18: "eighteen",
+        19: "nineteen",
+        20: "twenty",
+        30: "thirty",
+        40: "forty",
+        50: "fifty",
+        60: "sixty",
+        70: "seventy",
+        80: "eighty",
+        90: "ninety",
+        100: "hundred",
+    };
+    if (numToWord[n] != undefined) {
+        return numToWord[n];
+    }
+    else return n;
 }

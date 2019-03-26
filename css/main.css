@@ -44,10 +44,12 @@ body {
 #textAPanel{
     grid-area: textA;
     overflow: auto;
+    padding-right: 5px;
 }
 #textBPanel{
     grid-area: textB;
     overflow: auto;
+    padding-right: 5px;
 }
 #vis{ /*nested grid panel*/
     grid-area: vis; 
