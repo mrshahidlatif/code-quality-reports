@@ -11,27 +11,15 @@ function generateText(data) {
     html = html.replace(/BBLIST/g, "" + bugBlobArr[0]).replace(/BDLIST/g, "" + bugDecomList).replace(/BLOBDECOMSMELLSLIST/g, "" + blobDecomArr[0]).replace(/BLOBSPASMELLSLIST/g, "" + blobSpaArr[0]).replace(/BLOBLAZYSMELLSLIST/g, "" + blobLazyArr[0]);
     $("#textBPanel").html(html);
 
-    //bad smells charts
+
     drawBarChart("#barBlob", Math.round((blobCt / badCt) * 1000) / 10);
     drawBarChart("#barFc", Math.round((decomCt / badCt) * 1000) / 10);
     drawBarChart("#barSpa", Math.round((spaCt / badCt) * 1000) / 10);
     drawBarChart("#barLazy", Math.round((lazyCt / badCt) * 1000) / 10);
-    // coupling charts
-    drawBarChart("#bar_5", Math.round((goodCouplingCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_6", Math.round((regularCouplingCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_7", Math.round((badCouplingCt / classCt) * 1000) / 10);
-    //Inheritance charts
-    drawBarChart("#bar_8", Math.round((goodInheritanceCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_9", Math.round((regularInheritanceCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_10", Math.round((badInheritanceCt / classCt) * 1000) / 10);
-    // Cohesion charts
-    drawBarChart("#bar_11", Math.round((goodCohesionCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_12", Math.round((regularCohesionCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_13", Math.round((badCohesionCt / classCt) * 1000) / 10);
-    // Complexity charts
-    drawBarChart("#bar_14", Math.round((goodComplexityCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_15", Math.round((regularComplexityCt / classCt) * 1000) / 10);
-    drawBarChart("#bar_16", Math.round((badComplexityCt / classCt) * 1000) / 10);
+    drawBarChart("#barComplexity", Math.round((badComplexityCt / classCt) * 1000) / 10);
+    drawBarChart("#barCoupling", Math.round((badCouplingCt / classCt) * 1000) / 10);
+    drawBarChart("#barCohesion", Math.round((badCohesionCt / classCt) * 1000) / 10);
+    drawBarChart("#barInheritance", Math.round((badInheritanceCt / classCt) * 1000) / 10);
 
     //bug chart
     drawBarChart("#bar_17", Math.round((bugCt / classCt) * 1000) / 10);
@@ -112,95 +100,54 @@ function generalQualityText() {
     // TODO: Add a fifth group that summarizes the size-related metrics
     text += '<h3>Software Metrics</h3><p>The code quality analysis works with four groups of software metrics.</p>'
 
-    text += generateComplexityText();
-    text += generateCouplingText();
-    text += generateCohesionText();
-    text += generateInheritanceText();
+    text += attributeText("complexity", goodComplexityCt, regularComplexityCt, badComplexityCt);
+    text += attributeText("coupling", goodCouplingCt, regularCouplingCt, badCouplingCt);
+    text += attributeText("cohesion", goodCohesionCt, regularCohesionCt, badCohesionCt);
+    text += attributeText("inheritance", goodInheritanceCt, regularInheritanceCt, badInheritanceCt);
 
     return text;
 }
 
-function generateCouplingText() {
-    var text = '<p>';
-    var coup = '<h4><span class="couplingMetric clickable">Coupling</span>:</h4>';
-    // coupling quality
-    var couplingArr = [goodCouplingPercent, regularCouplingPercent, badCouplingPercent];
-    var m = Math.max(...couplingArr);
-    var i = couplingArr.indexOf(m);
-
-    if (i == 0) {
-        text += coup + ' The quality in terms of coupling is high because GOODCOUPLINGCT classes <span id="bar_5" class="barSpan"></span> have coupling metrics in a good range';
+// FIXME: the values of good, regular and bad don't sum up to 100%
+function attributeText(attribute, good, regular, bad) {
+    //console.log(attribute, good, regular, bad);
+    const attributeName = {
+        'complexity': 'code complexity',
+        'coupling': 'coupling between classes',
+        'cohesion': 'cohesion within classes',
+        'inheritance': 'usage of class inheritance'
+    };
+    var bar = '<span id="bar' + captitalize(attribute) + '" class="barSpan"></span>';
+    var badClasses = num2word(bad) + ' class' + (bad === 0 ? '' : 'es') + ' ' + bar;
+    var badClassesAre = badClasses + ' ' + (bad === 0 ? 'is' : 'are');
+    var text = '<p><h4 class="' + attribute + 'Metric clickable">' + captitalize(attribute) + ':</h4> '
+    var quality = '', reason = '';
+    if (good > bad && regular > bad) {
+        if (good > bad * 10) {
+            quality = '<i>very good</i> &#9733;&#9733;&#9733;';
+            if (bad === 0) {
+                reason = 'no class ' + bar + ' is rated as having <i>low</i> quality';
+            } else if (bad === 1) {
+                reason = 'only a single class ' + bar + ' is rated as having <i>low</i> quality';
+            } else {
+                reason = 'only the very small number of ' + badClasses + ' is rated as having <i>low</i> quality';
+            }
+        } else {
+            quality = '<i>good</i> &#9733;&#9733;';
+            reason = 'only ' + badClassesAre + ' rated as having <i>low</i> quality';
+        }
+    } else {
+        if (regular > bad) {
+            quality = '<i>okay</i> &#9733;';
+            reason = badClassesAre + ' rated as having <i>low</i> quality, which are still fewer than the ones rated as <i>regular</i> (' + regular + ')';
+        } else {
+            quality = '<i>low</i> &#9888;';
+            reason = 'the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
+        }
     }
-
-    else if (i == 1) {
-        text += coup + ' The quality in terms of coupling is moderate because REGULARCOUPLINGCT classes <span id="bar_6" class="barSpan">have coupling metrics in an acceptable range'
-    }
-
-    else if (i == 2) {
-        text += coup + ' The quality in terms of coupling is low because BADCOUPLINGCT classes <span id="bar_7" class="barSpan"></span> have coupling metrics in an undersired range'
-    }
-    text += '<span class="couplingInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl1"></div></div></p>';
+    text += 'The ' + attributeName[attribute] + ' is ' + quality + ' as ' + reason;
+    text += '<span class="' + attribute + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attribute) + '"></div></div></p>';
     return text;
-
-}
-function generateComplexityText() {
-    var comp = '<h4><span class="complexityMetric clickable">Complexity</span>:</h4>';
-    // complextiy quality
-    var complexityArr = [goodComplexityPercent, regularComplexityPercent, badComplexityPercent];
-    m = Math.max(...complexityArr);
-    i = complexityArr.indexOf(m);
-    var text = '<p>';
-    if (i == 0) {
-        text += comp + ' The quality from complexity perspective is high because GOODCOMPLEXITYCT classes <span id="bar_14" class="barSpan"></span> have low complexity'
-    }
-    else if (i == 1) {
-        text += comp + ' The quality from complexity perspective is medium because REGULARCOMPLEXITYCT classes <span id="bar_15" class="barSpan"></span> have regular complexity'
-    }
-    else if (i == 2) {
-        text += comp + ' The quality from complexity perspective is low because BADCOMPLEXITYCT classes <span id="bar_16" class="barSpan"></span> have  high complexity'
-    }
-    return text += '<span class="complexityInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl2"></div></div></p>';
-
-}
-function generateCohesionText() {
-    var coh = '<h4><span class="cohesionMetric clickable">Cohesion</span>:</h4>';
-
-    var cohesionArr = [goodCohesionPercent, regularCohesionPercent, badCohesionPercent];
-    m = Math.max(...cohesionArr);
-    i = cohesionArr.indexOf(m);
-    var text = '<p>';
-    if (i == 0) {
-        text += coh + ' High values of cohesion metrics in GOODCOHESIONCT classes <span id="bar_11" class="barSpan"></span> reflect good project quality';
-    }
-    else if (i == 1) {
-        text += coh + ' Moderate values of cohesion metrics in REGULARCOHESIONCT classes <span id="bar_12" class="barSpan"></span> reflect regular quality';
-    }
-    else if (i == 2) {
-        text += coh + ' Low values of cohesion metrics in BADCOHESIONCT classes <span id="bar_13" class="barSpan"></span> reflect bad proejct quality';
-    }
-    return text += '<span class="cohesionInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl3"></div></div><p>';
-
-}
-function generateInheritanceText() {
-
-    var inher = '<h4><span class="inheritanceMetric clickable">Inheritance</span>:</h4>';
-    // inheritance quality
-    var inheritanceArr = [goodInheritancePercent, regularInheritancePercent, badInheritancePercent];
-    m = Math.max(...inheritanceArr);
-    i = inheritanceArr.indexOf(m);
-    var text = '<p>';
-    if (i == 0) {
-        text += inher + ' Inheritance metrics indicate high quality in GOODINHERITANCECT classes <span id="bar_8" class="barSpan"></span>';
-    }
-    else if (i == 1) {
-        text += inher + ' Inheritance metrics indicate acceptable quality in REGULARINHERITANCECT classes <span id="bar_9" class="barSpan"></span>';
-    }
-    else if (i == 2) {
-        text += inher + ' Inheritance metrics indicate low quality in BADINHERITANCECT classes <span id="bar_10" class="barSpan"></span>';
-    }
-
-    return text += '<span class="inheritanceInfo infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="samplsl4"></div></div></p>';
-
 }
 
 function bugText() {
@@ -330,10 +277,18 @@ function generateTooltipTexts() {
     });
 
 }
-function generateClassDescription(className){
+function generateClassDescription(className) {
     var text = '';
     var bs = findBadSmellsInClass(className);
     text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
-    
+
     return text;
+}
+
+function captitalize(str) {
+    // https://stackoverflow.com/questions/5122402/uppercase-first-letter-of-variable
+    str = str.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+        return letter.toUpperCase();
+    });
+    return str;
 }

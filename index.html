@@ -108,8 +108,8 @@ function handleFileSelect(event) {
 	//modified
 	linkedSLopts = {
                   csvurl: encodeURI("csv/"+f.name),
-                  slids: ['samplsl2', 'samplsl1', 'samplsl3', 'samplsl4'],     //pass ids for containers of first and second graph, dafaults to ['sl1', 'sl2']
-                  sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs, defaults to ['cbo,ca,ce', 'wmc,max_cc']
+                  slids: ['slComplexity', 'slCoupling', 'slCohesion', 'slInheritance'],     //pass ids for containers of first and second graph
+                  sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs
                   slopts: [
                             {height: 25}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
                             //pass options specfic to each sl if required, in order
