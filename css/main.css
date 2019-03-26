@@ -158,17 +158,11 @@ svg .ca rect {
 svg .ce rect {
     fill: #65e48f;
 }
-.lcom{
+.lcom3{
     border-bottom: 2px solid #c51b8a;
 }
-svg .lcom rect {
-    fill: #c51b8a;
-}
-.lcom3{
-    border-bottom: 2px solid #fa9fb5;
-}
 svg .lcom3 rect {
-    fill: #fa9fb5;
+    fill: #c51b8a;
 }
 .noc{
     border-bottom: 2px solid #8b5400;

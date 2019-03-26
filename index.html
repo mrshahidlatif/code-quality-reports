@@ -109,7 +109,7 @@ function handleFileSelect(event) {
 	linkedSLopts = {
                   csvurl: encodeURI("csv/"+f.name),
                   slids: ['slComplexity', 'slCoupling', 'slCohesion', 'slInheritance'],     //pass ids for containers of first and second graph
-                  sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom,lcom3', 'dit,noc'], //pass fields for graphs
+                  sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom3', 'dit,noc'], //pass fields for graphs
                   slopts: [
                             {height: 25}, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
                             //pass options specfic to each sl if required, in order
@@ -991,7 +991,6 @@ function parallelplot(data) {
 		"cbo":{type:"number"},
 		"ca": {type:"number"},
 		"ce": {type:"number"},
-		"lcom": {type:"number"},
 		"lcom3": {type:"number"},
 		"noc": {type:"number"},
 		"dit": {type:"number"},
@@ -1032,7 +1031,6 @@ function highlightEdge(d){
           cbo: d.cbo,
           ce: d.ce,
           dit: d.dit,
-          lcom: d.lcom,
           lcom3: d.lcom3,
           loc: d.loc,
           max_cc: d.max_cc,

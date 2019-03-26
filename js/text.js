@@ -166,7 +166,7 @@ function bugText() {
 
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom">lcom</span>, <span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>)';
+    var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>)';
     // caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' <span class="BSLegend">Classes</span> contain bad smells';
 
     caption += '. ';
@@ -218,7 +218,7 @@ function showComplexityMetricDescription() {
 function showCohesionMetricDescription() {
     var content = '<p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>';
 
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('lcom')) + ' has maximum cohesion. </p>';
+    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('lcom3')) + ' has maximum cohesion. </p>';
 
     updateDetailPanel("Background: Cohesion Metrics", content);
 }
