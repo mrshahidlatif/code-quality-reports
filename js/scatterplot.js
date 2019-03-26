@@ -134,9 +134,7 @@ function ScatterPlot(){
             .on("mouseover", function(d) { 
                 var lst = d.cname.split(".");
                 var className = lst[lst.length-1];
-                var x = $("span.className:contains("+ className +")",window.parent.document).html();
-                $("span.className:contains("+ className +")",window.parent.document).css( "background-color", "#ffe68e");
-                $(this).attr("r","6").attr("stroke", "#ffe68e").attr("stroke-width","4px");
+                showHoverHighlighting(className);
                 //Show the new tooltip
                d3.select('.tooltip')
                 tooltip.transition()
@@ -145,38 +143,17 @@ function ScatterPlot(){
                 tooltip.html(className)
                 .style("left", (d3.event.pageX + 5) + "px")
                 .style("top", (d3.event.pageY - 5) + "px");
-
-                //Highlighting corresponding bar in the sparklines 
-                $("span.slcls."+className+"",window.parent.document).css('background','#ffe68e');
-
-                //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
-                var d = window.parent.fullData;
-                for(var i=0; i<d.length;i++){
-                    if(d[i] != undefined && d[i].cname.includes(className)){
-                        highlightEdge(d[i]);
-                    }
-                }
-                //appending to parcoord caption 
-                var bs = findBadSmellsInClass(className);
-                $('#captionPP').append('<span id="dynamicCaption"></span>');
-                $('#dynamicCaption').append(createClassSpan(className) + ' contains ' + printList(bs) + ' bad smells.');
-
             })
             .on("mouseout", function(d) {
-                $("span.className",window.parent.document).css( "background-color", "");
-                $(this).attr("r","6").attr("r","3").attr("stroke", "transparent").attr("stroke-width","0px");
-
-                $("span.slcls",window.parent.document).css('background','');
-                unHighlight();
+                var lst = d.cname.split(".");
+                var className = lst[lst.length-1];
+                removeHoverHighlighting(className);
                 mouseout(d);
 
                //Hiding the tooltip
                tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
-
-                //reset to original caption
-                $('#dynamicCaption').remove();
                 
             }).on("click",function(d){
                 var str = d.cname;

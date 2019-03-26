@@ -527,14 +527,7 @@ $(document).on("click", "button.collapsible", function () {
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".className", function () {
     var className = $(this).text();
-    $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
-    $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
-
-    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
-    var d = window.parent.fullData;
-    highlightEdge(d[classShortNameToIndex[className]]);
-    highlightCodeSmell(className);
-    showClassCaption(className);
+    showHoverHighlighting(className);
 
  }).on('mouseout', '.className', function() {
   var className = $(this).text();
@@ -545,8 +538,6 @@ $(document).on("mouseover", ".className", function () {
       removePersistentHighlighting(className);
     }
 
- }).on('mouseup', '.className', function(){
-    // haveClassToPersist = true;
  });
 
 $(document).on("click", ".className", function() {
@@ -671,6 +662,17 @@ function highlightCodeSmell(className) {
     }
 }
 
+function showHoverHighlighting(className){
+  $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
+  $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
+
+  //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+  var d = window.parent.fullData;
+  highlightEdge(d[classShortNameToIndex[className]]);
+  highlightCodeSmell(className);
+  showClassCaption(className);
+}
+
 function makeSelectionPersistent(className){
   //Already a class selected then clear highlighting first
   removePersistentHighlighting();
@@ -713,6 +715,7 @@ function removePersistentHighlighting(className){
   haveClassToPersist = false;
   persistentClass = "";
 }
+
 function removeHoverHighlighting(className){
   $("span.slcls."+className+"",window.parent.document).css('background','');
   if (persistentClass != '') $("span.slcls."+persistentClass+"",window.parent.document).css('background','black');
@@ -721,6 +724,7 @@ function removeHoverHighlighting(className){
   if (persistentClass != '') $("#scatterplot").contents().find("circle#"+persistentClass).css('fill', 'black');
   unHighlight();  
   $('.clickable').css('background','none');
+  
   //reset to original caption
   $('#dynamicCaption').remove();
 
@@ -1003,20 +1007,20 @@ function unHighlight(){
 }
 function highlightEdge(d){
 	// console.log(d);
-		var classData = {cname:d.cname,
-						amc: d.amc,
-						bug: d.bug,
-						ca: d.ca,
-						cbo: d.cbo,
-						ce: d.ce,
-						dit: d.dit,
-						lcom: d.lcom,
-						lcom3: d.lcom3,
-						loc: d.loc,
-						max_cc: d.max_cc,
-						noc: d.noc,
-						npm: d.npm,
-						wmc: d.wmc};
+  var classData = {cname:d.cname,
+          amc: d.amc,
+          bug: d.bug,
+          ca: d.ca,
+          cbo: d.cbo,
+          ce: d.ce,
+          dit: d.dit,
+          lcom: d.lcom,
+          lcom3: d.lcom3,
+          loc: d.loc,
+          max_cc: d.max_cc,
+          noc: d.noc,
+          npm: d.npm,
+          wmc: d.wmc};
 	pcz.highlight([classData]);
 }
 
