@@ -46,6 +46,7 @@
     </div>
     <div id="details">
       <h3 id="detailsHeader"></h3>
+      <p id="classDescription"></p>
       <div id="detailsContent"></div>
     </div>
   </div>
@@ -528,7 +529,6 @@ $(document).on("click", "button.collapsible", function () {
 $(document).on("mouseover", ".className", function () {
     var className = $(this).text();
     showHoverHighlighting(className);
-
  }).on('mouseout', '.className', function() {
   var className = $(this).text();
     if(haveClassToPersist){
@@ -536,16 +536,18 @@ $(document).on("mouseover", ".className", function () {
     }
     else {
       removePersistentHighlighting(className);
+      removeHoverHighlighting(className); 
     }
-
  });
 
 $(document).on("click", ".className", function() {
-
   var className = $(this).text();
   var idx = Number($(this).attr("data-index"));
   var str = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
+  
+  updateClassDescription(generateClassDescription(str.split('.').pop()));
+
   updateDetailPanel("File "+str.split(".").pop()+ ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
   // TODO: replace by asynchronous load
   var src = $.ajax({
@@ -697,6 +699,8 @@ function makeSelectionPersistent(className){
   if (cSmells.lazy == true){
     $(".smellLazy").css('font-weight','bold');
   }
+  showClassCaption(className);
+
   haveClassToPersist= true;
   persistentClass = className;
 
@@ -709,8 +713,12 @@ function removePersistentHighlighting(className){
 
   $("span.slcls").css('background',''); 
   $("#scatterplot").contents().find("circle").css('fill', '#8d8e8e');
+  $("#scatterplot").contents().find("circle#"+className).attr("r","3").attr("stroke", "").attr("stroke-width","0px");
   unHighlight();
   $('.clickable').css('background','none');
+
+  //reset to original caption
+  $('#dynamicCaption').remove();
 
   haveClassToPersist = false;
   persistentClass = "";
@@ -726,10 +734,8 @@ function removeHoverHighlighting(className){
   $('.clickable').css('background','none');
   
   //reset to original caption
-  $('#dynamicCaption').remove();
-
+  if (persistentClass != '') $('#dynamicCaption').remove();
 }
-
 
 /* ------------------------------------------------------------------------*/
 /* Util functions */ 
@@ -804,6 +810,10 @@ function updateDetailPanel(title, content) {
   $("#detailsHeader").text(title);
   $("#detailsContent").empty();
   $("#detailsContent").append($(content));
+}
+function updateClassDescription(content){
+  $("#classDescription").empty();
+  $("#classDescription").text(content);
 }
 
 function num2word(n){

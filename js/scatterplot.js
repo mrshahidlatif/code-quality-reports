@@ -157,6 +157,7 @@ function ScatterPlot(){
                 
             }).on("click",function(d){
                 var str = d.cname;
+                updateClassDescription(generateClassDescription(str.split('.').pop()));
                 var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
                 $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
                 $("#detailsContent").empty();

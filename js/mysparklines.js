@@ -115,6 +115,9 @@
 
       var idx = classShortNameToIndex[clsName];
       var str = fullData[idx].cname;
+
+      updateClassDescription(generateClassDescription(str.split('.').pop()));
+
       var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
       $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
       $("#detailsContent").empty();

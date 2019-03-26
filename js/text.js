@@ -330,3 +330,6 @@ function generateTooltipTexts() {
     });
 
 }
+function generateClassDescription(className){
+    return 'Specific description of the class:' + className;
+}
