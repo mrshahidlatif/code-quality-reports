@@ -665,6 +665,7 @@ function highlightCodeSmell(className) {
 }
 
 function showHoverHighlighting(className){
+  $('span.className:contains("'+className+'")').css('background','#ffe68e');
   $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
   $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
 
@@ -700,6 +701,8 @@ function makeSelectionPersistent(className){
     $(".smellLazy").css('font-weight','bold');
   }
   showClassCaption(className);
+  $('#dynamicCaption').css('background', '');
+  $('#dynamicCaption').css('font-weight', 'bold');
 
   haveClassToPersist= true;
   persistentClass = className;
@@ -732,9 +735,9 @@ function removeHoverHighlighting(className){
   if (persistentClass != '') $("#scatterplot").contents().find("circle#"+persistentClass).css('fill', 'black');
   unHighlight();  
   $('.clickable').css('background','none');
-  
+   
   //reset to original caption
-  if (persistentClass != '') $('#dynamicCaption').remove();
+  if (persistentClass == '') $('#dynamicCaption').remove();
 }
 
 /* ------------------------------------------------------------------------*/
