@@ -68,6 +68,7 @@ var yVal; //variables to store active values of scatterplot dimensions
 var classesWithBadSmells = [];
 var haveClassToPersist = false;
 var persistentClass = "";
+var scatterPlotDimensions=[];
 
 var LOC, AMC, WMC, NPM;
     
@@ -565,6 +566,10 @@ $(document).on("click", ".className", function() {
 // TODO: integrate links to the respective metrics
 $(document).on("click", ".smellBlob", function () {
     updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
+    
+    scatterPlotDimensions =['loc', 'amc'];
+    makeScatterPlot(fullData);
+    
     if (blobCt > 0) {
         var newdata = [];
         fullData.forEach(function (d, i) {
@@ -585,6 +590,10 @@ $(document).on("click", ".smellBlob", function () {
 
 $(document).on("click", ".smellFc", function () {
     updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
+
+    scatterPlotDimensions =['npm', 'wmc'];
+    makeScatterPlot(fullData);
+
     if (decomCt > 0) {
         var newdata = [];
         fullData.forEach(function (d, i) {
@@ -604,6 +613,11 @@ $(document).on("click", ".smellFc", function () {
 
 $(document).on("click", ".smellSpa", function () {
     updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
+    
+    // TODO: What should be the second dimension here?
+    scatterPlotDimensions =['amc', 'wmc'];
+    makeScatterPlot(fullData);
+    
     if (spaCt > 0) {
         var newdata = [];
         fullData.forEach(function (d, i) {
@@ -622,6 +636,11 @@ $(document).on("click", ".smellSpa", function () {
 
 $(document).on("click", ".smellLazy", function () {
     updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
+    
+    // TODO: What should be the second dimension here?
+    scatterPlotDimensions =['amc', 'wmc'];
+    makeScatterPlot(fullData);
+
     if (lazyCt > 0) {
         var newdata = [];
         fullData.forEach(function (d, i) {
@@ -783,7 +802,7 @@ function clone(obj) {
 			temp[key] = clone(obj[key]);
 			delete obj['isActiveClone'];
 		}
-	}
+  }
 	return temp;
 }
 
@@ -1090,6 +1109,7 @@ function parallelfilter(dims) {
 /* ------------------------------------------------------------------------*/
 
 // TODO: Fix size and layout of scatterplot 
+// TODO: Needs cleaning and refactoring 
 function makeScatterPlot(data){
   
   var root = d3.select('#controls');
@@ -1177,18 +1197,27 @@ function makeScatterPlot(data){
             }} catch(e){}
         });
 
-        var dims = {};
-        var dimension = [dimensions[0], dimensions[0]];
-        try {if(prev_options.xSelect != null) {
-            document.getElementById("xSelect").value = prev_options.xSelect;
-            dimension[0] = prev_options.xSelect;
-            dims[dimension[0]] = [null, 0];
-        }} catch(e){}
-        try {if(prev_options.ySelect != null) {
-            document.getElementById("ySelect").value = prev_options.ySelect;
-            dimension[1] = prev_options.ySelect;
-            dims[dimension[1]] = [null, 0];
-        }} catch(e){}
+        if (scatterPlotDimensions.length == 0){
+          // Dimensions coming from the x and y dimension selectors
+          var dims = {};
+          var dimension = [dimensions[0], dimensions[0]];
+          try {if(prev_options.xSelect != null) {
+              document.getElementById("xSelect").value = prev_options.xSelect;
+              dimension[0] = prev_options.xSelect;
+              dims[dimension[0]] = [null, 0];
+          }} catch(e){}
+          try {if(prev_options.ySelect != null) {
+              document.getElementById("ySelect").value = prev_options.ySelect;
+              dimension[1] = prev_options.ySelect;
+              dims[dimension[1]] = [null, 0];
+          }} catch(e){}
+        }
+        else {
+          //Dimensions coming from the global variable.
+          dimension = scatterPlotDimensions; 
+          document.getElementById("xSelect").value = dimension[0];
+          document.getElementById("ySelect").value = dimension[1];
+        }
         
 
         d3.selectAll("#chart>*").remove();
@@ -1206,6 +1235,8 @@ function makeScatterPlot(data){
             });
         scatterplot.render();
     }
+    // Clearing the gloabl variable after scatter plot has been made
+    scatterPlotDimensions.length=0;
   
 }
 function scatterfilter(newdata){
