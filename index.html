@@ -1099,7 +1099,6 @@ function makeScatterPlot(data){
   
     prev_data = clone(data);
     
-
     var columns = Object.keys(data[0]);
     selectData = [];
     for(var c in columns) {
@@ -1116,6 +1115,7 @@ function makeScatterPlot(data){
             var chart_data = clone(prev_data);
             xVal = this.value;
             $("#captionSP").html(generateSPCaption());
+            setup(chart_data);
         }
     }
 
