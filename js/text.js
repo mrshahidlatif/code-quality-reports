@@ -331,5 +331,9 @@ function generateTooltipTexts() {
 
 }
 function generateClassDescription(className){
-    return 'Specific description of the class:' + className;
+    var text = '';
+    var bs = findBadSmellsInClass(className);
+    text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
+    
+    return text;
 }
