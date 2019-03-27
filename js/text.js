@@ -1,7 +1,7 @@
 function generateText(data) {
     $("#subtitle").html(introText());
     $("#textAPanel").html(badSmellsText() + bugText());
-    $("#textBPanel").html(generalQualityText());
+    $("#textBPanel").html(qualityAttributeText());
 
     // displaying the captions to screen.
     $("#captionPP").html(generatePPCaption());
@@ -83,61 +83,91 @@ function badSmellsText() {
     return text;
 }
 
-function generalQualityText() {
+/* ------------------------------------------------------------------------*/
+/* Quality attributes */
+/* ------------------------------------------------------------------------*/
+
+// TODO: expand details (bar chart) when clicking on the metrics
+// TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
+// TODO: Add a fifth group that summarizes the size-related metrics
+
+function qualityAttributeText() {
+    var attributes = {
+        "complexity" : {"good": goodComplexityCt, "regular" : regularComplexityCt, "bad": badComplexityCt},
+        "coupling" : { "good": goodCouplingCt, "regular": regularCouplingCt, "bad" : badCouplingCt}, 
+        "cohesion" : { "good": goodCohesionCt, "regular" : regularCohesionCt, "bad" : badCohesionCt},
+        "inheritance" : { "good" : goodInheritanceCt, "regular" : regularInheritanceCt, "bad" : badInheritanceCt}
+    };
+    attributes["complexity"]["longname"] = 'code complexity';
+    attributes["coupling"]["longname"] = 'coupling between classes';
+    attributes["cohesion"]["longname"] = 'cohesion within classes';
+    attributes["inheritance"]["longname"] = 'usage of class inheritance';
+    Object.keys(attributes).forEach(function(attributeName) {
+        attributes[attributeName].score = computeQualityScore(attributes[attributeName].good, attributes[attributeName].regular, attributes[attributeName].bad);
+    });
     var text = '';
-    // TODO: expand details (bar chart) when clicking on the metrics
-    // TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
-    // TODO: Add a fifth group that summarizes the size-related metrics
-    text += '<h3>Quality Attributes</h3><p>The code quality analysis works with four groups of software metrics.</p>'
-
-    text += attributeText("complexity", goodComplexityCt, regularComplexityCt, badComplexityCt);
-    text += attributeText("coupling", goodCouplingCt, regularCouplingCt, badCouplingCt);
-    text += attributeText("cohesion", goodCohesionCt, regularCohesionCt, badCohesionCt);
-    text += attributeText("inheritance", goodInheritanceCt, regularInheritanceCt, badInheritanceCt);
-
+    text += '<h3>Quality Attributes</h3>';
+    text += attributeIntroText();
+    Object.keys(attributes).forEach(function(attributeName) {
+        text += attributeText(attributeName, attributes[attributeName]);
+    });
     return text;
 }
 
+function attributeIntroText() {
+    return '<p>The code quality analysis works with four groups of software metrics.</p>';
+}
+
 // FIXME: the values of good, regular and bad don't sum up to 100%
-function attributeText(attribute, good, regular, bad) {
-    //console.log(attribute, good, regular, bad);
-    const attributeName = {
-        'complexity': 'code complexity',
-        'coupling': 'coupling between classes',
-        'cohesion': 'cohesion within classes',
-        'inheritance': 'usage of class inheritance'
-    };
-    var bar = '<span id="bar' + captitalize(attribute) + '" class="barSpan"></span>';
-    var badClasses = num2word(bad) + ' class' + (bad === 0 ? '' : 'es') + ' ' + bar;
-    var badClassesAre = badClasses + ' ' + (bad === 0 ? 'is' : 'are');
-    var text = '<p><h4 class="' + attribute + 'Metric clickable">' + captitalize(attribute) + ':</h4> '
+function attributeText(attributeName, attribute) {
+    console.log(attributeName, attribute.good, attribute.regular, attribute.bad);
+    var bar = '<span id="bar' + captitalize(attributeName) + '" class="barSpan"></span>';
+    var badClasses = num2word(attribute.bad) + ' class' + (attribute.bad === 0 ? '' : 'es') + ' ' + bar;
+    var badClassesAre = badClasses + ' ' + (attribute.bad === 0 ? 'is' : 'are');
+    var text = '<p><h4 class="' + attributeName + 'Metric clickable">' + captitalize(attributeName) + ':</h4> '
     var quality = '', reason = '';
-    if (good > bad && regular > bad) {
-        if (good > bad * 10) {
+    switch (attribute.score) {
+        case 3:
             quality = '<i>very good</i> &#9733;&#9733;&#9733;';
-            if (bad === 0) {
+            if (attribute.bad === 0) {
                 reason = 'no class ' + bar + ' is rated as having <i>low</i> quality';
-            } else if (bad === 1) {
+            } else if (attribute.bad === 1) {
                 reason = 'only a single class ' + bar + ' is rated as having <i>low</i> quality';
             } else {
                 reason = 'only the very small number of ' + badClasses + ' is rated as having <i>low</i> quality';
             }
-        } else {
+            break;
+        case 2:
             quality = '<i>good</i> &#9733;&#9733;';
             reason = 'only ' + badClassesAre + ' rated as having <i>low</i> quality';
+            break;
+        case 1:
+            quality = '<i>okay</i> &#9733;';
+            reason = badClassesAre + ' rated as having <i>low</i> quality, which are still fewer than the ones rated as <i>regular</i> (' + attribute.regular + ')';
+            break;
+        default:
+            quality = '<i>low</i> &#9888;';
+            reason = 'the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
+    }
+    text += 'The ' + attribute.longname + ' is ' + quality + ' as ' + reason;
+    text += '<span class="' + attributeName + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attributeName) + '"></div></div></p>';
+    return text;
+}
+
+function computeQualityScore(good, regular, bad) {
+    if (good > bad && regular > bad) {
+        if (good > bad * 10) {
+            return 3; // very good
+        } else {
+            return 2; // good
         }
     } else {
         if (regular > bad) {
-            quality = '<i>okay</i> &#9733;';
-            reason = badClassesAre + ' rated as having <i>low</i> quality, which are still fewer than the ones rated as <i>regular</i> (' + regular + ')';
+            return 1; // okay
         } else {
-            quality = '<i>low</i> &#9888;';
-            reason = 'the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
+            return 0; // low
         }
     }
-    text += 'The ' + attributeName[attribute] + ' is ' + quality + ' as ' + reason;
-    text += '<span class="' + attribute + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attribute) + '"></div></div></p>';
-    return text;
 }
 
 function bugText() {
