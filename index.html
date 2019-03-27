@@ -862,7 +862,7 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").append($(content));
 }
 function updateClassDescription(content){
-  $("#sourcecode").prepend('<p id="classDescription">' + content + '</p>');
+  $("#sourcecodeContainer").prepend('<div id="classDescription">'+content+'</div>');
   $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
 }
 

@@ -330,14 +330,31 @@ function generateTooltipTexts() {
 
 }
 function generateClassDescription(className) {
-    // console.log(fullData);
-    // let wmc = fullData.map(d => d.wmc);
-    // console.log(wmc);
-    // console.log(getOutliers(wmc));
+    let loc = fullData.map(d => d.loc);
+    getOutliers(loc);
+    
+    var meanLOC = ss.mean(loc);
+    var badQualityWith = [];
 
+    if(badCouplingArr.indexOf(createClassSpan(className))!=-1){
+        badQualityWith.push('<span class="complexityMetric">Complexity</span>');
+    }
+    if(badCouplingArr.indexOf(createClassSpan(className))!=-1){
+        badQualityWith.push('<span class="couplingMetric">Coupling</span>');
+    }
+    if(badCohesionArr.indexOf(createClassSpan(className))!=-1){
+        badQualityWith.push('<span class="cohesionMetric">Cohesion</span>');
+    }
+    if(badInheritanceArr.indexOf(createClassSpan(className))!=-1){
+        badQualityWith.push('<span class="inheritanceMetric">Inheritance</span>');
+    }
+    
     var text = '';
     var bs = findBadSmellsInClass(className);
     text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
+    
+    if (badQualityWith.length!=0) 
+        text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ':'s ') + printList(badQualityWith) + ".";
 
     return text;
 }

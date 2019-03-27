@@ -209,11 +209,13 @@ svg .dit rect {
 /* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
-#details p{
+#classDescription{
     font-size: 14px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-
+    max-width: 100%;
+    height: auto;
 }
+
 #closeBtn:hover{
     cursor: pointer;
     color: #777;
