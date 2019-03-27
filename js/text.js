@@ -157,39 +157,50 @@ function attributeText(attribute) {
         case 3:
             quality = '<i>very good</i> &#9733;&#9733;&#9733;';
             if (attribute.bad === 0) {
-                reason = 'no class ' + bar + ' is rated as having <i>low</i> quality';
+                reason = ' because no class ' + bar + ' is rated as having <i>low</i> quality';
             } else if (attribute.bad === 1) {
-                reason = 'only a single class ' + bar + ' is rated as having <i>low</i> quality';
+                reason = ' because only a single class ' + bar + ' is rated as having <i>low</i> quality';
             } else {
-                reason = 'only the very small number of ' + badClasses + ' is rated as having <i>low</i> quality';
+                reason = ' because only the small number of ' + badClasses + ' is rated as having <i>low</i> quality';
             }
+            reason += ', but many as <i>good</i> (' + attribute.good + ')'
             break;
         case 2:
             quality = '<i>good</i> &#9733;&#9733;';
-            reason = 'only ' + badClassesAre + ' rated as having <i>low</i> quality';
+            reason = ' as only ' + badClassesAre + ' rated as having <i>low</i> quality';
+            if (attribute.good <= attribute.regular) {
+                reason += ', but not more as <i>good</i> (' + attribute.good + ') than as <i>regular</i> (' + attribute.regular + ')';
+            } else {
+                reason += ', but many as <i>good</i> (' + attribute.good + ')'
+            }
             break;
         case 1:
             quality = '<i>okay</i> &#9733;';
-            reason = badClassesAre + ' rated as having <i>low</i> quality, which are still fewer than the ones rated as <i>regular</i> (' + attribute.regular + ')';
+            if (attribute.good + attribute.regular > attribute.bad * 3 && attribute.good <= attribute.regular + attribute.bad) {
+                reason =  '. Although not a high number of classes ('+attribute.bad+') '+bar+' is rated as having <i>low</i> quality, many are just classified as <i>regular</i> (' + attribute.regular + ') and fewer as <i>good</i> (' + attribute.good + ')';
+            } else {
+                reason = ' as '+ badClassesAre + ' rated as having <i>low</i> quality, still fewer than the ones rated as <i>good</i> (' + attribute.good + ') or <i>regular</i> (' + attribute.regular + ')';
+            }
             break;
         default:
             quality = '<i>low</i> &#9888;';
-            reason = 'the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
+            reason = ' because the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
     }
-    text += 'The ' + attribute.longname + ' is ' + quality + ' as ' + reason;
+    text += 'The ' + attribute.longname + ' is ' + quality  + reason;
     text += '<span class="' + attribute.name + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attribute.name) + '"></div></div></p>';
     return text;
 }
 
+/* Warning: keep in sync with explanations */
 function computeQualityScore(good, regular, bad) {
-    if (good > bad && regular > bad) {
-        if (good > bad * 10) {
+    if (good + regular > bad * 3 && good > regular + bad) {
+        if (good > bad * 15 && good > regular) {
             return 3; // very good
         } else {
             return 2; // good
         }
     } else {
-        if (regular > bad) {
+        if (good + regular > bad) {
             return 1; // okay
         } else {
             return 0; // low
@@ -224,7 +235,7 @@ function bugText() {
 function generatePPCaption() {
     // TODO: color metric names
     var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>). ';
-     caption += 'Each line (left, parallel coordinates plot <span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right, scatterplot <span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class. The <span class="BSLegend">'+ num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' Classes</span> out of <span class="NoBSLegend"> ' + classCt + 'Classes</span> contain bad smells';
+    caption += 'Each line (left, parallel coordinates plot <span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right, scatterplot <span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class. The <span class="BSLegend">' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' Classes</span> out of <span class="NoBSLegend"> ' + classCt + 'Classes</span> contain bad smells';
 
     caption += '. ';
 
@@ -331,36 +342,36 @@ function generateClassDescription(className) {
     let loc = fullData.map(d => d.loc);
     let npm = fullData.map(d => d.npm);
     var cObj = fullData[classShortNameToIndex[className]];
-    
+
     getOutliers(loc);
-    
+
     var maxLOC = ss.max(loc);
     var maxNPM = ss.max(npm);
 
 
     var badQualityWith = [];
 
-    if(badCouplingArr.indexOf(createClassSpan(className))!=-1){
+    if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
         badQualityWith.push('<span class="complexityMetric">Complexity</span>');
     }
-    if(badCouplingArr.indexOf(createClassSpan(className))!=-1){
+    if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
         badQualityWith.push('<span class="couplingMetric">Coupling</span>');
     }
-    if(badCohesionArr.indexOf(createClassSpan(className))!=-1){
+    if (badCohesionArr.indexOf(createClassSpan(className)) != -1) {
         badQualityWith.push('<span class="cohesionMetric">Cohesion</span>');
     }
-    if(badInheritanceArr.indexOf(createClassSpan(className))!=-1){
+    if (badInheritanceArr.indexOf(createClassSpan(className)) != -1) {
         badQualityWith.push('<span class="inheritanceMetric">Inheritance</span>');
     }
-    
+
     var text = '';
     var bs = findBadSmellsInClass(className);
     text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
-    
-    if (badQualityWith.length!=0) 
-        text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ':'s ') + printList(badQualityWith) + ".";
-    var factor = (ss.max(npm)/ss.max(loc))/(ss.mean(npm)/ss.mean(loc));
-    if(cObj.npm/cObj.loc < factor*(ss.mean(npm)/ss.mean(loc)) && cObj.loc > ss.mean(loc)){
+
+    if (badQualityWith.length != 0)
+        text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ' : 's ') + printList(badQualityWith) + ".";
+    var factor = (ss.max(npm) / ss.max(loc)) / (ss.mean(npm) / ss.mean(loc));
+    if (cObj.npm / cObj.loc < factor * (ss.mean(npm) / ss.mean(loc)) && cObj.loc > ss.mean(loc)) {
         text += ' Compared with the average metric values of the classes, it has large size (<span class="loc">loc</span>) but less number of public methods (<span class="npm">npm</span>).';
     }
     return text;
@@ -377,16 +388,16 @@ function captitalize(str) {
     });
     return str;
 }
-function getOutliers(data){
+function getOutliers(data) {
     // Creating data arrays 
-    var ols =[]; 
+    var ols = [];
 
     var q1 = ss.quantile(data, 0.25);
     var q3 = ss.quantile(data, 0.75);
     var iqr = ss.interquartileRange(data);
-    ols = data.filter(d => d> q3+1.5*iqr);
-    
-    return ols; 
+    ols = data.filter(d => d > q3 + 1.5 * iqr);
+
+    return ols;
 }
 function num2word(n) {
     var numToWord = {
