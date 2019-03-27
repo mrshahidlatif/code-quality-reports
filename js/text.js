@@ -87,10 +87,6 @@ function badSmellsText() {
 /* Quality attributes */
 /* ------------------------------------------------------------------------*/
 
-// TODO: expand details (bar chart) when clicking on the metrics
-// TODO: Make the first sentence adaptive (should summarize the analysis somehow.)
-// TODO: Add a fifth group that summarizes the size-related metrics
-
 function qualityAttributeText() {
     var attributes = [
         { "name": "complexity", "longname": 'code complexity', "good": goodComplexityCt, "regular": regularComplexityCt, "bad": badComplexityCt },
@@ -110,6 +106,7 @@ function qualityAttributeText() {
     return text;
 }
 
+// TODO: Highlight classes that are consistently rated as low in the intro
 function attributeIntroText(attributes) {
     var minScore = 3;
     var avgScore = 0.0;
@@ -147,6 +144,10 @@ function attributeIntroText(attributes) {
 }
 
 // FIXME: the values of good, regular and bad don't sum up to 100%
+// TODO: expand details (bar chart) when clicking on the metrics
+// TODO: make sets of classes highlighted with bar chartts clickable/selectable
+// TODO: hand cursor for clickable bars
+// TODO: normalization of bar charts
 function attributeText(attribute) {
     console.log(attribute.name, attribute.good, attribute.regular, attribute.bad);
     var bar = '<span id="bar' + captitalize(attribute.name) + '" class="barSpan"></span>';
@@ -252,13 +253,7 @@ function drawBarChart(tagNmae, val) {
 /* Metric descriptions */
 /* ------------------------------------------------------------------------*/
 
-function showCouplingMetricDescription() {
-    var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
-
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
-
-    updateDetailPanel("Coupling", content);
-}
+// TODO: update remaining metric descriptions (comparble to the complexity description)
 
 // TODO: which metric is used as a basis for wmc? Also cyclomatic complexity? -> Explain cyclomatic complexity
 function showComplexityMetricDescription() {
@@ -271,6 +266,14 @@ function showComplexityMetricDescription() {
         content += '<p>Within the analyzed classes, ' + createClassSpan(maxClassWmc) + ' has the highest value with respect to <span class="wmc">wmc</span> and ' + createClassSpan(maxClassMaxCc) + ' the highest value with respect to <span class="max_cc">max_cc</span>.</p>';
     }
     updateDetailPanel("Background: Complexity Metrics", content);
+}
+
+function showCouplingMetricDescription() {
+    var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
+
+    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
+
+    updateDetailPanel("Coupling", content);
 }
 
 function showCohesionMetricDescription() {
@@ -290,6 +293,8 @@ function showInheritanceMetricDescription() {
 }
 
 function generateTooltipTexts() {
+
+    // TODO: avoid &isin; notation
 
     var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce &#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
 

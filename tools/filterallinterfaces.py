@@ -21,6 +21,7 @@ for dirName, subdirList, fileList in os.walk('sourcecode'):
                         print(interface)
                         interfaces.append(interface)
 
+# TODO: ".csv_filtered" -> "_filtered.csv"
 print('\nFilter csv files ...')
 for dirName, subdirList, fileList in os.walk('csv'):
     for fname in fileList:
