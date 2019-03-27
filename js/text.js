@@ -6,10 +6,6 @@ function generateText(data) {
     // displaying the captions to screen.
     $("#captionPP").html(generatePPCaption());
 
-    drawBarChart("#barBlob", Math.round((blobCt / badCt) * 1000) / 10);
-    drawBarChart("#barFc", Math.round((decomCt / badCt) * 1000) / 10);
-    drawBarChart("#barSpa", Math.round((spaCt / badCt) * 1000) / 10);
-    drawBarChart("#barLazy", Math.round((lazyCt / badCt) * 1000) / 10);
     drawBarChart("#barComplexity", Math.round((badComplexityArr.length / classCt) * 1000) / 10);
     drawBarChart("#barCoupling", Math.round((badCouplingArr.length / classCt) * 1000) / 10);
     drawBarChart("#barCohesion", Math.round((badCohesionArr.length / classCt) * 1000) / 10);
@@ -52,16 +48,16 @@ function badSmellsText() {
     }
     var listOfBadSmellTypes = [];
     if (blobCt > 0) {
-        listOfBadSmellTypes.push(((blobCt === 1) ? 'one' : num2word(blobCt)) + ' <span class="smellBlob clickable">Large Class' + ((blobCt === 1) ? '' : 'es') + '</span> <span class="barSpan" id="barBlob"></span> ' + createCollapsibleClassList(blobArr));
+        listOfBadSmellTypes.push(((blobCt === 1) ? 'one' : num2word(blobCt)) + ' <span class="smellBlob clickable">Large Class' + ((blobCt === 1) ? '' : 'es') + '</span> ' + createCollapsibleClassList(blobArr));
     }
     if (decomCt > 0) {
-        listOfBadSmellTypes.push(((decomCt === 1) ? 'one case' : num2word(decomCt) + ' cases') + ' of <span class="smellFc clickable">Functional Decomposition</span> <span class="barSpan" id="barFc"></span> ' + createCollapsibleClassList(decomArr));
+        listOfBadSmellTypes.push(((decomCt === 1) ? 'one case' : num2word(decomCt) + ' cases') + ' of <span class="smellFc clickable">Functional Decomposition</span> ' + createCollapsibleClassList(decomArr));
     }
     if (spaCt > 0) {
-        listOfBadSmellTypes.push(((spaCt === 1) ? 'one case' : num2word(spaCt) + ' cases') + ' of <span class="smellSpa clickable">Spaghetti Code</span> <span class="barSpan" id="barSpa"></span> ' + createCollapsibleClassList(spaArr));
+        listOfBadSmellTypes.push(((spaCt === 1) ? 'one case' : num2word(spaCt) + ' cases') + ' of <span class="smellSpa clickable">Spaghetti Code</span> ' + createCollapsibleClassList(spaArr));
     }
     if (lazyCt > 0) {
-        listOfBadSmellTypes.push(((lazyCt === 1) ? 'one' : num2word(lazyCt)) + ' <span class="smellLazy clickable">Lazy Class' + ((lazyCt === 1) ? '' : 'es') + '</span> <span class="barSpan" id="barLazy"></span> ' + createCollapsibleClassList(lazyArr));
+        listOfBadSmellTypes.push(((lazyCt === 1) ? 'one' : num2word(lazyCt)) + ' <span class="smellLazy clickable">Lazy Class' + ((lazyCt === 1) ? '' : 'es') + '</span> ' + createCollapsibleClassList(lazyArr));
     }
     text += ' ' + printList(listOfBadSmellTypes) + '.';
     if (superSmellsCt > 0) {
@@ -106,6 +102,7 @@ function qualityAttributeText() {
 }
 
 // TODO: Highlight classes that are consistently rated as low in the intro
+// TODO: info icon to explain the methodology, reference the papers
 function attributeIntroText(attributes) {
     var minScore = 3;
     var avgScore = 0.0;
@@ -302,7 +299,7 @@ function showInheritanceMetricDescription() {
 
 function generateTooltipTexts() {
 
-    // TODO: avoid &isin; notation
+    // TODO: adapt to updated computation
 
     var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce &#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
 
