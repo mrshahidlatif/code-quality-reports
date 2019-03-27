@@ -16,7 +16,7 @@ function generateText(data) {
 
     if (linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);
 
-    generateTooltipTexts();
+    generateAndSetTooltipTexts();
 }
 
 function introText() {
@@ -173,16 +173,16 @@ function attributeText(attribute) {
         case 1:
             quality = '<i>okay</i> &#9733;';
             if (attribute.good + attribute.regular > attribute.bad * 3 && attribute.good <= attribute.regular + attribute.bad) {
-                reason =  '. Although not a high number of classes ('+attribute.bad+') '+bar+' is rated as having <i>low</i> quality, many are just classified as <i>regular</i> (' + attribute.regular + ') and fewer as <i>good</i> (' + attribute.good + ')';
+                reason = '. Although not a high number of classes (' + attribute.bad + ') ' + bar + ' is rated as having <i>low</i> quality, many are just classified as <i>regular</i> (' + attribute.regular + ') and fewer as <i>good</i> (' + attribute.good + ')';
             } else {
-                reason = ' as '+ badClassesAre + ' rated as having <i>low</i> quality, still fewer than the ones rated as <i>good</i> (' + attribute.good + ') or <i>regular</i> (' + attribute.regular + ')';
+                reason = ' as ' + badClassesAre + ' rated as having <i>low</i> quality, still fewer than the ones rated as <i>good</i> (' + attribute.good + ') or <i>regular</i> (' + attribute.regular + ')';
             }
             break;
         default:
             quality = '<i>low</i> &#9888;';
             reason = ' because the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
     }
-    text += 'The ' + attribute.longname + ' is ' + quality  + reason;
+    text += 'The ' + attribute.longname + ' is ' + quality + reason;
     text += '<span class="' + attribute.name + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attribute.name) + '"></div></div></p>';
     return text;
 }
@@ -297,43 +297,34 @@ function showInheritanceMetricDescription() {
     updateDetailPanel("Background: Inheritance Metrics", content);
 }
 
-function generateTooltipTexts() {
-
-    // TODO: adapt to updated computation
-
-    var couplingMethod = "We use thresholds values of cbo, ce, and ca for categorizing coupling as good, regular, or bad.<br><br> Good: cbo, ce &#8804; 6; ca<=7,  <br> Regular: cbo, ca &isin; [7,39]; <br> Bad: cbo, ca > 39; ce > 16";
-
-    var complexityMethod = "We use thresholds values of wmc and max_cc for categorizing coupling as good, regular, or bad.<br><br> Good: max_cc &#8804; 2; wmc 	&#8804; 11,  <br> Regular: max_cc &isin; (2,4]; wmc &isin; (11,34) <br> Bad: max_cc > 4; wmc > 34";
-
-    var cohesionMethod = "We use thresholds values of lcom3 for categorizing coupling as good, regular, or bad.<br><br> Good: lcom3 &#8804; 0.167; <br> Regular: lcom3 &isin; (0.167,0.725]; <br> Bad: lcom3 > 0.725";
-
-    var inheritanceMethod = "We use thresholds values of dit and noc for categorizing coupling as good, regular, or bad.<br><br> Good: dit 	&#8804; 2; noc <= 1 <br> Regular: dit &isin; (2,4]; noc &isin; (1,3]  <br> Bad: dit > 4; noc > 3";
-
-    // TODO: add the full names of metrics here
-    var codeSmellsMethod = 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
-
-
+function generateAndSetTooltipTexts() {
     $(".projInfo").tooltip({
         content: projInfo
     });
-    $(".couplingInfo").tooltip({
-        content: couplingMethod
-    });
     $(".complexityInfo").tooltip({
-        content: complexityMethod
+        content: generateAttributeTooltip(['wmc', 'max_cc', ], 'wmc > 34 or max_cc > 4', 'wmc > 11 or max_cc > 2')
+    });
+    $(".couplingInfo").tooltip({
+        content: generateAttributeTooltip(['cbo', 'ca', 'ce'], 'cbo >= 9, ca > 39, or ce > 16', 'cbo >= 7, ca > 7, or ce > 6')
     });
     $(".cohesionInfo").tooltip({
-        content: cohesionMethod
+        content: generateAttributeTooltip(['lcom3'], 'lcom3 > 0.725', 'lcom3 > 0.167')
     });
     $(".inheritanceInfo").tooltip({
-        content: inheritanceMethod
+        content: generateAttributeTooltip(['noc', 'dit'], 'noc > 3 or dit > 4', 'noc > 1 or dit > 2')
     });
-
+    // TODO: update
     $(".codeSmellsInfo").tooltip({
-        content: codeSmellsMethod
+        content: 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
     });
-
 }
+
+function generateAttributeTooltip(metricList, condBad, condRegular) {
+    metricList = metricList.map(metric => generateMetricSpan(metric));
+    return '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p><p><i>Low</i>: ' + condBad + '<br><i>Regular</i>: not <i>low</i> and ' + condRegular + '<br><i>Good</i>: all other cases</p>';
+}
+
+
 function generateClassDescription(className) {
     let loc = fullData.map(d => d.loc);
     let npm = fullData.map(d => d.npm);
@@ -384,6 +375,7 @@ function captitalize(str) {
     });
     return str;
 }
+
 function getOutliers(data) {
     // Creating data arrays 
     var ols = [];
@@ -395,6 +387,7 @@ function getOutliers(data) {
 
     return ols;
 }
+
 function num2word(n) {
     var numToWord = {
         1: "one",
@@ -430,4 +423,22 @@ function num2word(n) {
         return numToWord[n];
     }
     else return n;
+}
+
+function generateMetricSpan(metric) {
+    var metricNames = {
+        "amc": "average method complexity",
+        "bug": "number of historic bugs",
+        "ca": "afferent coupling",
+        "cbo": "coupling between objects",
+        "ce": "efferent coupling",
+        "dit": "depth of inheritance tree",
+        "lcom3": "lack of cohesion of methods",
+        "loc": "lines of code",
+        "max_cc": "maximum cyclomatic complexity",
+        "noc": "number of children of a class",
+        "npm": "number of public methods",
+        "wmc": "weighted methods per class"
+    }
+    return '<span class="'+metric+'">' + metricNames[metric] + ' ('+metric+')</span>';
 }
