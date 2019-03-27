@@ -54,7 +54,7 @@ body {
 #vis{ /*nested grid panel*/
     grid-area: vis; 
     display: grid;
-    grid-template-areas: 'pcpPanel spPanel' 'pcpCaption spCaption';
+    grid-template-areas: 'pcpPanel spPanel' 'pcpCaption pcpCaption';
     grid-template-rows: 1fr 30px; 
     grid-template-columns: 70fr 30fr; 
     grid-gap: 5px 30px;
@@ -68,9 +68,7 @@ body {
 #captionPP{
     grid-area: pcpCaption;
 }
-#captionSC{
-    grid-area: spCaption;
-}
+
 #details { 
     grid-area: right; 
     overflow: auto;
@@ -209,12 +207,13 @@ svg .dit rect {
 /* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
-#classDescription{
+/* #classDescription{
     font-size: 14px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 100%;
     height: auto;
-}
+} */
+
 
 #closeBtn:hover{
     cursor: pointer;
@@ -230,10 +229,6 @@ svg .dit rect {
 }
 
  #captionPP{
-    font-size:12px;
- }
-
- #captionSP{
     font-size:12px;
  }
 

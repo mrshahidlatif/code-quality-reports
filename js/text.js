@@ -339,8 +339,6 @@ function generateClassDescription(className) {
     var maxLOC = ss.max(loc);
     var maxNPM = ss.max(npm);
 
-    // console.log(ss.mean(loc)+ ':'+ ss.mean(npm))
-
 
     var badQualityWith = [];
 

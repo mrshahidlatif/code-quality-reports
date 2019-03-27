@@ -43,7 +43,6 @@
         </div>
       </div>
       <div id="captionPP"></div>
-      <div id="captionSP"></div>
     </div>
     <div id="details">
       <h3 id="detailsHeader"></h3>
@@ -861,6 +860,7 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").empty();
   $("#detailsContent").append($(content));
 }
+//FIXME: it is not taking the style of span tags specified inside!
 function updateClassDescription(content){
   $("#detailsContent").prepend('<p id="classDescription"></p>');
   $('#classDescription').html(content);
