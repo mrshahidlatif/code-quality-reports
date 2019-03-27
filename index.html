@@ -670,6 +670,9 @@ $(document).on("click", ".cohesionMetric", function () {
 $(document).on("click", ".inheritanceMetric", function () {
     showInheritanceMetricDescription();
 });
+$(document).on("click", "#closeBtn", function () {
+    removePersistentHighlighting();
+});
 
 function showClassCaption(className) {
     var bs = findBadSmellsInClass(className);
@@ -747,6 +750,7 @@ function makeSelectionPersistent(className){
 
   haveClassToPersist= true;
   persistentClass = className;
+  
 
 }
 function removePersistentHighlighting(className){
@@ -762,7 +766,7 @@ function removePersistentHighlighting(className){
   $('.clickable').css('background','none');
 
   //reset to original caption
-  $('#dynamicPersistentCaption').remove();
+  $('#adaptiveCaption').remove();
 
   haveClassToPersist = false;
   persistentClass = "";
@@ -857,6 +861,7 @@ function updateDetailPanel(title, content) {
 }
 function updateClassDescription(content){
   $("#sourcecode").prepend('<p>' + content + '</p>');
+  $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
 }
 
 function findBadSmellsInClass(className){

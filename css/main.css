@@ -209,7 +209,10 @@ svg .dit rect {
 /* ------------------------------------------------------------------------*/
 /* Other -- TODO: sort and refactor properly */
 /* ------------------------------------------------------------------------*/
-
+#closeBtn:hover{
+    cursor: pointer;
+    color: #777;
+}
 #file-upload {
     display: block;
     margin: auto;
