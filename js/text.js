@@ -330,6 +330,11 @@ function generateTooltipTexts() {
 
 }
 function generateClassDescription(className) {
+    // console.log(fullData);
+    // let wmc = fullData.map(d => d.wmc);
+    // console.log(wmc);
+    // console.log(getOutliers(wmc));
+
     var text = '';
     var bs = findBadSmellsInClass(className);
     text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
@@ -348,7 +353,17 @@ function captitalize(str) {
     });
     return str;
 }
+function getOutliers(data){
+    // Creating data arrays 
+    var ols =[]; 
 
+    var q1 = ss.quantile(data, 0.25);
+    var q3 = ss.quantile(data, 0.75);
+    var iqr = ss.interquartileRange(data);
+    ols = data.filter(d => d> q3+1.5*iqr);
+    
+    return ols; 
+}
 function num2word(n) {
     var numToWord = {
         1: "one",

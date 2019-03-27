@@ -14,6 +14,7 @@
   <script type="text/javascript" src="js/mysparklines.js"></script>
   <script type="text/javascript" src="js/scatterplot.js"></script>
   <script type="text/javascript" src="js/text.js"></script>
+  <script src="lib/simple-statistics.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui.css"  type='text/css' media='all'>
   <link rel="stylesheet" href="lib/prism.css"  type='text/css' media='all' />
   <link rel="stylesheet" href="css/parcoords.css"  type='text/css' media='all'>
@@ -264,7 +265,7 @@ function analyzeData(data){
   //check for good inheritance
    if(d.dit <= 2 && d.noc <= 1){
      goodInheritanceCt++;
-    goodInheritanceArr.push(classSpan);
+     goodInheritanceArr.push(classSpan);
    }
    //check for regular inheritance
    if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
@@ -274,7 +275,7 @@ function analyzeData(data){
    //check for bad inheritance
    if(d.dit > 4 && d.noc > 3){
      badInheritanceCt++;
-    badInheritanceArr.push(classSpan);
+     badInheritanceArr.push(classSpan);
    }
    //check for good cohesion
    if(d.lcom3 <= 0.167){
@@ -861,7 +862,7 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").append($(content));
 }
 function updateClassDescription(content){
-  $("#sourcecode").prepend('<p>' + content + '</p>');
+  $("#sourcecode").prepend('<p id="classDescription">' + content + '</p>');
   $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
 }
 
