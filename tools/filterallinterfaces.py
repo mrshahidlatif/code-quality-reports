@@ -21,13 +21,12 @@ for dirName, subdirList, fileList in os.walk('sourcecode'):
                         print(interface)
                         interfaces.append(interface)
 
-# TODO: ".csv_filtered" -> "_filtered.csv"
 print('\nFilter csv files ...')
 for dirName, subdirList, fileList in os.walk('csv'):
     for fname in fileList:
         if fname.endswith('.csv') and not fname.endswith('_filtered.csv'):
             with open(dirName + '/' + fname, "r") as fin:
-                with open(dirName + '/' + fname+'_filtered', "w") as fout:
+                with open(dirName + '/' + fname[:-4]+'_filtered.csv', "w") as fout:
                     count = 0
                     for line in fin:
                         javaname = line.split(',')[0]
