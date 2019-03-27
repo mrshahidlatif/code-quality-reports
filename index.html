@@ -87,9 +87,9 @@ function handleFileSelect(event) {
 		alert('The File APIs are not fully supported in this browser.');
 	}
 
+  
   // hide text until bar charts are completely loaded
 	$("#textPanel > div").css({visibility: "hidden"});
-
 	var f = event.target.files[0]; // FileList object
 	projectName = f.name.replace('.csv','');
 	var reader = new FileReader();
@@ -717,7 +717,7 @@ function showHoverHighlighting(className){
   var d = window.parent.fullData;
   highlightEdge(d[classShortNameToIndex[className]]);
   highlightCodeSmell(className);
-  showClassCaption(className);
+  // showClassCaption(className);
 }
 
 function makeSelectionPersistent(className){

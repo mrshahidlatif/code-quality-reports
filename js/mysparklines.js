@@ -78,7 +78,6 @@
       $(".sl span").on('mouseover', function() {
         var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
         showHoverHighlighting(clsName);
-        showClassCaption(clsName);
 
         }).on('mouseout', function(){
           var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
