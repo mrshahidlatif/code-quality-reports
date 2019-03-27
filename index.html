@@ -862,7 +862,8 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").append($(content));
 }
 function updateClassDescription(content){
-  $("#sourcecodeContainer").prepend('<div id="classDescription">'+content+'</div>');
+  $("#detailsContent").prepend('<p id="classDescription"></p>');
+  $('#classDescription').html(content);
   $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
 }
 

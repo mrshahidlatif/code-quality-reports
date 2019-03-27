@@ -365,7 +365,7 @@ function generateClassDescription(className) {
         text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ':'s ') + printList(badQualityWith) + ".";
     var factor = (ss.max(npm)/ss.max(loc))/(ss.mean(npm)/ss.mean(loc));
     if(cObj.npm/cObj.loc < factor*(ss.mean(npm)/ss.mean(loc)) && cObj.loc > ss.mean(loc)){
-        text += ' Compared with the average values of the classes, it has large size (loc) but less number of public methods (npm).';
+        text += ' Compared with the average metric values of the classes, it has large size (<span class="loc">loc</span>) but less number of public methods (<span class="npm">npm</span>).';
     }
 
     return text;
