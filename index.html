@@ -547,7 +547,7 @@ $(document).on("click", ".className", function() {
   var str = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
   
-  updateDetailPanel("File "+str.split(".").pop()+ ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+  updateDetailPanel("Class "+str.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
   // TODO: replace by asynchronous load
   var src = $.ajax({
     url: url,
