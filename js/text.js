@@ -143,11 +143,10 @@ function attributeIntroText(attributes) {
 }
 
 // TODO: expand details (bar chart) when clicking on the metrics
-// TODO: make sets of classes highlighted with bar chartts clickable/selectable
-// TODO: hand cursor for clickable bars
+// TODO: make sets of classes highlighted with bar charts clickable/selectable
 // TODO: normalization of bar charts
 function attributeText(attribute) {
-    console.log(attribute.name, attribute.good, attribute.regular, attribute.bad);
+    //console.log(attribute.name, attribute.good, attribute.regular, attribute.bad);
     var bar = '<span id="bar' + captitalize(attribute.name) + '" class="barSpan"></span>';
     var badClasses = num2word(attribute.bad) + ' class' + (attribute.bad === 0 ? '' : 'es') + ' ' + bar;
     var badClassesAre = badClasses + ' ' + (attribute.bad === 0 ? 'is' : 'are');
