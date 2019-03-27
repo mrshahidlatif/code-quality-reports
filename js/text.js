@@ -5,7 +5,6 @@ function generateText(data) {
 
     // displaying the captions to screen.
     $("#captionPP").html(generatePPCaption());
-    $("#captionSP").html(generateSPCaption());
 
     drawBarChart("#barBlob", Math.round((blobCt / badCt) * 1000) / 10);
     drawBarChart("#barFc", Math.round((decomCt / badCt) * 1000) / 10);
@@ -224,8 +223,8 @@ function bugText() {
 
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>)';
-    // caption += ' The ' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' <span class="BSLegend">Classes</span> contain bad smells';
+    var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>). ';
+     caption += 'Each line (left, parallel coordinates plot <span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right, scatterplot <span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class. The <span class="BSLegend">'+ num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' Classes</span> out of <span class="NoBSLegend"> ' + classCt + 'Classes</span> contain bad smells';
 
     caption += '. ';
 
@@ -330,9 +329,15 @@ function generateTooltipTexts() {
 }
 function generateClassDescription(className) {
     let loc = fullData.map(d => d.loc);
+    let npm = fullData.map(d => d.npm);
+    var cObj = fullData[classShortNameToIndex[className]];
+    
     getOutliers(loc);
     
-    var meanLOC = ss.mean(loc);
+    var maxLOC = ss.max(loc);
+    var maxNPM = ss.max(npm);
+
+
     var badQualityWith = [];
 
     if(badCouplingArr.indexOf(createClassSpan(className))!=-1){
@@ -354,7 +359,10 @@ function generateClassDescription(className) {
     
     if (badQualityWith.length!=0) 
         text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ':'s ') + printList(badQualityWith) + ".";
-
+    var factor = (ss.max(npm)/ss.max(loc))/(ss.mean(npm)/ss.mean(loc));
+    if(cObj.npm/cObj.loc < factor*(ss.mean(npm)/ss.mean(loc)) && cObj.loc > ss.mean(loc)){
+        text += ' Compared with the average metric values of the classes, it has large size (<span class="loc">loc</span>) but less number of public methods (<span class="npm">npm</span>).';
+    }
     return text;
 }
 
