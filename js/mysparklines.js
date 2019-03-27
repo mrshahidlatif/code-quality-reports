@@ -122,8 +122,6 @@
       var idx = classShortNameToIndex[clsName];
       var str = fullData[idx].cname;
 
-      updateClassDescription(generateClassDescription(str.split('.').pop()));
-
       var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
       $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
       $("#detailsContent").empty();
@@ -136,6 +134,7 @@
       src = src.substring(src.indexOf("package "));   // cut out license text
       $("#sourcecode").text(src);
       Prism.highlightElement($("#sourcecode")[0]);
+      updateClassDescription(generateClassDescription(str.split('.').pop()));
       makeSelectionPersistent(str.split('.').pop());
     });
 

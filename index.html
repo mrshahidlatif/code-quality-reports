@@ -46,7 +46,6 @@
     </div>
     <div id="details">
       <h3 id="detailsHeader"></h3>
-      <p id="classDescription"></p>
       <div id="detailsContent"></div>
     </div>
   </div>
@@ -547,8 +546,6 @@ $(document).on("click", ".className", function() {
   var str = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
   
-  updateClassDescription(generateClassDescription(str.split('.').pop()));
-
   updateDetailPanel("File "+str.split(".").pop()+ ".java", $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
   // TODO: replace by asynchronous load
   var src = $.ajax({
@@ -558,6 +555,7 @@ $(document).on("click", ".className", function() {
   src = src.substring(src.indexOf("package "));   // cut out license text
   $("#sourcecode").text(src);
   Prism.highlightElement($("#sourcecode")[0]);
+  updateClassDescription(generateClassDescription(str.split('.').pop()));
   makeSelectionPersistent(className);
 });
 
@@ -858,8 +856,7 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").append($(content));
 }
 function updateClassDescription(content){
-  $("#classDescription").empty();
-  $("#classDescription").html(content);
+  $("#sourcecode").prepend('<p>' + content + '</p>');
 }
 
 function findBadSmellsInClass(className){
