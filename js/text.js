@@ -92,39 +92,67 @@ function badSmellsText() {
 // TODO: Add a fifth group that summarizes the size-related metrics
 
 function qualityAttributeText() {
-    var attributes = {
-        "complexity" : {"good": goodComplexityCt, "regular" : regularComplexityCt, "bad": badComplexityCt},
-        "coupling" : { "good": goodCouplingCt, "regular": regularCouplingCt, "bad" : badCouplingCt}, 
-        "cohesion" : { "good": goodCohesionCt, "regular" : regularCohesionCt, "bad" : badCohesionCt},
-        "inheritance" : { "good" : goodInheritanceCt, "regular" : regularInheritanceCt, "bad" : badInheritanceCt}
-    };
-    attributes["complexity"]["longname"] = 'code complexity';
-    attributes["coupling"]["longname"] = 'coupling between classes';
-    attributes["cohesion"]["longname"] = 'cohesion within classes';
-    attributes["inheritance"]["longname"] = 'usage of class inheritance';
-    Object.keys(attributes).forEach(function(attributeName) {
-        attributes[attributeName].score = computeQualityScore(attributes[attributeName].good, attributes[attributeName].regular, attributes[attributeName].bad);
+    var attributes = [
+        { "name": "complexity", "longname": 'code complexity', "good": goodComplexityCt, "regular": regularComplexityCt, "bad": badComplexityCt },
+        { "name": "coupling", "longname": 'coupling between classes', "good": goodCouplingCt, "regular": regularCouplingCt, "bad": badCouplingCt },
+        { "name": "cohesion", "longname": 'cohesion within classes', "good": goodCohesionCt, "regular": regularCohesionCt, "bad": badCohesionCt },
+        { "name": "inheritance", "longname": 'usage of class inheritance', "good": goodInheritanceCt, "regular": regularInheritanceCt, "bad": badInheritanceCt }
+    ];
+    attributes.forEach(function (attribute) {
+        attribute.score = computeQualityScore(attribute.good, attribute.regular, attribute.bad);
     });
     var text = '';
     text += '<h3>Quality Attributes</h3>';
-    text += attributeIntroText();
-    Object.keys(attributes).forEach(function(attributeName) {
-        text += attributeText(attributeName, attributes[attributeName]);
+    text += attributeIntroText(attributes);
+    attributes.forEach(function (attribute) {
+        text += attributeText(attribute);
     });
     return text;
 }
 
-function attributeIntroText() {
-    return '<p>The code quality analysis works with four groups of software metrics.</p>';
+function attributeIntroText(attributes) {
+    var minScore = 3;
+    var avgScore = 0.0;
+    attributes.forEach(function (attribute) {
+        const score = attribute.score;
+        minScore = Math.min(score, minScore);
+        avgScore += score;
+    });
+    avgScore = avgScore / attributes.length;
+    var text = '<p>An analysis of software metrics along four quality attributes shows generally ';
+    if (avgScore >= 2.5) {
+        text += '<i>very good</i> quality';
+    } else if (avgScore >= 1.75) {
+        text += '<i>good</i> quality';
+    } else if (avgScore >= 1.0) {
+        text += '<i>mixed</i> quality';
+    } else {
+        text += '<i>low</i> quality';
+    }
+    if (minScore === 0) {
+        var minAttributes = attributes.filter(attribute => attribute.score === minScore);
+        text += ', with issues'
+        if (minAttributes.length === 1) {
+            text += ' mainly regarding the <span class="' + minAttributes[0].name + 'Metric clickable">' + minAttributes[0].longname + '</span>';
+        } else if (minAttributes.length === 2) {
+            text += ' mainly regarding the <span class="' + minAttributes[0].name + 'Metric clickable">' + minAttributes[0].longname + '</span> and the <span class="' + minAttributes[1].name + 'Metric clickable">' + minAttributes[1].longname + '</span>';
+        } else if (minAttributes.length === 3) {
+            nonMinAttributes = attributes.filter(attribute => attribute.score > minScore);
+            text += ' in all attributes but <span class="' + nonMinAttributes[0].name + 'Metric clickable">' + nonMinAttributes[0] + '</span>';
+        } else {
+            text += ' regarding all attributes';
+        }
+    }
+    return text + '.</p>';
 }
 
 // FIXME: the values of good, regular and bad don't sum up to 100%
-function attributeText(attributeName, attribute) {
-    console.log(attributeName, attribute.good, attribute.regular, attribute.bad);
-    var bar = '<span id="bar' + captitalize(attributeName) + '" class="barSpan"></span>';
+function attributeText(attribute) {
+    console.log(attribute.name, attribute.good, attribute.regular, attribute.bad);
+    var bar = '<span id="bar' + captitalize(attribute.name) + '" class="barSpan"></span>';
     var badClasses = num2word(attribute.bad) + ' class' + (attribute.bad === 0 ? '' : 'es') + ' ' + bar;
     var badClassesAre = badClasses + ' ' + (attribute.bad === 0 ? 'is' : 'are');
-    var text = '<p><h4 class="' + attributeName + 'Metric clickable">' + captitalize(attributeName) + ':</h4> '
+    var text = '<p><h4 class="' + attribute.name + 'Metric clickable">' + captitalize(attribute.name) + ':</h4> '
     var quality = '', reason = '';
     switch (attribute.score) {
         case 3:
@@ -150,7 +178,7 @@ function attributeText(attributeName, attribute) {
             reason = 'the high number of ' + badClasses + ' is rated as having <i>low</i> quality';
     }
     text += 'The ' + attribute.longname + ' is ' + quality + ' as ' + reason;
-    text += '<span class="' + attributeName + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attributeName) + '"></div></div></p>';
+    text += '<span class="' + attribute.name + 'Info infoIcon"title=""> &#9432;</span>. <button class="collapsible"></button><div class="content"><div id="sl' + captitalize(attribute.name) + '"></div></div></p>';
     return text;
 }
 
