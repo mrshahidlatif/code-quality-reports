@@ -125,6 +125,9 @@ h4{
 .BSLegend{
     border-bottom: 2px solid black;
 }
+.NoBSLegend{
+    border-bottom: 2px solid #8d8e8e;
+}
 
 .wmc{
     border-bottom: 2px solid #2b8cbe;
