@@ -11,10 +11,10 @@ function generateText(data) {
     drawBarChart("#barFc", Math.round((decomCt / badCt) * 1000) / 10);
     drawBarChart("#barSpa", Math.round((spaCt / badCt) * 1000) / 10);
     drawBarChart("#barLazy", Math.round((lazyCt / badCt) * 1000) / 10);
-    drawBarChart("#barComplexity", Math.round((badComplexityCt / classCt) * 1000) / 10);
-    drawBarChart("#barCoupling", Math.round((badCouplingCt / classCt) * 1000) / 10);
-    drawBarChart("#barCohesion", Math.round((badCohesionCt / classCt) * 1000) / 10);
-    drawBarChart("#barInheritance", Math.round((badInheritanceCt / classCt) * 1000) / 10);
+    drawBarChart("#barComplexity", Math.round((badComplexityArr.length / classCt) * 1000) / 10);
+    drawBarChart("#barCoupling", Math.round((badCouplingArr.length / classCt) * 1000) / 10);
+    drawBarChart("#barCohesion", Math.round((badCohesionArr.length / classCt) * 1000) / 10);
+    drawBarChart("#barInheritance", Math.round((badInheritanceArr.length / classCt) * 1000) / 10);
 
     //bug chart
     drawBarChart("#barBug", Math.round((bugCt / classCt) * 1000) / 10);
@@ -89,10 +89,10 @@ function badSmellsText() {
 
 function qualityAttributeText() {
     var attributes = [
-        { "name": "complexity", "longname": 'code complexity', "good": goodComplexityCt, "regular": regularComplexityCt, "bad": badComplexityCt },
-        { "name": "coupling", "longname": 'coupling between classes', "good": goodCouplingCt, "regular": regularCouplingCt, "bad": badCouplingCt },
-        { "name": "cohesion", "longname": 'cohesion within classes', "good": goodCohesionCt, "regular": regularCohesionCt, "bad": badCohesionCt },
-        { "name": "inheritance", "longname": 'usage of class inheritance', "good": goodInheritanceCt, "regular": regularInheritanceCt, "bad": badInheritanceCt }
+        { "name": "complexity", "longname": 'code complexity', "good": goodComplexityArr.length, "regular": regularComplexityArr.length, "bad": badComplexityArr.length },
+        { "name": "coupling", "longname": 'coupling between classes', "good": goodCouplingArr.length, "regular": regularCouplingArr.length, "bad": badCouplingArr.length },
+        { "name": "cohesion", "longname": 'cohesion within classes', "good": goodCohesionArr.length, "regular": regularCohesionArr.length, "bad": badCohesionArr.length },
+        { "name": "inheritance", "longname": 'usage of class inheritance', "good": goodInheritanceArr.length, "regular": regularInheritanceArr.length, "bad": badInheritanceArr.length }
     ];
     attributes.forEach(function (attribute) {
         attribute.score = computeQualityScore(attribute.good, attribute.regular, attribute.bad);
@@ -135,7 +135,7 @@ function attributeIntroText(attributes) {
             text += ' mainly regarding the <span class="' + minAttributes[0].name + 'Metric clickable">' + minAttributes[0].longname + '</span> and the <span class="' + minAttributes[1].name + 'Metric clickable">' + minAttributes[1].longname + '</span>';
         } else if (minAttributes.length === 3) {
             nonMinAttributes = attributes.filter(attribute => attribute.score > minScore);
-            text += ' in all attributes but <span class="' + nonMinAttributes[0].name + 'Metric clickable">' + nonMinAttributes[0] + '</span>';
+            text += ' in all attributes but <span class="' + nonMinAttributes[0].name + 'Metric clickable">' + nonMinAttributes[0].longname + '</span>';
         } else {
             text += ' regarding all attributes';
         }
@@ -143,7 +143,6 @@ function attributeIntroText(attributes) {
     return text + '.</p>';
 }
 
-// FIXME: the values of good, regular and bad don't sum up to 100%
 // TODO: expand details (bar chart) when clicking on the metrics
 // TODO: make sets of classes highlighted with bar chartts clickable/selectable
 // TODO: hand cursor for clickable bars

@@ -74,7 +74,7 @@ var LOC, AMC, WMC, NPM;
     
 var linkedSLopts = null;    //added
 
-var badCt = 0, bugCt = 0, goodCouplingCt = 0, regularCouplingCt = 0, badCouplingCt = 0, goodInheritanceCt = 0, regularInheritanceCt = 0, badInheritanceCt = 0, goodCohesionCt = 0, regularCohesionCt = 0, badCohesionCt = 0, goodComplexityCt = 0, regularComplexityCt = 0, badComplexityCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, goodCouplingPercent = 0, regularCouplingPercent = 0, badCouplingPercent = 0, goodInheritancePercent = 0, regularInheritancePercent =0, badInheritancePercent = 0, goodCohesionPercent = 0, regularCohesionPercent = 0, badCohesionPercent = 0, goodComplexityPercent = 0, regularComplexityPercent = 0, badComplexityPercent = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+var badCt = 0, bugCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "",  goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "",  badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
 /* ------------------------------------------------------------------------*/
 /* Load data and generate report */ 
@@ -246,92 +246,40 @@ function analyzeData(data){
       classesWithBadSmells.push(badClass);
     }
     badClasses = classesWithBadSmells;
-    // console.log(classesWithBadSmells);
-    //check for good coupling
-    if(d.cbo <= 6 && (d.ca <= 7 || d.ce <=6)){
-      goodCouplingCt++;
+
+    if (d.max_cc > 4 || d.wmc > 34) {
+      badComplexityArr.push(classSpan);
+    } else if (d.max_cc > 2 || d.wmc > 11) {
+      regularComplexityArr.push(classSpan);
+    } else {
+      goodComplexityArr.push(classSpan);
+    }
+
+    if (d.cbo >= 9 || d.ca > 39 || d.ce > 16) {
+      badCouplingArr.push(classSpan);
+    } else if (d.cbo >= 7 || d.ca > 7 || d.ce > 6) {
+      regularCouplingArr.push(classSpan);
+    } else {
       goodCouplingArr.push(classSpan);
     }
-    //check for regular coupling
-    if((d.cbo >= 7 && d.cbo < 39) && ((d.ca > 7 && d.ca <=39) || (d.ce > 6 && d.ce <=16))){
-      regularCouplingCt++;
-     regularCouplingArr.push(classSpan);
-   }
-   //check for bad coupling
-   if((d.cbo >= 9) && ((d.ca > 39) || (d.ce > 16))){
-     badCouplingCt++;
-     badCouplingArr.push(classSpan);
+
+    
+    if (d.lcom3 > 0.725) {
+      badCohesionArr.push(classSpan);
+    } else if (d.lcom3 > 0.167) {
+      regularCohesionArr.push(classSpan);
+    } else {
+      goodCohesionArr.push(classSpan);
     }
-  //check for good inheritance
-   if(d.dit <= 2 && d.noc <= 1){
-     goodInheritanceCt++;
-     goodInheritanceArr.push(classSpan);
-   }
-   //check for regular inheritance
-   if((d.dit > 2 && d.dit <= 4) && (d.noc > 1 && d.noc <= 3)){
-     regularInheritanceCt++;
-    regularInheritanceArr.push(classSpan);
-   }
-   //check for bad inheritance
-   if(d.dit > 4 && d.noc > 3){
-     badInheritanceCt++;
-     badInheritanceArr.push(classSpan);
-   }
-   //check for good cohesion
-   if(d.lcom3 <= 0.167){
-     goodCohesionCt++;
-     goodCohesionArr.push(classSpan);
-   }
-   //check for regular cohesion
-   if(d.lcom3 > 0.167 && d.lcom3 <= 0.725 ){
-     regularCohesionCt++;
-     regularCohesionArr.push(classSpan);
-   }
-   //check for bad cohesion
-   if(d.lcom3 > 0.725){
-     badCohesionCt++;
-     badCohesionArr.push(classSpan);
-   }
-   //check for good Complexity
-   if(d.max_cc <= 2 || d.wmc <= 11){
-     goodComplexityCt++;
-     goodComplexityArr.push(classSpan);
-   }
-   //check for regular Complexity
-   if((d.max_cc > 2 && d.max_cc <= 4) || (d.wmc > 11 && d.wmc <= 34)){
-     regularComplexityCt++;
-     regularComplexityArr.push(classSpan);
-   }
-   //check for bad Complexity
-   if(d.max_cc > 4 || d.wmc > 34){
-     badComplexityCt++;
-     badComplexityArr.push(classSpan);
-   }
+    
+    if (d.dit > 4 || d.noc > 3) {
+      badInheritanceArr.push(classSpan);
+    } else if (d.dit > 2 || d.noc > 1) {
+      regularInheritanceArr.push(classSpan);
+    } else {
+      goodInheritanceArr.push(classSpan);
+    }
   })
-
-  //classes with coupling metrics values
-  goodCouplingPercent = Math.round((goodCouplingCt/classCt)*100);
-  regularCouplingPercent = Math.round((regularCouplingCt/classCt)*100);
-  badCouplingPercent = Math.round((badCouplingCt/classCt)*100);
-
- //classes with inheritance metrics values
-  goodInheritancePercent = Math.round((goodInheritanceCt/classCt)*100);
-  regularInheritancePercent = Math.round((regularInheritanceCt/classCt)*100);
-  badInheritancePercent = Math.round((badInheritanceCt/classCt)*100);
-
-//classes with cohesion metrics values
-  goodCohesionPercent = Math.round((goodCohesionCt/classCt)*100);
-  regularCohesionPercent = Math.round((regularCohesionCt/classCt)*100);
-  badCohesionPercent =  Math.round((badCohesionCt/classCt)*100);
-
-
-//classes with complexity metrics values
-  goodComplexityPercent = Math.round((goodComplexityCt/classCt)*100);
-  regularComplexityPercent = Math.round((regularComplexityCt/classCt)*100);
-  badComplexityPercent = Math.round((badComplexityCt/classCt)*100);
-//counting the total bad smells
-
-
 
   for(var i = 0; i < bugArr.length; i++){
     var b = bugArr[i];
