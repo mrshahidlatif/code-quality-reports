@@ -551,7 +551,7 @@ $(document).on("click", ".smellFc", function () {
         dims['wmc'] = [16, null];
         parallelfilter(dims);
 
-        var caption = 'The <span class="BSLegend">Classes</span> containing Functional Decomposition smell have <span class="wmc">loc</span> > 16 and <span class="npm">amc</span> < 8';
+        var caption = 'The <span class="BSLegend">Classes</span> containing Functional Decomposition smell have <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
         updateCaption(caption);
     }
 });
@@ -646,10 +646,11 @@ function showPersistentClassCaption(className) {
     var content = createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
     updateCaption(content)
 }
+
 function updateCaption(content){
   $('#adaptiveCaption').remove();
   $('#captionPP').append('<span id="adaptiveCaption"></span>');
-  $('#adaptiveCaption').append(content); 
+  $('#adaptiveCaption').append(' '+ content); 
 }
 
 function highlightCodeSmell(className) {
@@ -705,13 +706,9 @@ function makeSelectionPersistent(className){
   if (cSmells.lazy == true){
     $(".smellLazy").css('font-weight','bold');
   }
-  showPersistentClassCaption(className);
-  $('#dynamicPersistentCaption').css('background', '');
-  $('#dynamicPersistentCaption').css('font-weight', 'bold');
 
   haveClassToPersist= true;
   persistentClass = className;
-  
 
 }
 function removePersistentHighlighting(className){
@@ -1060,7 +1057,6 @@ function makeScatterPlot(data){
         if(prev_data) {
             var chart_data = clone(prev_data);
             xVal = this.value;
-            $("#captionSP").html(generateSPCaption());
             setup(chart_data);
         }
     }
@@ -1070,7 +1066,6 @@ function makeScatterPlot(data){
         if(prev_data) {
             var chart_data = clone(prev_data);
             yVal = this.value;
-            $("#captionSP").html(generateSPCaption());
             setup(chart_data);
         }
     }

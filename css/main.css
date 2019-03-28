@@ -177,6 +177,15 @@ svg .noc rect {
 svg .dit rect {
     fill: #cf891f;
 }
+.loc{
+    border-bottom: 2px solid black;;
+}
+.amc{
+    border-bottom: 2px solid black;;
+}
+.npm{
+    border-bottom: 2px solid black;;
+}
 
 /* ------------------------------------------------------------------------*/
 /* Tooltips */
