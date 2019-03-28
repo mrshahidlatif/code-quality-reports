@@ -738,7 +738,7 @@ function removePersistentHighlighting(className){
   $("span.slcls").css('background',''); 
   $("#scatterplot").contents().find("circle").css('fill', '#8d8e8e');
   $("#scatterplot").contents().find("circle#"+className).attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-  unHighlight();
+  resetParallelPlot();
   $('.clickable').css('background','none');
 
   //reset to original caption
@@ -1001,7 +1001,7 @@ function parallelplot(data) {
 }
 function unHighlight(){
 	//clearing the highlighting
-	pcz.unhighlight();
+  pcz.unhighlight();
 }
 function highlightEdge(d){
   var classData = {cname:d.cname,
@@ -1026,6 +1026,13 @@ function makeEdgePersistent(className){
     if(d.cname.split('.').pop() == className){
       return 'black';
     }
+    return '#8d8e8e';
+  }).render();
+}
+function resetParallelPlot(){
+   //TODO: maybe find a better way of doing it. 
+   pcz.brushReset();
+   pcz.color(function(d){
     return '#8d8e8e';
   }).render();
 }
