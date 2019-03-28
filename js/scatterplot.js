@@ -50,7 +50,7 @@ function ScatterPlot(){
         var h = d3.select($el).style("height");
         svg = d3.select($el).append("svg").attr('width', w).attr("height", h);
         root = svg.append("g")
-            .attr("transform", "translate(" + margin + "," + 2 + ")");
+            .attr("transform", "translate(" + margin + "," + 4 + ")");
         if(prev_data != null && prev_data.length > 0) {
             var chart_data = clone(prev_data);
             data = chart_data;
@@ -64,7 +64,7 @@ function ScatterPlot(){
             d.index = i;
             d.neighbors = [];
         });
-        size = size - 20;
+        // size = size - 20;
 
         var xValue = function(d) {return d[dimensions[0]];}, // data -> value
             xScale = d3.scale.linear().range([0, size]),     // value -> display
@@ -79,10 +79,11 @@ function ScatterPlot(){
 
         var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(4);
         var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4);
+        
         root.append("g")
             .attr("class", "axis x-axis")
             .style("font-size","12px")
-            .attr("transform", "translate( 0, " +size+")") // move axis to bottom of chart
+            .attr("transform", "translate( 0, " +size +")") // move axis to bottom of chart
             .call(xAxis);
         //     .call(d3.axis(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
         //   }));
@@ -91,10 +92,10 @@ function ScatterPlot(){
         root.append("text")
             .attr("class", "label")
             .attr("x", size/2)
-            .attr("y", size+ 25)
+            .attr("y", size+30)
             .style("text-anchor", "middle")
             .text(dimensions[0])
-            .style("font-size","14px");
+            .style("font-size","12px");
 
         // y-axis
         root.append("g")
@@ -113,7 +114,7 @@ function ScatterPlot(){
             .attr("transform", "rotate(-90)") // rotate text -90 degrees from x, y
             .style("text-anchor", "middle")
             .text(dimensions[1])
-            .style("font-size","14px");
+            .style("font-size","12px");
 
         root.selectAll(".dot")
             .data(data)
@@ -237,8 +238,6 @@ function ScatterPlot(){
             }
 
         });
-
-
         window.makeAnnotations = d3.annotation()
             .type(d3.annotationLabel)
             .annotations(nonOtherNodes.map((d, i) => {
@@ -279,15 +278,6 @@ function ScatterPlot(){
                /*  .force("x", d3.forceX(a => a.positionX).strength(a => Math.max(0.15, Math.min(3, Math.abs(a.x - a.positionX) / 20))))
                 .force("y", d3.forceY(a => a.positionY).strength(a => Math.max(0.25, Math.min(3, Math.abs(a.x - a.positionX) / 20)))) */
                 .force("collision", window.collide)
-				/* .alpha(0.5)
-				.on('tick', d => {
-                    labelArray.forEach((d, i) => {
-                        const match = noteBoxes[i];
-                        try {d.dx = match.x - match.positionX;} catch(e){}
-                        try {d.dy = match.y - match.positionY;} catch(e){}
-                    });
-                    makeAnnotations.update();
-                }); */
 
 		labelArray.forEach((d, i) => {
 			d.width = noteBoxes[i].width;
@@ -324,50 +314,6 @@ function ScatterPlot(){
 			}
 
 			d.x = minPosition.x; d.y = minPosition.y;
-
-			/* svg.append("rect")
-				.attr("x", d.x + d.offsetCornerX)
-				.attr("y", d.y + d.offsetCornerY)
-				.attr("width", d.width)
-				.attr("height", d.height)
-				.attr("stroke", "#aaa")
-				.style("fill", "transparent"); */
-
-			/* if(d.note.label == "RevalidatingDOMParser"){
-				labelArray.forEach((dd)=>{
-					if(dd.note.label == "XMLEntityReaderFactory"){
-						console.log(isOverlapTwoLabel(dd,d,true));
-
-
-						svg.append("rect")
-							.attr("x", d.x + d.offsetCornerX)
-							.attr("y", d.y + d.offsetCornerY)
-							.attr("width", d.width)
-							.attr("height", d.height)
-							.attr("stroke", "#aaa")
-							.attr("stroke-width", 1)
-							.style("fill", "transparent");
-
-
-						svg.append("rect")
-							.attr("x", dd.x + dd.offsetCornerX)
-							.attr("y", dd.y + dd.offsetCornerY)
-							.attr("width", dd.width)
-							.attr("height", dd.height)
-							.attr("stroke", "#f00")
-							.attr("stroke-width", 1)
-							.style("fill", "transparent");
-
-					}
-
-				})
-			} */
-			// if(d.note.label == "XSchemaValidator")
-				// d.note.label,calculateCost(labelData, nonOtherNodes, d, labelArray, minPosition.j,true);
-
-			/* svg.append("circle")
-				.style("fill", "green").attr("r", 2)
-				.attr("cx", d.x).attr("cy", d.y); */
 
 			svg.append("line")
 				.attr("stroke", "#555")

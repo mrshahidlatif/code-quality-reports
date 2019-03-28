@@ -835,7 +835,6 @@ function updateDetailPanel(title, content) {
   $("#detailsContent").empty();
   $("#detailsContent").append($(content));
 }
-//FIXME: it is not taking the style of span tags specified inside!
 function updateClassDescription(content){
   $("#detailsContent").prepend('<p id="classDescription"></p>');
   $('#classDescription').html(content);
@@ -1168,9 +1167,9 @@ function makeScatterPlot(data){
 
         d3.selectAll("#chart>*").remove();
         var h = d3.select("#chart").style("height");
-        var size = +h.substring(0,h.length -2);
+        var size = +h.substring(0,h.length -2)-35;
 
-        var scatterplot = ScatterPlot().$el("#chart").size(size).threshold(12).margin(30).threshold(OUTLIER_THRESHOLD)
+        var scatterplot = ScatterPlot().$el("#chart").size(size).threshold(12).margin(35).threshold(OUTLIER_THRESHOLD)
             .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
                 tooltip.style("opacity", 1)
                     .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))
