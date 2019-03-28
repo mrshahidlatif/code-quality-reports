@@ -47,7 +47,7 @@
 
           for(var s = 0; s < settings.sldef.length; s++) {
             sldata[s] = {minmax: [0,0]};
-            sldata[s].cols = getcols(settings.sldef[s], cols); //console.log(sldata[s].cols);
+            sldata[s].cols = getcols(settings.sldef[s], cols); 
             //initialise with common options
             sldata[s].slopts = $.extend({}, slopts);
             //add graph specific options
@@ -59,8 +59,6 @@
           }
 
           getpckgs(csvrows, cols.length, ',');
-          //console.log(pckgs);
-          //console.log(sldata);
 
           createsls();
 
@@ -74,35 +72,33 @@
     });
 
   }
-  function addLinking(){
-      $(".sl span").on('mouseover', function() {
-        var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-        showHoverHighlighting(clsName);
-
-        }).on('mouseout', function(){
-          var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-          if(haveClassToPersist){
-            removeHoverHighlighting(clsName); 
-          }
-          else {
-            removePersistentHighlighting(clsName);
-            removeHoverHighlighting(clsName); 
-        }
-      });
+  function addLinking() {
+    $(".sl span.slcls").on('mouseover', function () {
+      var clsName = $(".sl span[data-bar=" + $(this).attr('data-bar') + "]").attr('data-slcls');
+      showHoverHighlighting(clsName);
+    }).on('mouseout', function () {
+      var clsName = $(".sl span[data-bar=" + $(this).attr('data-bar') + "]").attr('data-slcls');
+      if (haveClassToPersist) {
+        removeHoverHighlighting(clsName);
+      }
+      else {
+        removePersistentHighlighting(clsName);
+        removeHoverHighlighting(clsName);
+      }
+    });
   }
   function addHLeffects() {  //add and remove highlight on corresponding bars
-    $(".sl span").on('mouseover', function() {
-      $(".sl span[data-bar="+$(this).attr('data-bar')+"]").addClass(settings.HLclass);
-      // alert($(".sl span[data-bar="+$(this).attr('data-bar')+"]").html());
+    $(".sl span").on('mouseover', function () {
+      $(".sl span[data-bar=" + $(this).attr('data-bar') + "]").addClass(settings.HLclass);
     })
-      .on('mouseout', function() { $(".sl span[data-bar="+$(this).attr('data-bar')+"]").removeClass(settings.HLclass); });
+      .on('mouseout', function () { $(".sl span[data-bar=" + $(this).attr('data-bar') + "]").removeClass(settings.HLclass); });
   }
   function slToolTip(slel, flds) {  //create and store tooltip for bar if not set already and return it
     var tt = slel.data('sltooltip');
     if(tt == '') {  //if tooltip has not been set
       var s      = $(".sl").index(slel.parents(".sl")),
           slcols = settings.sldef[s].split(',').reverse();
-      tt = '<span class="sltt">' + slel.data('slcls') + '</span>';
+      tt = '<span class="sltt">' + slel.data('slcls').split('.').pop() + '</span>';
       for(var i = 0; i < flds.length; i++) {
         tt += '<span class="slttval">' +
                 '<span style="color:' +flds[i].color + '">&#9679;</span>' +
@@ -117,24 +113,7 @@
   function showClassCodeOnClick(){
     $(".sl span").on('click', function() {
       var clsName =   $(".sl span[data-bar="+$(this).attr('data-bar')+"]").attr('data-slcls');
-
-      var idx = classShortNameToIndex[clsName];
-      var str = fullData[idx].cname;
-
-      var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-      $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
-      $("#detailsContent").empty();
-      $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-      // TODO: replace by asynchronous load
-      var src = $.ajax({
-        url: url,
-        async: false
-      }).responseText;
-      src = src.substring(src.indexOf("package "));   // cut out license text
-      $("#sourcecode").text(src);
-      Prism.highlightElement($("#sourcecode")[0]);
-      updateClassDescription(generateClassDescription(str.split('.').pop()));
-      makeSelectionPersistent(str.split('.').pop());
+      loadSourcecode(clsName);
     });
 
   }
@@ -148,19 +127,22 @@
     for(var pckg in pckgs) if(pckgs.hasOwnProperty(pckg)) { //for each package
       var p = -1;  //div index counter for each pckg
       //draw a bar for each class along with a dummy bar in their own span
-      for(var i = 0; i < pckgs[pckg].cls.length; i++, b++) {
+      for(var i = 0; i < pckgs[pckg].length; i++, b++) {
         if(!i || b % maxbars_row == 0) {  //if it's the first bar in a pckg or max number of bars per row have been added
           p++;
           numbars_pckg_row = 0;
           $(".sl").append('<div class="pckg '+pckg+' '+pckg+'_'+p+'"/>');  //add new div for pckg
         }
         numbars_pckg_row++;
+        var className = pckgs[pckg][i];
+        var classIndex = classNameToIndex[className];
         $(".sl>div."+pckg+"_"+p).append('<span data-bar="bar' + b +
-                                            '" data-slcls="'+pckgs[pckg].cls[i] +
+                                            '" data-slcls="'+className +
+                                            '" data-index="'+classIndex +
                                             '" data-sltooltip=""' +
-                                             ' class="slcls '+pckgs[pckg].cls[i] + '" />');
+                                             ' class="slcls class'+classIndex + '" />');
         for(var s = 0; s < settings.sldef.length; s++) {  //for each graph
-          var newbar = $(".sl"+s+" span."+pckgs[pckg].cls[i]);
+          var newbar = $(".sl"+s+" span.class"+classIndex);
           newbar.sparkline([sldata[s][pckg][i], sldata[s].minmax], sldata[s].slopts);
         }
         if(!maxbars_row) {
@@ -168,7 +150,7 @@
           barwd = settings.slopts[0].barWidth + slbar.outerWidth(true) - slbar.innerWidth();
           maxbars_row = Math.round(slmaxwd / barwd);
         }
-        if(i + 1 == pckgs[pckg].cls.length || (b + 1) % maxbars_row == 0) {  //if max number of bars per row have been added or it's the last bar
+        if(i + 1 == pckgs[pckg].length || (b + 1) % maxbars_row == 0) {  //if max number of bars per row have been added or it's the last bar
           //add label to last added divs
           $(".sl>div.pckg:last-child").append('<div class="lbl"><span>'+pckg+'</span></div>');
           newlbls = $(".sl>div.pckg:last-child>div.lbl>span");
@@ -209,15 +191,17 @@
     return tmp;
   }
   function getpckgs(rows, numcols, delim) { //get the packages with their classes and corresponding values for each graph
-    var cname = sldata.cnidx;
-    for(var i = 1; i < rows.length; i++) {
+    for (var i = 1; i < rows.length; i++) {
       var row = rows[i].split(delim);
+      var cname = row[sldata.cnidx];
       if (row.length == numcols) {
-        var pckgcls = pckgclsname(row[cname]), pckg = pckgcls[0], cls = pckgcls[1];
-        if(!pckgs[pckg]) pckgs[pckg] = {cls: []};  //array to hold class names
-        pckgs[pckg].cls.push(cls);
-        for(var s = 0; s < settings.sldef.length; s++) {
-          if(!sldata[s][pckg]) sldata[s][pckg] = [];  //array to hold class data for this pckg for sl number s
+        var pckgcls = pckgclsname(cname);
+        var pckg = pckgcls[0];
+        var cls = pckgcls[1];
+        if (!pckgs[pckg]) pckgs[pckg] = [];  //array to hold class names
+        pckgs[pckg].push(cname);
+        for (var s = 0; s < settings.sldef.length; s++) {
+          if (!sldata[s][pckg]) sldata[s][pckg] = [];  //array to hold class data for this pckg for sl number s
           sldata[s][pckg].push(getclsdata(s, row));
         }
       }

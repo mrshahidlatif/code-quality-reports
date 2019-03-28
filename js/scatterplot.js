@@ -124,30 +124,28 @@ function ScatterPlot(){
             .attr("cx", xMap)
             .attr("cy", yMap)
             .attr("id",function(d){
-                //adding class name to each dot DOM
-                var fName = d.cname.split(".")
-                var cName = fName[fName.length-1];
-                return cName;
+                return d.cname;
+            })
+            .attr("data-index",function(d){
+                return classNameToIndex[d.cname];
             })
             .style("fill", function(d) {
                 return "#8d8e8e";
             })
             .on("mouseover", function(d) { 
-                var lst = d.cname.split(".");
-                var className = lst[lst.length-1];
+                var className = d.cname;
                 showHoverHighlighting(className);
                 //Show the new tooltip
                d3.select('.tooltip')
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(className)
+                tooltip.html(className.split(".").pop())
                 .style("left", (d3.event.pageX + 5) + "px")
                 .style("top", (d3.event.pageY - 5) + "px");
             })
             .on("mouseout", function(d) {
-                var lst = d.cname.split(".");
-                var className = lst[lst.length-1];
+                var className = d.cname;
                 if(haveClassToPersist){
                     removeHoverHighlighting(className); 
                   }
@@ -163,22 +161,7 @@ function ScatterPlot(){
                 .style("opacity", 0);
                 
             }).on("click",function(d){
-                var str = d.cname;
-                var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-                $("#detailsHeader").text("File "+str.split(".").pop()+ ".java");
-                $("#detailsContent").empty();
-                $("#detailsContent").append($('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-                // TODO: replace by asynchronous load
-                var src = $.ajax({
-                  url: url,
-                  async: false
-                }).responseText;
-                src = src.substring(src.indexOf("package "));   // cut out license text
-                $("#sourcecode").text(src);
-                Prism.highlightElement($("#sourcecode")[0]);
-                updateClassDescription(generateClassDescription(str.split('.').pop()));
-                makeSelectionPersistent(str.split('.').pop());
-                
+                loadSourcecode(d.cname);                
               });
 
         data.forEach(function(d, i){
@@ -244,7 +227,7 @@ function ScatterPlot(){
                 return {
                     data: {x: d.x, y: d.y, pointIdx: d.index},
                     note: {
-                        label: d.cname ? d.cname.split(".").pop() : "label",
+                        label: d.cname ? d.cname : "label",
                         align: "middle",
                         fixed: true
                     },

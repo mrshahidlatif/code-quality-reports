@@ -332,7 +332,7 @@ function generateAttributeTooltip(metricList, condBad, condRegular) {
 function generateClassDescription(className) {
     let loc = fullData.map(d => d.loc);
     let npm = fullData.map(d => d.npm);
-    var cObj = fullData[classShortNameToIndex[className]];
+    var cObj = fullData[classNameToIndex[className]];
 
     getOutliers(loc);
 

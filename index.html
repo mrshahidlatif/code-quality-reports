@@ -61,8 +61,7 @@
 var projectName = "";
 var fullData;
 var badClasses;
-var classFullNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
-var classShortNameToIndex = {} // equivalent dictionary with short class names -- TODO: temporary solution, should be removed
+var classNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
 var xVal; //variables to store active values of scatterplot dimensions
 var yVal; //variables to store active values of scatterplot dimensions
 var classesWithBadSmells = [];
@@ -182,8 +181,7 @@ function analyzeData(data){
 	});
 
 	data.forEach(function(d, i){
-    classFullNameToIndex[d.cname] = i; 
-    classShortNameToIndex[d.cname.split(".").pop()] = i;
+    classNameToIndex[d.cname] = i; 
     var s = d.smells;
     var badClass = new Object;
     var badSmellsinClass = [];
@@ -241,7 +239,7 @@ function analyzeData(data){
 			badCt++;
     }
     if (s.lazy || s.spaghetti || s.decomposition || s.blob || d.bug > 0){
-      badClass.name =  d.cname.split(".").pop();
+      badClass.name =  d.cname;
       badClass.badSmells = badSmellsinClass;
       badClass.bug = d.bug;
       classesWithBadSmells.push(badClass);
@@ -455,7 +453,6 @@ function analyzeData(data){
   }
   numberOfPackages = packages.length;
   result = stringify(structurize(paths)).join("\n");
-  // console.log(result);
 
 }
 
@@ -476,10 +473,10 @@ $(document).on("click", "button.collapsible", function () {
 
 //Highlighting corresponding element of vis on hovering class name in text
 $(document).on("mouseover", ".className", function () {
-    var className = $(this).text();
+    var className = getClassNameFromClassSpan(this);
     showHoverHighlighting(className);
  }).on('mouseout', '.className', function() {
-  var className = $(this).text();
+  var className = getClassNameFromClassSpan(this);
     if(haveClassToPersist){
       removeHoverHighlighting(className); 
     }
@@ -489,21 +486,20 @@ $(document).on("mouseover", ".className", function () {
     }
  });
 
-// TODO: use full class name (cname) consistently
 $(document).on("click", ".className", function() {
-  var className = $(this).text();
-  var idx = Number($(this).attr("data-index"));
-  var cname = fullData[idx].cname;
-  var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-  updateScatterPlot($(this));
-  updateDetailPanel("Class "+cname.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-  var src = javaCode[cname];
+  var className = getClassNameFromClassSpan(this);
+  loadSourcecode(className);
+});
+
+function loadSourcecode(className) {
+  updateDetailPanel("Class "+className.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+  var src = javaCode[className];
   src = src.substring(src.indexOf("package "));   // cut out license text
   $("#sourcecode").text(src);
   Prism.highlightElement($("#sourcecode")[0]);
-  updateClassDescription(generateClassDescription(cname.split('.').pop()));
+  updateClassDescription(generateClassDescription(className));
   makeSelectionPersistent(className);
-});
+}
 
 
 // TODO: give for each pattern an example (maybe one for high, medium and low).
@@ -634,11 +630,11 @@ $(document).on("click", "#closeBtn", function () {
     updateDetailPanel('','');
 });
 
-function updateScatterPlot(clickedClass){
-  //TODO: complete it and try to do the same when a bar is clicked in the sparklines
-  var className = clickedClass.text();
+// TODO: reimplement - separate selecting the dimensions in the scatterplot from loading the source code
+function updateScatterPlot(className){
+  /*//TODO: complete it and try to do the same when a bar is clicked in the sparklines
   //Selecting relevant dimensions in scatterplot
-  var cSmells = fullData[classShortNameToIndex[className]].smells;
+  var cSmells = fullData[classNameToIndex[className]].smells;
   if (clickedClass.parent().attr('id') === "textAPanel"){
     scatterPlotDimensions=['loc','bug'];
     makeScatterPlot(fullData);
@@ -646,7 +642,7 @@ function updateScatterPlot(clickedClass){
   else if (cSmells.blob == true) {
       scatterPlotDimensions=['loc','amc'];
       makeScatterPlot(fullData);
-  }
+  }*/
 }
 
 function showClassCaption(className) {
@@ -668,7 +664,7 @@ function updateCaption(content){
 }
 
 function highlightCodeSmell(className) {
-    var cSmells = fullData[classShortNameToIndex[className]].smells;
+    var cSmells = fullData[classNameToIndex[className]].smells;
     if (cSmells.blob == true) {
         $(".smellBlob").css('background', '#ffe68e');
     }
@@ -684,13 +680,13 @@ function highlightCodeSmell(className) {
 }
 
 function showHoverHighlighting(className){
-  $('span.className:contains("'+className+'")').css('background','#ffe68e');
-  $("span.slcls." + className + "", window.parent.document).css('background', '#ffe68e');
-  $("#scatterplot").contents().find("circle#" + className).attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
+  var classIndex = classNameToIndex[className];
+  $('span.className[data-index=' + classIndex+']').css('background','#ffe68e');
+  $('span.slcls[data-index=' + classIndex+']').css('background', '#ffe68e');
+  $('#scatterplot circle[data-index=' + classIndex+']').attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
 
   //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
-  var d = window.parent.fullData;
-  highlightEdge(d[classShortNameToIndex[className]]);
+  highlightEdge(fullData[classIndex]);
   highlightCodeSmell(className);
   // showClassCaption(className);
 }
@@ -703,11 +699,10 @@ function makeSelectionPersistent(className){
   $("span.slcls."+className+"").css('background','black');
   $("#scatterplot").contents().find("circle#"+className).css("fill","black");
 
-  // highlightEdge(fullData[classShortNameToIndex[className]]);
   makeEdgePersistent(className);
 
   //make code smell name persistent
-  var cSmells = fullData[classShortNameToIndex[className]].smells;
+  var cSmells = fullData[classNameToIndex[className]].smells;
   if (cSmells.blob == true){
     $(".smellBlob").css('font-weight','bold');
   }
@@ -726,14 +721,15 @@ function makeSelectionPersistent(className){
 
 }
 function removePersistentHighlighting(className){
+  var classIndex = classNameToIndex[className];
   $(".smellBlob").css('font-weight','normal');
   $(".smellFc").css('font-weight','normal');
   $(".smellSpa").css('font-weight','normal');
   $(".smellLazy").css('font-weight','normal');
 
   $("span.slcls").css('background',''); 
-  $("#scatterplot").contents().find("circle").css('fill', '#8d8e8e');
-  $("#scatterplot").contents().find("circle#"+className).attr("r","3").attr("stroke", "").attr("stroke-width","0px");
+  $("#scatterplot circle").css('fill', '#8d8e8e');
+  $('#scatterplot circle[data-index=' + classIndex+']').attr("r","3").attr("stroke", "").attr("stroke-width","0px");
   resetParallelPlot();
   $('.clickable').css('background','none');
 
@@ -745,11 +741,13 @@ function removePersistentHighlighting(className){
 }
 
 function removeHoverHighlighting(className){
-  $("span.slcls."+className+"",window.parent.document).css('background','');
-  if (persistentClass != '') $("span.slcls."+persistentClass+"",window.parent.document).css('background','black');
+  var classIndex = classNameToIndex[className];
+  var persistentClassIndex = classNameToIndex[persistentClass];
+  $('span.slcls[data-index=' + classIndex+']').css('background','');
+  if (persistentClass != '') $('span.slcls[data-index=' + persistentClassIndex+']').css('background','black');
   
-  $("#scatterplot").contents().find("circle#"+className).attr("r","3").attr("stroke", "").attr("stroke-width","0px");
-  if (persistentClass != '') $("#scatterplot").contents().find("circle#"+persistentClass).css('fill', 'black');
+  $('#scatterplot circle[data-index=' + classIndex+']').attr("r","3").attr("stroke", "").attr("stroke-width","0px");
+  if (persistentClass != '') $('#scatterplot circle[data-index=' + persistentClassIndex+']').css('fill', 'black');
   unHighlight();  
   $('.clickable').css('background','none');
    
@@ -788,8 +786,13 @@ function findClassWithMaxValueOfMetricX (X){
 }
 
 function createClassSpan(cname) {
-  var i = classFullNameToIndex[cname]? classFullNameToIndex[cname]: classShortNameToIndex[cname]; // TODO always use full names internally
+  var i = classNameToIndex[cname];
   return "<span class='className clickable' data-index='" + i + "'>" + cname.split(".").pop() + "</span>";
+}
+
+function getClassNameFromClassSpan(span) {
+  var idx = Number($(span).attr("data-index"));
+  return fullData[idx].cname;
 }
 
 function printList(list){
@@ -840,10 +843,10 @@ function updateClassDescription(content){
 function findBadSmellsInClass(className){
   //use global data variable called fullData
   var bs = [];
-  if (fullData[classShortNameToIndex[className]].smells['blob']){ bs.push('Large Class')};
-  if (fullData[classShortNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 
-  if (fullData[classShortNameToIndex[className]].smells['spaghetti']){ bs.push('Spaghetti Code')}; 
-  if (fullData[classShortNameToIndex[className]].smells['lazy']){ bs.push('Lazy Class')}; 
+  if (fullData[classNameToIndex[className]].smells['blob']){ bs.push('Large Class')};
+  if (fullData[classNameToIndex[className]].smells['decomposition']){ bs.push('Functional Decomposition')}; 
+  if (fullData[classNameToIndex[className]].smells['spaghetti']){ bs.push('Spaghetti Code')}; 
+  if (fullData[classNameToIndex[className]].smells['lazy']){ bs.push('Lazy Class')}; 
 
   return bs;
 }
@@ -945,9 +948,8 @@ function countClassesHavingBadSmells(data) {
 /* ------------------------------------------------------------------------*/
  // load csv file and create the chart
 function parallelplot(data) {
-  // console.log(data);
+
 	data.forEach(function(d, i){
-		// delete d.cname;
 		delete d.rfc;
 		delete d.dam;
 		delete d.moa;
@@ -957,7 +959,6 @@ function parallelplot(data) {
 		delete d.cbm;
 		delete d.avg_cc;
 	});
-	// console.log(data[0]);
 
 	//specify the dimensions and their order
 	var myDimensions = {
@@ -1019,7 +1020,7 @@ function makeEdgePersistent(className){
   //TODO: maybe find a better way of doing it. 
   pcz.brushReset();
   pcz.color(function(d){
-    if(d.cname.split('.').pop() == className){
+    if(d.cname === className){
       return 'black';
     }
     return '#8d8e8e';
@@ -1101,7 +1102,6 @@ function makeScatterPlot(data){
     }
 
     function setup(data){
-        // console.log(data);
         try {OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value);} catch(e){}
 
         d3.selectAll('#controls>*').remove();
@@ -1169,7 +1169,7 @@ function makeScatterPlot(data){
         var scatterplot = ScatterPlot().$el("#chart").size(size).threshold(12).margin(35).threshold(OUTLIER_THRESHOLD)
             .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function(d, i){
                 tooltip.style("opacity", 1)
-                    .html((d.cname ? d.cname.split(".").pop() : ("label" + d.index.toString())))
+                    .html((d.cname ? d.cname : ("label" + d.index.toString())))
                     .style("left", (d3.event.pageX - 155) + "px")  // specify x location
                     .style("top", (d3.event.pageY - 110) + "px");  // specify y location
             }).mouseout(function(d){
