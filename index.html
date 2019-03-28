@@ -492,7 +492,9 @@ $(document).on("click", ".className", function() {
   var idx = Number($(this).attr("data-index"));
   var str = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-  
+
+  updateScatterPlot($(this));
+ 
   updateDetailPanel("Class "+str.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
   // TODO: replace by asynchronous load
   var src = $.ajax({
@@ -634,6 +636,21 @@ $(document).on("click", "#closeBtn", function () {
     removePersistentHighlighting();
     updateDetailPanel('','');
 });
+
+function updateScatterPlot(clickedClass){
+  // console.log(clickedClass.parent().attr('id'));
+  var className = clickedClass.text();
+  //Selecting relevant dimensions in scatterplot
+  var cSmells = fullData[classShortNameToIndex[className]].smells;
+  if (clickedClass.parent().attr('id') === "textAPanel"){
+    scatterPlotDimensions=['loc','bug'];
+    makeScatterPlot(fullData);
+  }
+  else if (cSmells.blob == true) {
+      scatterPlotDimensions=['loc','amc'];
+      makeScatterPlot(fullData);
+  }
+}
 
 function showClassCaption(className) {
     var bs = findBadSmellsInClass(className);

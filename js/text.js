@@ -217,13 +217,12 @@ function bugText() {
         // FIXME: Make sentences less repetitive regarding phrasing
         text += 'With respect to past and present bugs, ' + num2word(bugCt) + ' of the classes <span id="barBug" class="barSpan"></span> have been associated with bugs.';
         if (d.length > 3) {
-            text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> habe both associated bugs and identified code smells';
+            text += ' The classes <button class="collapsible"></button><div class="content"><p>' + printItalicsList(d) + '</p></div> have both associated bugs and identified code smells';
         }
         else if (d.length > 0) {
             text += (d.length == 1) ? ' The class ' + printItalicList(d) + ' has ' : ' The classes ' + printItalicList(d) + ' have ';
             text += 'both associated bugs and identified code smells.';
         }
-
     }
     return text;
 }
