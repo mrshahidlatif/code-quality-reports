@@ -344,16 +344,16 @@ function generateClassDescription(className) {
     var badQualityWith = [];
 
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="complexityMetric">Complexity</span>');
+        badQualityWith.push('<span class="complexityMetric clickable">Complexity</span>');
     }
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="couplingMetric">Coupling</span>');
+        badQualityWith.push('<span class="couplingMetric clickable">Coupling</span>');
     }
     if (badCohesionArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="cohesionMetric">Cohesion</span>');
+        badQualityWith.push('<span class="cohesionMetric clickable">Cohesion</span>');
     }
     if (badInheritanceArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="inheritanceMetric">Inheritance</span>');
+        badQualityWith.push('<span class="inheritanceMetric clickable">Inheritance</span>');
     }
 
     var text = '';
