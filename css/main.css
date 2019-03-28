@@ -178,13 +178,13 @@ svg .dit rect {
     fill: #cf891f;
 }
 .loc{
-    border-bottom: 2px solid black;;
+    border-bottom: 2px solid none;;
 }
 .amc{
-    border-bottom: 2px solid black;;
+    border-bottom: 2px solid none;;
 }
 .npm{
-    border-bottom: 2px solid black;;
+    border-bottom: 2px solid none;;
 }
 
 /* ------------------------------------------------------------------------*/
