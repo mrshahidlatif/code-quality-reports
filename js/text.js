@@ -231,7 +231,7 @@ function bugText() {
 function generatePPCaption() {
     // TODO: color metric names
     var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>). ';
-    caption += 'Each line (left, parallel coordinates plot <span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right, scatterplot <span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class. The <span class="BSLegend">' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' Classes</span> out of <span class="NoBSLegend"> ' + classCt + 'Classes</span> contain bad smells';
+    caption += 'Each line (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class. The <span class="BSLegend">' + num2word(countClassesHavingBadSmells(classesWithBadSmells)) + ' Classes</span> out of <span class="NoBSLegend"> ' + classCt + ' Classes</span> contain bad smells';
 
     caption += '. ';
 
@@ -316,6 +316,12 @@ function generateAndSetTooltipTexts() {
     // TODO: update
     $(".codeSmellsInfo").tooltip({
         content: 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
+    });
+    $(".pcpInfo").tooltip({
+        content: 'Parallel Coordinates Plot visualizes the eleven metrics that are used to assess the quality. The grouping of the dimensions corresponds to the sequence of quality attributes in the text.'
+    });
+    $(".spInfo").tooltip({
+        content: 'Scatterplot shows the relationships between any two selected metrics. On interactions, the displayed metrics corresponds to the clicked entity.'
     });
 }
 
