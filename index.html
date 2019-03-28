@@ -2,6 +2,7 @@
 <html>
 <header>
   <meta charset="utf-8">
+  <script type="text/javascript" src="data/java_code.js"></script>
   <script type="text/javascript" src="lib/jquery-2.2.2.min.js"></script>
   <script type="text/javascript" src="lib/jquery.sparkline.js"></script>
   <script type="text/javascript" src="lib/prism.js"></script>
@@ -488,24 +489,19 @@ $(document).on("mouseover", ".className", function () {
     }
  });
 
+// TODO: use full class name (cname) consistently
 $(document).on("click", ".className", function() {
   var className = $(this).text();
   var idx = Number($(this).attr("data-index"));
-  var str = fullData[idx].cname;
+  var cname = fullData[idx].cname;
   var url = "sourcecode/src/" + str.replace(/[.]/g, "/") + ".java";
-
   updateScatterPlot($(this));
- 
-  updateDetailPanel("Class "+str.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
-  // TODO: replace by asynchronous load
-  var src = $.ajax({
-    url: url,
-    async: false
-  }).responseText;
+  updateDetailPanel("Class "+cname.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+  var src = javaCode[cname];
   src = src.substring(src.indexOf("package "));   // cut out license text
   $("#sourcecode").text(src);
   Prism.highlightElement($("#sourcecode")[0]);
-  updateClassDescription(generateClassDescription(str.split('.').pop()));
+  updateClassDescription(generateClassDescription(cname.split('.').pop()));
   makeSelectionPersistent(className);
 });
 
