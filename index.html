@@ -130,6 +130,7 @@ function generateReport(data){
   analyzeData(data);
   generateText(data);
   parallelplot(data);
+  scatterPlotDimensions= ['loc','wmc'];
   makeScatterPlot(data);
 }
 
@@ -638,7 +639,7 @@ $(document).on("click", "#closeBtn", function () {
 });
 
 function updateScatterPlot(clickedClass){
-  // console.log(clickedClass.parent().attr('id'));
+  //TODO: complete it and try to do the same when a bar is clicked in the sparklines
   var className = clickedClass.text();
   //Selecting relevant dimensions in scatterplot
   var cSmells = fullData[classShortNameToIndex[className]].smells;
