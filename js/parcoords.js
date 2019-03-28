@@ -2394,7 +2394,7 @@ pc.highlight = function(data) {
 
   __.highlighted = data;
   pc.clear("highlight");
-  d3.selectAll([canvas.foreground, canvas.brushed]).classed("faded", true);
+  d3.selectAll([canvas.foreground, canvas.brushed]).classed("faded", false); // changed to false, default was true
   data.forEach(path_highlight);
   events.highlight.call(this, data);
   return this;
