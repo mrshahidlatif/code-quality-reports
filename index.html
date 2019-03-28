@@ -604,18 +604,31 @@ $(document).on("click", ".smellLazy", function () {
 
 $(document).on("click", ".couplingMetric", function () {
     showCouplingMetricDescription();
+
+    //TODO: can't display 3 dimension, maybe select most relevant two
+    scatterPlotDimensions =['ce', 'ca'];
+    makeScatterPlot(fullData);
 });
 
 $(document).on("click", ".complexityMetric", function () {
     showComplexityMetricDescription();
+
+    scatterPlotDimensions =['max_cc', 'wmc'];
+    makeScatterPlot(fullData);
 });
 
 $(document).on("click", ".cohesionMetric", function () {
     showCohesionMetricDescription();
+     //TODO: can't display 1 dimension, maybe select one more relevant
+    scatterPlotDimensions =['lcom3', 'dit'];
+    makeScatterPlot(fullData);
 });
 
 $(document).on("click", ".inheritanceMetric", function () {
     showInheritanceMetricDescription();
+    //TODO: can't display 1 dimension, maybe select one more relevant
+    scatterPlotDimensions =['noc', 'dit'];
+    makeScatterPlot(fullData);
 });
 $(document).on("click", "#closeBtn", function () {
     removePersistentHighlighting();
