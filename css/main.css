@@ -12,15 +12,6 @@ body {
     text-align: justify;
 }
 
-h3 {
-    font-family: 'Segoe UI Light';
-}
-
-h4 {
-    font-family: 'Segoe UI Light';
-    font-size: 15px;
-}
-
 /* ------------------------------------------------------------------------
 /* Grid layout 
 /* ------------------------------------------------------------------------*/
@@ -138,11 +129,15 @@ p, div.p {
 }
 
 h3 {
+    font-size: 16px;
     padding-bottom: 6pt;
+    font-weight: normal;
 }
 
 h4 {
+    font-size: 16px;
     display: inline;
+    font-weight: normal;
 }
 
 /* ------------------------------------------------------------------------
