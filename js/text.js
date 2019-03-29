@@ -14,7 +14,7 @@ function generateText(data) {
     //bug chart
     drawBarChart("#barBug", Math.round((bugCt / classCt) * 1000) / 10);
 
-    if (linkedSLopts != null) $(document).linkedSparklines(linkedSLopts);
+    $(document).linkedSparklines(linkedSLopts);
 
     generateAndSetTooltipTexts();
 }
