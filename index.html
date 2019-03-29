@@ -37,11 +37,12 @@
     <div id="vis">
       <div id="parallelplot" class="parcoords"></div>
       <div id="scatterplot">
-        <div id="controls"></div>
+        <div id="controlsY"></div>
         <div id="chart_container">
           <div id="chart"></div>
           <div id="tooltip" class="tooltip"></div>
         </div>
+        <div id="controlsX"></div>
       </div>
       <div id="caption"></div>
     </div>
@@ -1058,7 +1059,8 @@ function parallelfilter(dims) {
 // TODO: Needs cleaning and refactoring 
 function makeScatterPlot(data){
   
-  var root = d3.select('#controls');
+  var controlsX = d3.select('#controlsX');
+  var controlsY = d3.select('#controlsY');
   var tooltip = d3.select('#tooltip').style("opacity", 0);
 
     var OUTLIER_THRESHOLD = 15, selectData = [], prev_data, excluded_keys = ["smells","cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"], prev_options = {}, dimensions = [];
@@ -1105,12 +1107,13 @@ function makeScatterPlot(data){
     function setup(data){
         try {OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value);} catch(e){}
 
-        d3.selectAll('#controls>*').remove();
+        d3.selectAll('#controlsX>*').remove();
+        d3.selectAll('#controlsY>*').remove();
 
-        var xSpan = root.append('span')
+        var xSpan = controlsX.append('span')
             .text('x: ');
 
-        var xInput = root.append('select')
+        var xInput = controlsX.append('select')
             .attr('id','xSelect')
             .on('change', xChange)
             .selectAll('option')
@@ -1120,10 +1123,10 @@ function makeScatterPlot(data){
             .attr('value', function (d) { return d.text })
             .text(function (d) { return d.text ;});
 
-        var ySpan = root.append('span')
-            .text(' y: ')
+        var ySpan = controlsY.append('span')
+            .text('y: ')
 
-        var yInput = root.append('select')
+        var yInput = controlsY.append('select')
             .attr('id','ySelect')
             .on('change',yChange)
             .selectAll('option')

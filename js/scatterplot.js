@@ -1,7 +1,7 @@
 function ScatterPlot(){
     var $el = d3.select("#chart");
     var size = 0;
-    var margin = 5;
+    var margin = 0;
     var colorAcessor = null;
     var colorScale = d3.scale.ordinal(d3.schemeCategory10);
     var data;
@@ -50,7 +50,7 @@ function ScatterPlot(){
         var h = d3.select($el).style("height");
         svg = d3.select($el).append("svg").attr('width', w).attr("height", h);
         root = svg.append("g")
-            .attr("transform", "translate(" + margin + "," + 4 + ")");
+            .attr("transform", "translate(" + margin + ",0)");
         if(prev_data != null && prev_data.length > 0) {
             var chart_data = clone(prev_data);
             data = chart_data;
@@ -64,7 +64,7 @@ function ScatterPlot(){
             d.index = i;
             d.neighbors = [];
         });
-        // size = size - 20;
+        size = size + 15; // increase height because x-axis label is not used TODO: replace by better solution
 
         var xValue = function(d) {return d[dimensions[0]];}, // data -> value
             xScale = d3.scale.linear().range([0, size]),     // value -> display
@@ -89,13 +89,13 @@ function ScatterPlot(){
         //   }));
 
         // x-axis label
-        root.append("text")
+        /*root.append("text")
             .attr("class", "label")
             .attr("x", size/2)
             .attr("y", size+30)
             .style("text-anchor", "middle")
             .text(dimensions[0])
-            .style("font-size","12px");
+            .style("font-size","12px");*/
 
         // y-axis
         root.append("g")
@@ -107,14 +107,14 @@ function ScatterPlot(){
         //   }));
 
         // y-axis label
-        root.append("text")
+        /*root.append("text")
             .attr("class", "label")
             .attr("x", 0-(size/2))
             .attr("y", 0-margin*0.7)
             .attr("transform", "rotate(-90)") // rotate text -90 degrees from x, y
             .style("text-anchor", "middle")
             .text(dimensions[1])
-            .style("font-size","12px");
+            .style("font-size","12px");*/
 
         root.selectAll(".dot")
             .data(data)
