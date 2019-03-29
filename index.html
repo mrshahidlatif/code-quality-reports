@@ -2,6 +2,7 @@
 <html>
 <header>
   <meta charset="utf-8">
+  <script type="text/javascript" src="data/csv_data.js"></script>
   <script type="text/javascript" src="data/java_code.js"></script>
   <script type="text/javascript" src="lib/jquery-2.2.2.min.js"></script>
   <script type="text/javascript" src="lib/jquery.sparkline.js"></script>
@@ -69,6 +70,7 @@ var classesWithBadSmells = [];
 var haveClassToPersist = false;
 var persistentClass = "";
 var scatterPlotDimensions=[];
+var brushedData = [];
 
 var LOC, AMC, WMC, NPM;
     
@@ -87,12 +89,16 @@ function handleFileSelect(event) {
 	} else {
 		alert('The File APIs are not fully supported in this browser.');
 	}
-
+  
+  //reading data from JS file, csvData
+  //TODO: replace the logic here to load data from JS file
+  //console.log(csvData["lucene-2.0_filtered"]);
   
   // hide text until bar charts are completely loaded
 	$("#textPanel > div").css({visibility: "hidden"});
 	var f = event.target.files[0]; // FileList object
-	projectName = f.name.replace('.csv','');
+  projectName = f.name.replace('.csv','');
+ 
 	var reader = new FileReader();
 	reader.onload = function(event) {
 		setTimeout(function(){
@@ -104,7 +110,8 @@ function handleFileSelect(event) {
 
 	// Read in the file as a data URL.
   reader.readAsDataURL(f);
-  
+  console.log(f);
+  console.log(encodeURI("csv/"+f.name));
 	//modified
 	linkedSLopts = {
                   csvurl: encodeURI("csv/"+f.name),
@@ -994,8 +1001,25 @@ function parallelplot(data) {
   // adding axis labels
   pcz.svg.selectAll(".dimension")
     .selectAll(".label")
-		.style("font-size", "14px");
-
+    .style("font-size", "14px");
+  
+  pcz.on("brush", function(d){
+  var content = 'The current selection contains ' + d.length +' class' + (d.length==1 ? '':'es');  
+  if (d.length == 1){
+    content += ', '+ printList([createClassSpan(d[0].cname)]);
+  }
+  else if (d.length == 2){
+    content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname)]);
+  }
+  else if (d.length == 3){
+    content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
+  }
+  content += '.';
+  updateCaption(content);
+  
+  // scatterfilter(d);
+  });
+  
 }
 function unHighlight(){
 	//clearing the highlighting
@@ -1189,7 +1213,12 @@ function scatterfilter(newdata){
 		var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
 			.style("fill", function(d,i) { return newdata[i]? "black": "#AAAAAAAA";} );
-
+}
+//For resetting the scatterplot completely
+function resetScatterplot(){
+  var g = d3.select("#chart svg g");
+		g.selectAll(".dot")
+			.style("fill", function(d) { return "#AAAAAAAA";} );
 }
 
 </script>
