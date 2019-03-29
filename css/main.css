@@ -11,6 +11,13 @@ body {
     overflow: hidden;
     text-align: justify;
 }
+h3{
+    font-family: 'Segoe UI Light';
+}
+h4{
+    font-family: 'Segoe UI Light';
+    font-size: 15px;
+}
 
 /* ------------------------------------------------------------------------
 /* Grid layout 

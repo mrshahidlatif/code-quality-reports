@@ -607,8 +607,6 @@ $(document).on("click", ".smellLazy", function () {
 
 $(document).on("click", ".couplingMetric", function () {
     showCouplingMetricDescription();
-
-    //TODO: can't display 3 dimension, maybe select most relevant two
     scatterPlotDimensions =['ce', 'ca'];
     makeScatterPlot(fullData);
 });
@@ -622,14 +620,12 @@ $(document).on("click", ".complexityMetric", function () {
 
 $(document).on("click", ".cohesionMetric", function () {
     showCohesionMetricDescription();
-     //TODO: can't display 1 dimension, maybe select one more relevant
-    scatterPlotDimensions =['lcom3', 'dit'];
+    scatterPlotDimensions =['lcom3', 'loc'];
     makeScatterPlot(fullData);
 });
 
 $(document).on("click", ".inheritanceMetric", function () {
     showInheritanceMetricDescription();
-    //TODO: can't display 1 dimension, maybe select one more relevant
     scatterPlotDimensions =['noc', 'dit'];
     makeScatterPlot(fullData);
 });
@@ -1014,10 +1010,10 @@ function parallelplot(data) {
   else if (d.length == 3){
     content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
   }
+  scatterfilter(d);
   content += '.';
   updateCaption(content);
   
-  // scatterfilter(d);
   });
   
 }
