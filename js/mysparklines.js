@@ -33,45 +33,35 @@
     $.extend(settings, options);
     settings.slopts[0] = slopts;
 
-    $.ajax({  //fetch csv text
-      type: "GET",
-      url: settings.csvurl,
-      dataType: "text",
-      success: function(data) {
-        var csvrows = data.split(/\r\n|\n/);
-        if(csvrows.length < 2) alert('No data found');
-        else {  //create graphs if data is found
+    data = csvData[projectName];
+    var csvrows = data.split(/\r\n|\n/);;
+    if(csvrows.length < 2) alert('No data found');
+    else {  //create graphs if data is found
 
-          var cols  = csvrows[0].split(',');
-          sldata.cnidx = cols.indexOf('cname');
+      var cols  = csvrows[0].split(',');
+      sldata.cnidx = cols.indexOf('cname');
 
-          for(var s = 0; s < settings.sldef.length; s++) {
-            sldata[s] = {minmax: [0,0]};
-            sldata[s].cols = getcols(settings.sldef[s], cols); 
-            //initialise with common options
-            sldata[s].slopts = $.extend({}, slopts);
-            //add graph specific options
-            if(options.slopts[s+1]) $.extend(sldata[s].slopts, options.slopts[s+1]);
-            //all graphs will use the same barWidth, reinitialise in case it was overwritten
-            sldata[s].slopts.barWidth = slopts.barWidth;
-            $("#"+settings.slids[s]).html('');
-            $("#"+settings.slids[s]).addClass('sl sl' + s);
-          }
-
-          getpckgs(csvrows, cols.length, ',');
-
-          createsls();
-
-        }
-        if(settings.fn_wrapup != null) settings.fn_wrapup();
-      },
-      error: function(jqxhr, stat, err) { //should not occur normally if file exists
-        alert(stat + '...' + err);
-        if(settings.fn_wrapup != null) settings.fn_wrapup();
+      for(var s = 0; s < settings.sldef.length; s++) {
+        sldata[s] = {minmax: [0,0]};
+        sldata[s].cols = getcols(settings.sldef[s], cols); 
+        //initialise with common options
+        sldata[s].slopts = $.extend({}, slopts);
+        //add graph specific options
+        if(options.slopts[s+1]) $.extend(sldata[s].slopts, options.slopts[s+1]);
+        //all graphs will use the same barWidth, reinitialise in case it was overwritten
+        sldata[s].slopts.barWidth = slopts.barWidth;
+        $("#"+settings.slids[s]).html('');
+        $("#"+settings.slids[s]).addClass('sl sl' + s);
       }
-    });
+      
+      getpckgs(csvrows, cols.length, ',');
 
+      createsls();
+
+    }
+    if(settings.fn_wrapup != null) settings.fn_wrapup();
   }
+
   function addLinking() {
     $(".sl span.slcls").on('mouseover', function () {
       var clsName = $(".sl span[data-bar=" + $(this).attr('data-bar') + "]").attr('data-slcls');
@@ -176,7 +166,6 @@
     var ret = [];
     sl = sl.split(',');
     for(var i = 0; i < sl.length; i++) ret.push(cols.indexOf(sl[i]));
-    //console.log('getcols: '+ret);
     return ret;
   }
   function pckgclsname(pckglist) {  //get package and class name
@@ -186,7 +175,6 @@
   function getclsdata(slidx, row) {  //get the column values for the row and update the minmax array
     var tmp = [];
     for(var i =  0; i < sldata[slidx].cols.length; i++) tmp.push(parseFloat(row[sldata[slidx].cols[i]], 10));
-    //console.log('getclsdata: '+tmp);
     updateminmax(slidx, tmp);
     return tmp;
   }
