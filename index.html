@@ -1000,20 +1000,24 @@ function parallelplot(data) {
     .style("font-size", "14px");
   
   pcz.on("brush", function(d){
-  var content = 'The current selection contains ' + d.length +' class' + (d.length==1 ? '':'es');  
-  if (d.length == 1){
-    content += ', '+ printList([createClassSpan(d[0].cname)]);
-  }
-  else if (d.length == 2){
-    content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname)]);
-  }
-  else if (d.length == 3){
-    content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
-  }
-  scatterfilter(d);
-  content += '.';
-  updateCaption(content);
-  
+    var content = 'The current selection contains ' + d.length +' class' + (d.length==1 ? '':'es');  
+    if (d.length == 1){
+      content += ', '+ printList([createClassSpan(d[0].cname)]);
+    }
+    else if (d.length == 2){
+      content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname)]);
+    }
+    else if (d.length == 3){
+      content += ', '+ printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
+    }
+    scatterfilter(d);
+    content += '.';
+    updateCaption(content);
+    //TODO: not a neat solution, it's more like a hack at the moment
+    if(d.length==293){
+      resetScatterplot();
+      updateCaption('');
+    }
   });
   
 }
@@ -1214,7 +1218,9 @@ function scatterfilter(newdata){
 function resetScatterplot(){
   var g = d3.select("#chart svg g");
 		g.selectAll(".dot")
-			.style("fill", function(d) { return "#AAAAAAAA";} );
+			.style("fill", function(d) {
+         return "#AAAAAAAA";
+      } );
 }
 
 </script>
