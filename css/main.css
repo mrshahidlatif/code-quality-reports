@@ -35,9 +35,9 @@ body {
 #textPanel { /*nested grid panel*/
     grid-area: main; 
     display: grid;
-    grid-template-areas: 'textA textB';
+    grid-template-areas: 'textB textA';
     grid-template-rows: 1fr; 
-    grid-template-columns:30fr 70fr; 
+    grid-template-columns:70fr 30fr; 
     grid-gap: 30px;
     overflow: auto;
 }
@@ -56,7 +56,7 @@ body {
     display: grid;
     grid-template-areas: 'pcpPanel spPanel' 'pcpCaption pcpCaption';
     grid-template-rows: 1fr 30px; 
-    grid-template-columns: 70fr 30fr; 
+    grid-template-columns: 75fr 25fr; 
     grid-gap: 5px 30px;
 }
 #parallelplot {

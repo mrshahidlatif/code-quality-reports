@@ -38,13 +38,13 @@ function introText() {
 // TODO: mention the number of classes affected by smells, not just the number of smells
 function badSmellsText() {
     var text = "";
-    text += '<h3>Code Smells</h3><div class="p">Based on an analysis of software metrics, we have ';
+    text += '<h3>Code Smells</h3><div class="p">';
     if (badCt == 0) {
-        text += 'not detected any class-level code smells <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span> in the project&mdash;congratulations, the quality is high.'
+        text += 'We have not detected any class-level code smells <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span> in the project&mdash;congratulations.'
     } else if (badCt == 1) {
-        text += 'detected one class-level code smell <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span>: ';
+        text += 'We have only detected one class-level code smell <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span>: ';
     } else if (badCt > 1) {
-        text += 'detected ' + num2word(badCt) + ' class-level code smells <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span>, among them ';
+        text += 'We have detected ' + num2word(badCt) + ' class-level code smells <span class="codeSmellsInfo infoIcon"title=""> &#9432;</span>, among them ';
     }
     var listOfBadSmellTypes = [];
     if (blobCt > 0) {
