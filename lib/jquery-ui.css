@@ -1302,7 +1302,7 @@ a.ui-button:active,
 
 /* Overlays */
 .ui-widget-overlay {
-	background: #aaaaaa;
+	background: #AAAAAA;
 	opacity: .003;
 	filter: Alpha(Opacity=.3); /* support: IE8 */
 }

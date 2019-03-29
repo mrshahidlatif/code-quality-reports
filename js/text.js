@@ -4,7 +4,7 @@ function generateText(data) {
     $("#textBPanel").html(qualityAttributeText());
 
     // displaying the captions to screen.
-    $("#captionPP").html(generatePPCaption());
+    $("#caption").html(generatePPCaption());
 
     drawBarChart("#barComplexity", Math.round((badComplexityArr.length / classCt) * 1000) / 10);
     drawBarChart("#barCoupling", Math.round((badCouplingArr.length / classCt) * 1000) / 10);
@@ -229,9 +229,9 @@ function bugText() {
 
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'The overview of the software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), and <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>). ';
+    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>) and <span class="otherMetric clickable">other metrics</span> (<span class="loc">loc</span>, <span class="amc">amc</span>, <span class="npm">npm</span>, <span class="bug">bug</span>). ';
     
-    caption += 'Each line (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and each dot (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent a class.';
+    caption += 'Gray <span class="box"/> lines (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and dots (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent classes.';
 
     return caption;
 }
@@ -316,10 +316,10 @@ function generateAndSetTooltipTexts() {
         content: 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
     });
     $(".pcpInfo").tooltip({
-        content: 'Parallel Coordinates Plot visualizes the eleven metrics that are used to assess the quality. The grouping of the dimensions corresponds to the sequence of quality attributes in the text.'
+        content: 'A <i>parallel coordinates plot</i> visualizes all software metrics that we use in the analysis. Each of the vertical dimensions represents a metric. A class is then drawn as a line connecting the different dimesions according to metrics values of the class.'
     });
     $(".spInfo").tooltip({
-        content: 'Scatterplot shows the relationships between any two selected metrics. On interactions, the displayed metrics corresponds to the clicked entity.'
+        content: 'A <i>scatterplot</i> corresponds to any two selected metrics. A class is drawn as a dot, with x- and y-coordinate mapping to the values of the currently selected metrics.'
     });
 }
 

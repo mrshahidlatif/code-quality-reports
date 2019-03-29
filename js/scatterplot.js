@@ -130,7 +130,7 @@ function ScatterPlot(){
                 return classNameToIndex[d.cname];
             })
             .style("fill", function(d) {
-                return "#8d8e8e";
+                return "#AAAAAAAA";
             })
             .on("mouseover", function(d) { 
                 var className = d.cname;

@@ -1,94 +1,110 @@
-* { margin:0; padding:0; box-sizing:border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
-    height: 100%; overflow: hidden;
+    height: 100%;
+    overflow: hidden;
     text-align: justify;
 }
 
+/* ------------------------------------------------------------------------
+/* Grid layout 
+/* ------------------------------------------------------------------------*/
 
-/* ------------------------------------------------------------------------*/
-/* Grid layout */
-/* ------------------------------------------------------------------------*/
 #grid-container {
     display: grid;
-    grid-template-areas:
-        'header header'
-        'main right'
-        'vis right';
+    grid-template-areas: 'header header' 'main right' 'vis right';
     grid-gap: 10px;
-    height: 100vh; 
+    height: 100vh;
     background-color: #e8e8e8;
     padding: 10px;
-    grid-template-rows: 50px 2fr 1.2fr; 
-    grid-template-columns:70fr 30fr; 
+    grid-template-rows: 50px 2fr 1.3fr;
+    grid-template-columns: 70fr 30fr;
 }
-#grid-container > div {
+
+#grid-container>div {
     background-color: white;
     padding: 10px;
 }
-#header { 
+
+#header {
     grid-area: header;
     padding-top: 0px !important;
 }
-#textPanel { /*nested grid panel*/
-    grid-area: main; 
+
+#textPanel {
+    /*nested grid panel*/
+    grid-area: main;
     display: grid;
     grid-template-areas: 'textB textA';
-    grid-template-rows: 1fr; 
-    grid-template-columns:70fr 30fr; 
+    grid-template-rows: 1fr;
+    grid-template-columns: 70fr 30fr;
     grid-gap: 30px;
     overflow: auto;
 }
-#textAPanel{
+
+#textAPanel {
     grid-area: textA;
     overflow: auto;
     padding-right: 5px;
 }
-#textBPanel{
+
+#textBPanel {
     grid-area: textB;
     overflow: auto;
     padding-right: 5px;
 }
-#vis{ /*nested grid panel*/
-    grid-area: vis; 
+
+#vis {
+    /*nested grid panel*/
+    grid-area: vis;
     display: grid;
     grid-template-areas: 'pcpPanel spPanel' 'pcpCaption pcpCaption';
-    grid-template-rows: 1fr 35px; 
-    grid-template-columns: 75fr 25fr; 
+    grid-template-rows: 1fr 40px;
+    grid-template-columns: 75fr 25fr;
     grid-gap: 5px 30px;
 }
+
 #parallelplot {
     grid-area: pcpPanel;
 }
-#scatterplot{
+
+#scatterplot {
     grid-area: spPanel;
 }
-#captionPP{
+
+#caption {
     grid-area: pcpCaption;
 }
 
-#details { 
-    grid-area: right; 
+#details {
+    grid-area: right;
     overflow: auto;
-    padding : 10px;
+    padding: 10px;
 }
+
 #sourcecodeContainer {
     padding: 0px;
     margin: 0px;
     overflow: visible;
     background-color: white;
 }
+
 #sourcecode {
     font-size: 11px;
 }
 
-/* ------------------------------------------------------------------------*/
-/* Base tags */
+/* ------------------------------------------------------------------------
+/* Base tags
 /* ------------------------------------------------------------------------*/
 
-p, div.p { /* div.p is required if paragraphs (p) should contain nested div elements*/
+p, div.p {
+    /* div.p is required if paragraphs (p) should contain nested div elements*/
     margin-top: 6pt;
     margin-bottom: 6pt;
 }
@@ -97,105 +113,161 @@ h3 {
     padding-bottom: 6pt;
 }
 
-h4{
+h4 {
     display: inline;
 }
 
-/* ------------------------------------------------------------------------*/
-/* Color Legends */
+/* ------------------------------------------------------------------------
+/* Color Legends 
 /* ------------------------------------------------------------------------*/
 
-.couplingMetric.clickable{
+.couplingMetric.clickable {
     border-bottom: 2px solid #238b45;
     display: inline-block;
 }
-.complexityMetric.clickable{
 
+.complexityMetric.clickable {
     border-bottom: 2px solid #2b8cbe;
     display: inline-block;
 }
-.cohesionMetric.clickable{
+
+.cohesionMetric.clickable {
     border-bottom: 2px solid #c51b8a;
     display: inline-block;
 }
-.inheritanceMetric.clickable{
+
+.inheritanceMetric.clickable {
     border-bottom: 2px solid #8b5400;
     display: inline-block;
 }
-.BSLegend{
-    border-bottom: 2px solid black;
-}
-.NoBSLegend{
-    border-bottom: 2px solid #8d8e8e;
+
+.otherMetric.clickable {
+    border-bottom: 2px solid #666666;
+    display: inline-block;
 }
 
-.wmc{
+.BSLegend {
+    border-bottom: 2px solid black;
+}
+
+.NoBSLegend {
+    border-bottom: 2px solid #AAAAAAAA;
+}
+
+.wmc {
     border-bottom: 2px solid #2b8cbe;
 }
+
 svg .wmc rect {
     fill: #2b8cbe;
 }
-.max_cc{
+
+.max_cc {
     border-bottom: 2px solid #56baec;
 }
+
 svg .max_cc rect {
     fill: #56baec;
 }
-.cbo{
+
+.cbo {
     border-bottom: 2px solid #238b45;
 }
+
 svg .cbo rect {
     fill: #238b45;
 }
-.ca{
+
+.ca {
     border-bottom: 2px solid #3dc56b;
 }
+
 svg .ca rect {
     fill: #3dc56b;
 }
-.ce{
+
+.ce {
     border-bottom: 2px solid #65e48f;
 }
+
 svg .ce rect {
     fill: #65e48f;
 }
-.lcom3{
+
+.lcom3 {
     border-bottom: 2px solid #c51b8a;
 }
+
 svg .lcom3 rect {
     fill: #c51b8a;
 }
-.noc{
+
+.noc {
     border-bottom: 2px solid #8b5400;
 }
+
 svg .noc rect {
     fill: #8b5400;
 }
-.dit{
-    border-bottom: 2px solid #cf891f;;
+
+.dit {
+    border-bottom: 2px solid #cf891f;
 }
+
 svg .dit rect {
     fill: #cf891f;
 }
-.loc{
-    border-bottom: 2px solid none;;
-}
-.amc{
-    border-bottom: 2px solid none;;
-}
-.npm{
-    border-bottom: 2px solid none;;
+
+.loc {
+    border-bottom: 2px solid #666666;
+    ;
 }
 
-/* ------------------------------------------------------------------------*/
-/* Tooltips */
+svg .loc rect {
+    fill: #666666;
+}
+
+.amc {
+    border-bottom: 2px solid #888888;
+}
+
+svg .amc rect {
+    fill: #888888;
+}
+
+.npm {
+    border-bottom: 2px solid #AAAAAA;
+}
+
+svg .npm rect {
+    fill: #AAAAAA;
+}
+
+.bug {
+    border-bottom: 2px solid #CCCCCC;
+}
+
+svg .bug rect {
+    fill: #CCCCCC;
+}
+
+.box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: #AAAAAAAA;
+}
+
+/* ------------------------------------------------------------------------
+/* Tooltips
 /* ------------------------------------------------------------------------*/
 
 .ui-tooltip-content {
-    font-size:10pt;
-    color:white;
+    font-size: 10pt;
+    color: white;
 }
-.ui-tooltip{
+
+.ui-tooltip {
     background: #666666;
 }
 
@@ -204,10 +276,10 @@ svg .dit rect {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     background: #666666;
-  }
+}
 
-/* ------------------------------------------------------------------------*/
-/* Parallel Coordinates */
+/* ------------------------------------------------------------------------
+/* Parallel Coordinates 
 /* ------------------------------------------------------------------------*/
 
 #parallelplot text {
@@ -216,9 +288,10 @@ svg .dit rect {
     text-shadow: 0 0 1px white;
 }
 
+/* ------------------------------------------------------------------------
+/* Other -- TODO: sort and refactor properly
 /* ------------------------------------------------------------------------*/
-/* Other -- TODO: sort and refactor properly */
-/* ------------------------------------------------------------------------*/
+
 /* #classDescription{
     font-size: 14px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -226,11 +299,11 @@ svg .dit rect {
     height: auto;
 } */
 
-
-#closeBtn:hover{
+#closeBtn:hover {
     cursor: pointer;
     color: #777;
 }
+
 #file-upload {
     display: block;
     margin: auto;
@@ -240,16 +313,18 @@ svg .dit rect {
     color: black;
 }
 
-#title{
+#title {
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 3px;
 }
-#subtitle{
+
+#subtitle {
     font-size: 15px;
     font-style: italic;
 }
-.infoIcon:hover{
+
+.infoIcon:hover {
     cursor: pointer;
     color: #666666;
 }
@@ -257,6 +332,7 @@ svg .dit rect {
 .barSpan {
     vertical-align: middle;
 }
+
 .barSpan .bar {
     fill: #969696;
 }
@@ -276,68 +352,104 @@ a:link {
 }
 
 .collapsible {
-background-color: white;
-color: black;
-cursor: pointer;
-padding: 1px;
-border: none;
-text-align: left;
-outline: none;
-font-size: 12px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    padding: 1px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px;
 }
 
-.active{
-background-color: white;
+.active {
+    background-color: white;
 }
+
 .collapsible:hover {
-background-color: #777;
+    background-color: #777;
 }
 
 .content {
-padding: 5px 5px 5px 5px;
-font-size: 12px;
-overflow: auto;
-border: 1px solid gray;
-margin-top: 2px;
+    padding: 5px 5px 5px 5px;
+    font-size: 12px;
+    overflow: auto;
+    border: 1px solid gray;
+    margin-top: 2px;
 }
 
 .collapsible:after {
-content: '[\002B]';
-color: black;
-margin-left: 0px;
+    content: '[\002B]';
+    color: black;
+    margin-left: 0px;
 }
 
 .active:after {
-content: "[\2212]";
+    content: "[\2212]";
 }
 
 /*can change the following css attributes for these classes specified in mysparklines.css*/
-div.sl {margin-top: 0px; margin-bottom: 0px; padding-top: 5px!important;}  /*applied to graph containers*/
-div.pckg>span.slcls {margin: 0 0 0 1px;}      /*applied to each bar*/
-div.pckg>div.lbl {border-left: solid 1px #000; height: 10px;}  /*applied to package labels container*/
-div.pckg>div.lbl>span {font-size: 10px;}  /*applied to package labels text*/
-div.pckg:hover>div.lbl>span {font-weight: bold;}  /*applied to each package label on hover over package div*/
+
+div.sl {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 5px!important;
+}
+
+/*applied to graph containers*/
+
+div.pckg>span.slcls {
+    margin: 0 0 0 1px;
+}
+
+/*applied to each bar*/
+
+div.pckg>div.lbl {
+    border-left: solid 1px #000;
+    height: 10px;
+}
+
+/*applied to package labels container*/
+
+div.pckg>div.lbl>span {
+    font-size: 10px;
+}
+
+/*applied to package labels text*/
+
+div.pckg:hover>div.lbl>span {
+    font-weight: bold;
+}
+
+/*applied to each package label on hover over package div*/
+
 /*can change this class or use another*/
-.hl {background-color: #ccc;} /*applied to bars on highlight*/
+
+.hl {
+    background-color: #ccc;
+}
+
+/*applied to bars on highlight*/
 
 ::-webkit-scrollbar {
-width: 0.5em;
-height: 0.5em;
+    width: 0.5em;
+    height: 0.5em;
 }
+
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-background-color: lightgrey;
-outline: 1px solid slategrey;
+    background-color: lightgrey;
+    outline: 1px solid slategrey;
 }
 
-.educationalDescriptions{
+.educationalDescriptions {
     border-bottom: 1px solid black;
 }
 
-.educationalDescriptions{
+.educationalDescriptions {
     border-bottom: 1px dotted black;
 }
 
@@ -345,33 +457,36 @@ outline: 1px solid slategrey;
     cursor: pointer;
     background-color: #ffe68e;
 }
-#dynamicCaption{
+
+#dynamicCaption {
     background-color: #ffe68e;
 }
-#adaptiveCaption{
+
+#adaptiveCaption {
     font-weight: bold;
 }
 
+/* ------------------------------------------------------------------------
+/* Parallel coordinates 
 /* ------------------------------------------------------------------------*/
-/* Parallel Coordinates */
-/* ------------------------------------------------------------------------*/
+
 .text-center {
-	text-align: center;
-	margin: 6px 0;
+    text-align: center;
+    margin: 6px 0;
 }
 
+/* ------------------------------------------------------------------------
+/* Scatter plot
 /* ------------------------------------------------------------------------*/
-/* Scatter plot */
-/* ------------------------------------------------------------------------*/
-  
-.axis path,
-.axis line {
+
+.axis path, .axis line {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges;
     stroke-width: 1px;
 }
-.x.axis{
+
+.x.axis {
     font-size: 10px;
 }
 
@@ -387,24 +502,17 @@ outline: 1px solid slategrey;
     background: #666666;
     pointer-events: none;
     font-size: 12px;
-    color:white;
+    color: white;
 }
 
 .annotation-note {
     cursor: pointer;
 }
 
-/* .text-center {
-    text-align: center;
-    margin: 5px;
-    height: 10px;
-    width: 280px;
-   
-} */
-#controls{
+#controls {
     z-index: 10;
     text-align: left;
-    display:inline-block;
+    display: inline-block;
     margin: 5px;
     height: 20px;
     width: 100%;
