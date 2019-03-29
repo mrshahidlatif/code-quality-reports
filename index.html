@@ -704,6 +704,8 @@ function makeSelectionPersistent(className){
   removePersistentHighlighting();
 
   //make the highlight persistent now
+  var classIndex = classNameToIndex[className]; 
+  $('span.className[data-index=' + classIndex+']').css('font-weight','bold');
   $("span.slcls."+className+"").css('background','black');
   $("#scatterplot").contents().find("circle#"+className).css("fill","black");
 
@@ -729,7 +731,8 @@ function makeSelectionPersistent(className){
 
 }
 function removePersistentHighlighting(className){
-  var classIndex = classNameToIndex[className];
+  var classIndex = classNameToIndex[className]; 
+  $('span.className').css('font-weight','normal');
   $(".smellBlob").css('font-weight','normal');
   $(".smellFc").css('font-weight','normal');
   $(".smellSpa").css('font-weight','normal');
