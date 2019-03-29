@@ -517,6 +517,7 @@ $(document).on("click", ".smellBlob", function () {
     
     scatterPlotDimensions =['loc', 'amc'];
     makeScatterPlot(fullData);
+    haveClassToPersist= true;
     
     if (blobCt > 0) {
         var newdata = [];
@@ -541,6 +542,7 @@ $(document).on("click", ".smellFc", function () {
 
     scatterPlotDimensions =['npm', 'wmc'];
     makeScatterPlot(fullData);
+    haveClassToPersist= true;
 
     if (decomCt > 0) {
         var newdata = [];
@@ -565,6 +567,7 @@ $(document).on("click", ".smellSpa", function () {
     // TODO: What should be the second dimension here?
     scatterPlotDimensions =['amc', 'wmc'];
     makeScatterPlot(fullData);
+    haveClassToPersist= true;
     
     if (spaCt > 0) {
         var newdata = [];
@@ -588,6 +591,7 @@ $(document).on("click", ".smellLazy", function () {
     // TODO: What should be the second dimension here?
     scatterPlotDimensions =['amc', 'wmc'];
     makeScatterPlot(fullData);
+    haveClassToPersist= true;
 
     if (lazyCt > 0) {
         var newdata = [];
