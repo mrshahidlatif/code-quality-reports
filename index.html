@@ -1020,11 +1020,12 @@ function parallelplot(data) {
     scatterfilter(d);
     content += '.';
     updateCaption(content);
-    //TODO: not a neat solution, it's more like a hack at the moment
-    if(d.length==293){
+    //TODO: !!CRUCIAL!!!! not a neat solution, it's more like a hack at the moment
+    if(d.length==293 || d.length==0){
       resetScatterplot();
       updateCaption('');
     }
+    haveClassToPersist=true;
   });
   
 }
