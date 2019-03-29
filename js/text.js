@@ -14,7 +14,7 @@ function generateText(data) {
     //bug chart
     drawBarChart("#barBug", Math.round((bugCt / classCt) * 1000) / 10);
 
-    $(document).linkedSparklines(linkedSLopts);
+    $(document).linkedSparklines();
 
     generateAndSetTooltipTexts();
 }
@@ -230,7 +230,7 @@ function bugText() {
 function generatePPCaption() {
     // TODO: color metric names
     var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>) and <span class="otherMetric clickable">other metrics</span> (<span class="loc">loc</span>, <span class="amc">amc</span>, <span class="npm">npm</span>, <span class="bug">bug</span>). ';
-    
+
     caption += 'Gray <span class="box"/> lines (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and dots (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent classes.';
 
     return caption;
@@ -300,7 +300,7 @@ function generateAndSetTooltipTexts() {
         content: projInfo
     });
     $(".complexityInfo").tooltip({
-        content: generateAttributeTooltip(['wmc', 'max_cc', ], 'wmc > 34 or max_cc > 4', 'wmc > 11 or max_cc > 2')
+        content: generateAttributeTooltip(['wmc', 'max_cc',], 'wmc > 34 or max_cc > 4', 'wmc > 11 or max_cc > 2')
     });
     $(".couplingInfo").tooltip({
         content: generateAttributeTooltip(['cbo', 'ca', 'ce'], 'cbo >= 9, ca > 39, or ce > 16', 'cbo >= 7, ca > 7, or ce > 6')
@@ -444,5 +444,5 @@ function generateMetricSpan(metric) {
         "npm": "number of public methods",
         "wmc": "weighted methods per class"
     }
-    return '<span class="'+metric+'">' + metricNames[metric] + ' ('+metric+')</span>';
+    return '<span class="' + metric + '">' + metricNames[metric] + ' (' + metric + ')</span>';
 }

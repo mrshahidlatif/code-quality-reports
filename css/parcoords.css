@@ -1,16 +1,20 @@
-.parcoords > canvas {
+.parcoords>canvas {
   font: 14px sans-serif;
   position: absolute;
 }
-.parcoords > canvas {
+
+.parcoords>canvas {
   pointer-events: none;
 }
+
 .parcoords text.label {
   cursor: default;
 }
+
 .parcoords rect.background:hover {
-  fill: rgba(120,120,120,0.2);
+  fill: rgba(120, 120, 120, 0.2);
 }
+
 .parcoords canvas {
   opacity: 1;
   transition: opacity 0.3s;
@@ -18,9 +22,11 @@
   -webkit-transition: opacity 0.3s;
   -o-transition: opacity 0.3s;
 }
+
 .parcoords canvas.faded {
   opacity: 0.25;
 }
+
 .parcoords {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

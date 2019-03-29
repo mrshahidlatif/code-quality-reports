@@ -4,10 +4,12 @@ div.sl {
   padding: 0!important;
   overflow: hidden!important;
 }
+
 div.pckg {
   display: inline-block!important;
   white-space: nowrap!important;
 }
+
 div.pckg>span.slcls {
   margin: 0 1px;
   display: inline-block!important;
@@ -16,11 +18,13 @@ div.pckg>span.slcls {
   overflow-x: hidden!important;
   cursor: pointer;
 }
+
 div.pckg>div.lbl {
   border-left: solid 1px #000;
   height: 20px;
   width: 1px!important;
 }
+
 div.pckg>div.lbl>span {
   font-size: 12px;
   display: inline-block!important;
@@ -28,21 +32,26 @@ div.pckg>div.lbl>span {
   margin: 0!important;
   padding: 0!important;
 }
+
 div.pckg:hover>div.lbl>span {
   font-weight: bold;
   background-color: none;
 }
+
 .hl {
   background-color: #ccc;
 }
+
 .sltt {
   display: block;
   font-weight: bold;
 }
+
 .slttval {
   display: block;
   padding-left: 10px;
 }
+
 .slttcol {
   display: inline-block;
   width: 50px;
