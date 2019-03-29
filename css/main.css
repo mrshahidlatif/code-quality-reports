@@ -55,7 +55,7 @@ body {
     grid-area: vis; 
     display: grid;
     grid-template-areas: 'pcpPanel spPanel' 'pcpCaption pcpCaption';
-    grid-template-rows: 1fr 30px; 
+    grid-template-rows: 1fr 35px; 
     grid-template-columns: 75fr 25fr; 
     grid-gap: 5px 30px;
 }
@@ -239,10 +239,6 @@ svg .dit rect {
     float: right;
     color: black;
 }
-
- #captionPP{
-    font-size:12px;
- }
 
 #title{
     font-size: 20px;
