@@ -782,9 +782,7 @@ pc.createAxes = function() {
       })
       .attr("class", function(d) {
         return "label "+dimensionLabels(d);
-      })
-      .on("dblclick", flipAxisAndUpdatePCP)
-      .on("wheel", rotateLabels);
+      });
   axisLabelG.append("svg:text")
       .attr("text-anchor", "middle")
       .text(dimensionLabels);
@@ -862,9 +860,7 @@ pc.updateAxes = function(animationTime) {
         "x": 0,
         "class": "label"
       })
-      .text(dimensionLabels)
-      .on("dblclick", flipAxisAndUpdatePCP)
-      .on("wheel", rotateLabels);
+      .text(dimensionLabels);
 
   // Update
   g_data.attr("opacity", 0);
