@@ -266,18 +266,14 @@ function generateSPCaption() {
 // TODO: which metric is used as a basis for wmc? Also cyclomatic complexity? -> Explain cyclomatic complexity
 function showComplexityMetricDescription() {
     var content = '<p>Complexity metrics estimate how difficult it is to understand the respective code (not to be confused with "computational complexity", which refers to the runtime resources an algorithm consumes). Based on a complexity computation on method level, we consider two perspectives: First, <span class="wmc">weighted methods per class (wmc)</span> sum all method complexity values for a class. Second, to also hightlight classes that contain few high-complexity methods but many low-complexity ones, the <span class="max_cc">maximal cyclomatic complexity (max_cc)</span> takes into consideration the maximum of all the method-level complexity values of class.</p>';
-    var maxClassWmc = findClassWithMaxValueOfMetricX('wmc');
-    var maxClassMaxCc = findClassWithMaxValueOfMetricX('max_cc');
-    if (maxClassWmc === maxClassMaxCc) {
-        content += '<p>Within the analyzed classes, ' + createClassSpan(maxClassWmc) + ' has the highest values with respect to both metrics.</p>';
-    } else {
-        content += '<p>Within the analyzed classes, ' + createClassSpan(maxClassWmc) + ' has the highest value with respect to <span class="wmc">wmc</span> and ' + createClassSpan(maxClassMaxCc) + ' the highest value with respect to <span class="max_cc">max_cc</span>.</p>';
-    }
+
+    content += generateMaxMetricText(['wmc', 'max_cc']);
+
     updateDetailPanel("Background: Complexity Metrics", content);
 }
 
 function showCouplingMetricDescription() {
-    var content = '<p>The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>) are used to assess quality in terms of coupling. We use thresholds of the metrics to classify the individual classes as having good, regular, or bad coupling.</p>';
+    var content = '<p>It is desirable that different classes are only coupled in a loose fashion&mdash;depedencencies should be avoided where possible, but moved within classes (see also: cohesion). We consider three different metrics to cover different views on coupling: The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>).</p>';
 
     content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
 
@@ -304,6 +300,17 @@ function showOtherMetricDescription() {
     var content = '<p>Furthermore, we have considered some general metrics: '+generateMetricSpan('loc')+', '+generateMetricSpan('amc')+', '+generateMetricSpan('npm')+', and '+generateMetricSpan('bug')+'.</p>';
 
     updateDetailPanel("Background: Others Metrics", content);
+}
+
+function generateMaxMetricText(metrics) {
+    var text = ''
+    var maxClasses = metrics.map(metric => findClassWithMaxValueOfMetricX(metric));
+    if (maxClasses[0] === maxClasses[1]) {
+        text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest values with respect to both metrics.</p>';
+    } else {
+        text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest value with respect to '+generateShortMetricSpan(metrics[0])+' and ' + createClassSpan(maxClasses[1]) + ' the highest value with respect to '+generateShortMetricSpan(metrics[1])+'.</p>';
+    }
+    return text;
 }
 
 function generateAndSetTooltipTexts() {
