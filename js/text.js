@@ -328,42 +328,56 @@ function generateAttributeTooltip(metricList, condBad, condRegular) {
     return '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p><p><i>Low</i>: ' + condBad + '<br><i>Regular</i>: not <i>low</i> and ' + condRegular + '<br><i>Good</i>: all other cases</p>';
 }
 
+/* ------------------------------------------------------------------------*/
+/* Class descriptions */
+/* ------------------------------------------------------------------------*/
 
 function generateClassDescription(className) {
     let loc = fullData.map(d => d.loc);
     let npm = fullData.map(d => d.npm);
-    var cObj = fullData[classNameToIndex[className]];
-
-    getOutliers(loc);
-
-    var maxLOC = ss.max(loc);
-    var maxNPM = ss.max(npm);
-
-
+    var classData = fullData[classNameToIndex[className]];
+    var bs = findBadSmellsInClass(className);
+    //bs = bs.map(smell => '<span class="clickable">' + smell + '</span>')
     var badQualityWith = [];
-
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="complexityMetric clickable">Complexity</span>');
+        badQualityWith.push('<span class="complexityMetric clickable">complexity</span>');
     }
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="couplingMetric clickable">Coupling</span>');
+        badQualityWith.push('<span class="couplingMetric clickable">coupling</span>');
     }
     if (badCohesionArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="cohesionMetric clickable">Cohesion</span>');
+        badQualityWith.push('<span class="cohesionMetric clickable">cohesion</span>');
     }
     if (badInheritanceArr.indexOf(createClassSpan(className)) != -1) {
-        badQualityWith.push('<span class="inheritanceMetric clickable">Inheritance</span>');
+        badQualityWith.push('<span class="inheritanceMetric clickable">inheritance</span>');
     }
 
-    var text = '';
-    var bs = findBadSmellsInClass(className);
-    text += createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
-
-    if (badQualityWith.length != 0)
-        text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ' : 's ') + printList(badQualityWith) + ".";
+    var text = 'Class ' + createClassSpan(className);
     var factor = (ss.max(npm) / ss.max(loc)) / (ss.mean(npm) / ss.mean(loc));
-    if (cObj.npm / cObj.loc < factor * (ss.mean(npm) / ss.mean(loc)) && cObj.loc > ss.mean(loc)) {
-        text += ' Compared with the average metric values of the classes, it has large size (<span class="loc">loc</span>) but less number of public methods (<span class="npm">npm</span>).';
+    if (classData.loc > ss.mean(loc) * 1.5) {
+        text += ' is ' + (ss.max(loc) === classData.loc ? 'the largest class of the project' : 'among the larger classes') + ' (' + generateShortMetricSpan('loc') + ': ' + classData.loc + ')';
+        if (classData.npm / classData.loc < factor * (ss.mean(npm) / ss.mean(loc))) {
+            text += ' with, considering its size, a relatively small public interface (' + generateShortMetricSpan('npm') + ': ' + classData.npm + ')';
+        }
+        text += '.'
+    } else if (classData.loc > ss.mean(loc) * 0.7) {
+        text += ' has a mid-range size (' + generateShortMetricSpan('loc') + ': ' + classData.loc + ').';
+    } else {
+        text += ' is comparatively small (' + generateShortMetricSpan('loc') + ': ' + classData.loc + ').';
+    }
+    var sentenceCount = 1;
+    if (badQualityWith.length != 0) {
+        if (badQualityWith.length === 4) {
+            text += ' It has low quality with respect to all four quality attributes (' + printList(badQualityWith) + ").";
+        } else {
+            text += ' It has low quality with respect to the attribute' + (badQualityWith.length === 1 ? ' ' : 's ') + printList(badQualityWith) + ".";
+        }
+        sentenceCount++;
+    }
+    if (bs.length > 0) {
+        text += sentenceCount > 1 ? ' Moreover, it' : ' It';
+        text += ' carries ' + (bs.length === 1 ? 'a ' : '') + printList(bs) + ' smell' + (bs.length === 1 ? '' : 's') + '. ';
+        sentenceCount++;
     }
     return text;
 }
@@ -429,7 +443,7 @@ function num2word(n) {
     else return n;
 }
 
-function generateMetricSpan(metric) {
+function generateMetricSpan(metric, shortVersion) {
     var metricNames = {
         "amc": "average method complexity",
         "bug": "number of historic bugs",
@@ -444,5 +458,10 @@ function generateMetricSpan(metric) {
         "npm": "number of public methods",
         "wmc": "weighted methods per class"
     }
-    return '<span class="' + metric + '">' + metricNames[metric] + ' (' + metric + ')</span>';
+    var text = shortVersion ? metric : metricNames[metric] + ' (' + metric + ')';
+    return '<span class="' + metric + '">' + text + '</span>';
+}
+
+function generateShortMetricSpan(metric) {
+    return generateMetricSpan(metric, true);
 }
