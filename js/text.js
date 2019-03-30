@@ -324,9 +324,9 @@ function generateAndSetTooltipTexts() {
     $(".inheritanceInfo").tooltip({
         content: generateAttributeTooltip(['noc', 'dit'], 'noc > 3 or dit > 4', 'noc > 1 or dit > 2')
     });
-    // TODO: update
+    // TODO: add scientific source
     $(".codeSmellsInfo").tooltip({
-        content: 'The detection of code smells is based on four metrics: lines of code (loc), (amc), (npm), and (wmc). We categorize each class as having code smells according to the threshold vlaues: <br><br> Large Class: loc 	&#8805; 1500; amc 	&#8805; 129 <br> Functional Decomposition: npm &#8804; 8 ; wmc	&#8805 16; <br> Spaghetti Class: amc &#8805; 151 <br> Lazy Class: wmc = 0 '
+        content: '<p>The detection of code smells is based on four metrics: ' + printList(['wmc','loc','amc','npm'].map(metric => generateMetricSpan(metric))) +'. We categorize each class as having code smells according to the threshold values:</p><p>Large Class: ' + generateShortMetricSpan('loc') + ' &#8805; 1500 and ' + generateShortMetricSpan('amc') + ' &#8805; 129 <br> Functional Decomposition: ' + generateShortMetricSpan('npm') + ' &#8804; 8 and ' + generateShortMetricSpan('wmc') + '	&#8805 16 <br> Spaghetti Class: ' + generateShortMetricSpan('amc') + ' &#8805; 151 <br> Lazy Class: ' + generateShortMetricSpan('wmc') + ' = 0 '
     });
     $(".pcpInfo").tooltip({
         content: 'A <i>parallel coordinates plot</i> visualizes all software metrics that we use in the analysis. Each of the vertical dimensions represents a metric. A class is then drawn as a line connecting the different dimesions according to metrics values of the class.'
