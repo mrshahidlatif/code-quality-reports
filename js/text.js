@@ -239,7 +239,7 @@ function bugText() {
 
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> ('+generateShortMetricSpan('wmc')+', '+generateShortMetricSpan('max_cc')+'), <span class="couplingMetric clickable">coupling</span> ('+generateShortMetricSpan('ca')+', '+generateShortMetricSpan('ce')+'), <span class="cohesionMetric clickable">cohesion</span> ('+generateShortMetricSpan('lcom3')+'), <span class="inheritanceMetric clickable">inheritance</span> ('+generateShortMetricSpan('noc')+', '+generateShortMetricSpan('dit')+') and <span class="otherMetric clickable">other metrics</span> ('+generateShortMetricSpan('loc')+', '+generateShortMetricSpan('amc')+', '+generateShortMetricSpan('npm')+', '+generateShortMetricSpan('bug')+'). ';
+    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> (' + generateShortMetricSpan('wmc') + ', ' + generateShortMetricSpan('max_cc') + '), <span class="couplingMetric clickable">coupling</span> (' + generateShortMetricSpan('ca') + ', ' + generateShortMetricSpan('ce') + '), <span class="cohesionMetric clickable">cohesion</span> (' + generateShortMetricSpan('lcom3') + '), <span class="inheritanceMetric clickable">inheritance</span> (' + generateShortMetricSpan('noc') + ', ' + generateShortMetricSpan('dit') + ') and <span class="otherMetric clickable">other metrics</span> (' + generateShortMetricSpan('loc') + ', ' + generateShortMetricSpan('amc') + ', ' + generateShortMetricSpan('npm') + ', ' + generateShortMetricSpan('bug') + '). ';
 
     caption += 'Gray <span class="box"/> lines (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and dots (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent classes.';
 
@@ -266,49 +266,44 @@ function generateSPCaption() {
 // TODO: which metric is used as a basis for wmc? Also cyclomatic complexity? -> Explain cyclomatic complexity
 function showComplexityMetricDescription() {
     var content = '<p>Complexity metrics estimate how difficult it is to understand the respective code (not to be confused with "computational complexity", which refers to the runtime resources an algorithm consumes). Based on a complexity computation on method level, we consider two perspectives: First, <span class="wmc">weighted methods per class (wmc)</span> sum all method complexity values for a class. Second, to also hightlight classes that contain few high-complexity methods but many low-complexity ones, the <span class="max_cc">maximal cyclomatic complexity (max_cc)</span> takes into consideration the maximum of all the method-level complexity values of class.</p>';
-
     content += generateMaxMetricText(['wmc', 'max_cc']);
-
     updateDetailPanel("Background: Complexity Metrics", content);
 }
 
 function showCouplingMetricDescription() {
-    var content = '<p>It is desirable that different classes are only coupled in a loose fashion&mdash;depedencencies should be avoided where possible, but moved within classes (see also: cohesion). We consider two different metrics to cover different views on coupling: afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>).</p>';
-
+    var content = '<p>It is desirable that different classes are only coupled in a loose fashion&mdash;dependencies should be avoided where possible, but moved within classes (see also: <span class="cohesionMetric clickable">cohesion</span>). We consider two different views on coupling: ' + generateMetricSpan('ca') + ' provides the numbers of other classes that depend on the class (incoming dependencies), and in contrast, ' + generateMetricSpan('ce') + ' is defined as the number of other classes that the class depends on (outgoing dependencies).</p>';
     content += generateMaxMetricText(['ca', 'ce']);
-
     updateDetailPanel("Background: Coupling Metrics", content);
 }
 
 function showCohesionMetricDescription() {
-    var content = '<p>Two versions of lack of cohesion metric, i.e., <span class="lcom">ce</span> and <span class="lcom3">lcom3</span> show the quality in terms of cohesion.</p>';
-
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('lcom3')) + ' has maximum cohesion. </p>';
-
+    var content = '<p>Since classes should only have a single responsibility, it is assumed that the methods of a well-designed class are considerably connected with each other, and hence can be called <i>cohesive</i>. A lack of cohesion, in contrast, indicates that a class might have several less connected responsibilities. Such classes can be split without introducing much <span class="couplingMetric clickable">coupling</span>. In particular, the metric' + generateMetricSpan('lcom3') + ' takes into consideration whether the methods access the same set of attributes (variables) of a class. </p>';
+    content += generateMaxMetricText(['lcom3']);
     updateDetailPanel("Background: Cohesion Metrics", content);
 }
 
 function showInheritanceMetricDescription() {
-    var content = '<p>The metrics depth of inheritance (<span class="dit">dit</span>) and number of children (<span class="noc">noc</span>) are used to assess the quality in terms of inheritance.</p>';
-
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('noc')) + ' has high inheritance. </p>';
-
+    var content = '<p>Inheritance between classes is a characteristic feature of object-oriented programming. However, the inappropriate or overly use of inheritance can also decrease code quality. We consider specifically a high '+generateMetricSpan('dit')+' and a high '+generateMetricSpan('noc')+' of a class as such potential problems. In the first case, many inheritance relations need to be followed to understand the code. In the latter case, the inheritance hierarchy gets too broad&mdash;further classes could substructure the larger set of children.</p>';
+    content += generateMaxMetricText(['dit', 'noc']);
     updateDetailPanel("Background: Inheritance Metrics", content);
 }
 
 function showOtherMetricDescription() {
-    var content = '<p>Furthermore, we have considered some general metrics: '+generateMetricSpan('loc')+', '+generateMetricSpan('amc')+', '+generateMetricSpan('npm')+', and '+generateMetricSpan('bug')+'.</p>';
-
+    var content = '<p>Furthermore, we also cover some general metrics: ' + generateMetricSpan('loc') + ' provides an impression of the overall size of class, ' + generateMetricSpan('amc') + ' reveals how long the contained methods are on average (complexity here is just measured in size), ' + generateMetricSpan('npm') + ' gives an idea of how much functionality a class reveals to its surrounding, and ' + generateMetricSpan('bug') + ' counts the bugs that have been associated with a class (fixed and open bugs are counted alike).</p>';
     updateDetailPanel("Background: Others Metrics", content);
 }
 
 function generateMaxMetricText(metrics) {
     var text = ''
     var maxClasses = metrics.map(metric => findClassWithMaxValueOfMetricX(metric));
-    if (maxClasses[0] === maxClasses[1]) {
-        text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest values with respect to both metrics.</p>';
-    } else {
-        text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest value with respect to '+generateShortMetricSpan(metrics[0])+' and ' + createClassSpan(maxClasses[1]) + ' the highest value with respect to '+generateShortMetricSpan(metrics[1])+'.</p>';
+    if (metrics.length === 1) {
+        text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest value with respect to ' + generateMetricSpan(metrics[0]) + '.</p>';
+    } else if (metrics.length === 2) {
+        if (maxClasses[0] === maxClasses[1]) {
+            text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest values with respect to both metrics.</p>';
+        } else {
+            text += '<p>Within the analyzed classes, ' + createClassSpan(maxClasses[0]) + ' has the highest value with respect to ' + generateMetricSpan(metrics[0]) + ' and ' + createClassSpan(maxClasses[1]) + ' the highest value with respect to ' + generateMetricSpan(metrics[1]) + '.</p>';
+        }
     }
     return text;
 }
@@ -477,7 +472,7 @@ function generateMetricSpan(metric, shortVersion) {
         "wmc": { name: "weighted methods per class", category: "complexity" }
     }
     var text = shortVersion ? metric : metricData[metric].name + ' (' + metric + ')';
-    return '<span class="' + metric+ ' clickable ' + metricData[metric].category + 'Metric">' + text + '</span>';
+    return '<span class="' + metric + ' clickable ' + metricData[metric].category + 'Metric">' + text + '</span>';
 }
 
 function generateShortMetricSpan(metric) {
