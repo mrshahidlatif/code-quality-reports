@@ -277,7 +277,7 @@ function showCouplingMetricDescription() {
 }
 
 function showCohesionMetricDescription() {
-    var content = '<p>Since classes should only have a single responsibility, it is assumed that the methods of a well-designed class are considerably connected with each other, and hence can be called <i>cohesive</i>. A lack of cohesion, in contrast, indicates that a class might have several less connected responsibilities. Such classes can be split without introducing much <span class="couplingMetric clickable">coupling</span>. In particular, the metric' + generateMetricSpan('lcom3') + ' takes into consideration whether the methods access the same set of attributes (variables) of a class. </p>';
+    var content = '<p>Since classes should only have a single responsibility, it is assumed that the methods of a well-designed class are considerably connected with each other, and hence can be called <i>cohesive</i>. A lack of cohesion, in contrast, indicates that a class might have several less connected responsibilities. Such classes can be split without introducing much <span class="couplingMetric clickable">coupling</span>. In particular, the metric ' + generateMetricSpan('lcom3') + ' takes into consideration whether the methods access the same set of attributes (variables) of a class. </p>';
     content += generateMaxMetricText(['lcom3']);
     updateDetailPanel("Background: Cohesion Metrics", content);
 }

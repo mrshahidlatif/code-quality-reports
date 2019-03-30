@@ -146,27 +146,22 @@ h4 {
 
 .couplingMetric.clickable {
     border-bottom: 2px solid #238b45;
-    display: inline-block;
 }
 
 .complexityMetric.clickable {
     border-bottom: 2px solid #2b8cbe;
-    display: inline-block;
 }
 
 .cohesionMetric.clickable {
     border-bottom: 2px solid #c51b8a;
-    display: inline-block;
 }
 
 .inheritanceMetric.clickable {
     border-bottom: 2px solid #8b5400;
-    display: inline-block;
 }
 
 .otherMetric.clickable {
     border-bottom: 2px solid #666666;
-    display: inline-block;
 }
 
 .BSLegend {
