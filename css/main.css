@@ -273,19 +273,25 @@ svg .bug rect {
 /* ------------------------------------------------------------------------*/
 
 .ui-tooltip-content {
-    font-size: 10pt;
-    color: white;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .ui-tooltip {
-    background: #666666;
+    background: white;
 }
 
+/* sparkline tooltips */
 .jqstooltip {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
-    background: #666666;
+    background: white;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: black;
+    font-size: 14px;
+    box-shadow: 0px 0px 5px black;
 }
 
 /* ------------------------------------------------------------------------
@@ -301,13 +307,6 @@ svg .bug rect {
 /* ------------------------------------------------------------------------
 /* Other -- TODO: sort and refactor properly
 /* ------------------------------------------------------------------------*/
-
-/* #classDescription{
-    font-size: 14px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 100%;
-    height: auto;
-} */
 
 #closeBtn:hover {
     cursor: pointer;
@@ -508,10 +507,10 @@ div.pckg:hover>div.lbl>span {
     max-width: 250px;
     max-height: 64px;
     padding: 4px;
-    background: #666666;
+    background: white;
     pointer-events: none;
-    font-size: 12px;
-    color: white;
+    font-size: 14px;
+    box-shadow: 0px 0px 5px blacK;
 }
 
 .annotation-note {

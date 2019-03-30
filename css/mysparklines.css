@@ -44,7 +44,7 @@ div.pckg:hover>div.lbl>span {
 
 .sltt {
   display: block;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .slttval {
