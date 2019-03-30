@@ -178,7 +178,7 @@ h4 {
 }
 
 .wmc {
-    border-bottom: 2px solid #2b8cbe;
+    border-bottom: 2px solid #2b8cbe !important;
 }
 
 svg .wmc rect {
@@ -186,7 +186,7 @@ svg .wmc rect {
 }
 
 .max_cc {
-    border-bottom: 2px solid #56baec;
+    border-bottom: 2px solid #56baec !important;
 }
 
 svg .max_cc rect {
@@ -194,7 +194,7 @@ svg .max_cc rect {
 }
 
 .cbo {
-    border-bottom: 2px solid #238b45;
+    border-bottom: 2px solid #238b45 !important;
 }
 
 svg .cbo rect {
@@ -202,7 +202,7 @@ svg .cbo rect {
 }
 
 .ca {
-    border-bottom: 2px solid #3dc56b;
+    border-bottom: 2px solid #3dc56b !important;
 }
 
 svg .ca rect {
@@ -210,7 +210,7 @@ svg .ca rect {
 }
 
 .ce {
-    border-bottom: 2px solid #65e48f;
+    border-bottom: 2px solid #65e48f !important;
 }
 
 svg .ce rect {
@@ -218,7 +218,7 @@ svg .ce rect {
 }
 
 .lcom3 {
-    border-bottom: 2px solid #c51b8a;
+    border-bottom: 2px solid #c51b8a !important;
 }
 
 svg .lcom3 rect {
@@ -226,7 +226,7 @@ svg .lcom3 rect {
 }
 
 .noc {
-    border-bottom: 2px solid #8b5400;
+    border-bottom: 2px solid #8b5400 !important;
 }
 
 svg .noc rect {
@@ -234,7 +234,7 @@ svg .noc rect {
 }
 
 .dit {
-    border-bottom: 2px solid #cf891f;
+    border-bottom: 2px solid #cf891f !important;
 }
 
 svg .dit rect {
@@ -242,7 +242,7 @@ svg .dit rect {
 }
 
 .loc {
-    border-bottom: 2px solid #666666;
+    border-bottom: 2px solid #666666 !important;
     ;
 }
 
@@ -251,7 +251,7 @@ svg .loc rect {
 }
 
 .amc {
-    border-bottom: 2px solid #888888;
+    border-bottom: 2px solid #888888 !important;
 }
 
 svg .amc rect {
@@ -259,7 +259,7 @@ svg .amc rect {
 }
 
 .npm {
-    border-bottom: 2px solid #AAAAAA;
+    border-bottom: 2px solid #AAAAAA !important;
 }
 
 svg .npm rect {
@@ -267,7 +267,7 @@ svg .npm rect {
 }
 
 .bug {
-    border-bottom: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC !important;
 }
 
 svg .bug rect {
@@ -361,7 +361,6 @@ svg .bug rect {
 }
 
 .clickable {
-    color: black;
     border-bottom: 1px solid black;
 }
 
