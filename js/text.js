@@ -67,6 +67,7 @@ function badSmellsText() {
     if (c != undefined) {
         text += ' For instance, ' + createClassSpan(c.name) + ' has ' + num2word(c.badSmells.length) + ' smells: ' + printList(c.badSmells) + '.';
     }
+    // TODO: update following descriptions
     if (highblobArr.length == 1) {
         text += ' Comparatively high metric value of lines of code (loc) indicates bad quality in ' + highblobArr[0] +
             '.';
@@ -204,6 +205,11 @@ function computeQualityScore(good, regular, bad) {
     }
 }
 
+/* ------------------------------------------------------------------------*/
+/* Bug descriptions */
+/* ------------------------------------------------------------------------*/
+
+
 function bugText() {
     var text = "";
     text += '<h3>Bug History</h3>'
@@ -227,9 +233,13 @@ function bugText() {
     return text;
 }
 
+/* ------------------------------------------------------------------------*/
+/* Metric descriptions */
+/* ------------------------------------------------------------------------*/
+
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> (<span class="wmc">wmc</span>, <span class="max_cc">max_cc</span>), <span class="couplingMetric clickable">coupling</span> (<span class="cbo">cbo</span>, <span class="ca">ca</span>, <span class="ce">ce</span>), <span class="cohesionMetric clickable">cohesion</span> (<span class="lcom3">lcom3</span>), <span class="inheritanceMetric clickable">inheritance</span> (<span class="noc">noc</span>, <span class="dit">dit</span>) and <span class="otherMetric clickable">other metrics</span> (<span class="loc">loc</span>, <span class="amc">amc</span>, <span class="npm">npm</span>, <span class="bug">bug</span>). ';
+    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> ('+generateShortMetricSpan('wmc')+', '+generateShortMetricSpan('max_cc')+'), <span class="couplingMetric clickable">coupling</span> ('+generateShortMetricSpan('cbo')+', '+generateShortMetricSpan('ca')+', '+generateShortMetricSpan('ce')+'), <span class="cohesionMetric clickable">cohesion</span> ('+generateShortMetricSpan('lcom3')+'), <span class="inheritanceMetric clickable">inheritance</span> ('+generateShortMetricSpan('noc')+', '+generateShortMetricSpan('dit')+') and <span class="otherMetric clickable">other metrics</span> ('+generateShortMetricSpan('loc')+', '+generateShortMetricSpan('amc')+', '+generateShortMetricSpan('npm')+', '+generateShortMetricSpan('bug')+'). ';
 
     caption += 'Gray <span class="box"/> lines (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and dots (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent classes.';
 
@@ -244,11 +254,6 @@ function generateSPCaption() {
     else {
         return 'Correlation between ' + xVal + ' and ' + yVal + '.';
     }
-}
-
-
-function drawBarChart(tagNmae, val) {
-    $(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="' + (val / 2) + '" height="14"></rect><text x="25" y="11" style="font-size:12px">' + val + '%</text></g></svg>');
 }
 
 
@@ -276,7 +281,7 @@ function showCouplingMetricDescription() {
 
     content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
 
-    updateDetailPanel("Coupling", content);
+    updateDetailPanel("Background: Coupling Metrics", content);
 }
 
 function showCohesionMetricDescription() {
@@ -293,6 +298,12 @@ function showInheritanceMetricDescription() {
     content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('noc')) + ' has high inheritance. </p>';
 
     updateDetailPanel("Background: Inheritance Metrics", content);
+}
+
+function showOtherMetricDescription() {
+    var content = '<p>Furthermore, we have considered some general metrics: '+generateMetricSpan('loc')+', '+generateMetricSpan('amc')+', '+generateMetricSpan('npm')+', and '+generateMetricSpan('bug')+'.</p>';
+
+    updateDetailPanel("Background: Others Metrics", content);
 }
 
 function generateAndSetTooltipTexts() {
@@ -337,6 +348,7 @@ function generateClassDescription(className) {
     let npm = fullData.map(d => d.npm);
     var classData = fullData[classNameToIndex[className]];
     var bs = findBadSmellsInClass(className);
+    // TODO: make bad smells clickable
     //bs = bs.map(smell => '<span class="clickable">' + smell + '</span>')
     var badQualityWith = [];
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
@@ -444,24 +456,28 @@ function num2word(n) {
 }
 
 function generateMetricSpan(metric, shortVersion) {
-    var metricNames = {
-        "amc": "average method complexity",
-        "bug": "number of historic bugs",
-        "ca": "afferent coupling",
-        "cbo": "coupling between objects",
-        "ce": "efferent coupling",
-        "dit": "depth of inheritance tree",
-        "lcom3": "lack of cohesion of methods",
-        "loc": "lines of code",
-        "max_cc": "maximum cyclomatic complexity",
-        "noc": "number of children of a class",
-        "npm": "number of public methods",
-        "wmc": "weighted methods per class"
+    var metricData = {
+        "amc": { name: "average method complexity", category: "other" },
+        "bug": { name: "number of historic bugs", category: "other" },
+        "ca": { name: "afferent coupling", category: "coupling" },
+        "cbo": { name: "coupling between objects", category: "coupling" },
+        "ce": { name: "efferent coupling", category: "coupling" },
+        "dit": { name: "depth of inheritance tree", category: "inheritance" },
+        "lcom3": { name: "lack of cohesion of methods", category: "cohesion" },
+        "loc": { name: "lines of code", category: "other" },
+        "max_cc": { name: "maximum cyclomatic complexity", category: "complexity" },
+        "noc": { name: "number of children of a class", category: "inheritance" },
+        "npm": { name: "number of public methods", category: "other" },
+        "wmc": { name: "weighted methods per class", category: "complexity" }
     }
-    var text = shortVersion ? metric : metricNames[metric] + ' (' + metric + ')';
-    return '<span class="' + metric + '">' + text + '</span>';
+    var text = shortVersion ? metric : metricData[metric].name + ' (' + metric + ')';
+    return '<span class="' + metric+ ' clickable ' + metricData[metric].category + 'Metric">' + text + '</span>';
 }
 
 function generateShortMetricSpan(metric) {
     return generateMetricSpan(metric, true);
+}
+
+function drawBarChart(tagNmae, val) {
+    $(tagNmae).html('<svg width="50" height="14" style="background: #ccc;"><g transform="translate(0,0)" style="text-anchor: middle;"><rect class="bar" width="' + (val / 2) + '" height="14"></rect><text x="25" y="11" style="font-size:12px">' + val + '%</text></g></svg>');
 }
