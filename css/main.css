@@ -193,28 +193,20 @@ svg .max_cc rect {
     fill: #56baec;
 }
 
-.cbo {
+.ca {
     border-bottom: 2px solid #238b45 !important;
 }
 
-svg .cbo rect {
+svg .ca rect {
     fill: #238b45;
 }
 
-.ca {
+.ce {
     border-bottom: 2px solid #3dc56b !important;
 }
 
-svg .ca rect {
-    fill: #3dc56b;
-}
-
-.ce {
-    border-bottom: 2px solid #65e48f !important;
-}
-
 svg .ce rect {
-    fill: #65e48f;
+    fill: #3dc56b;
 }
 
 .lcom3 {

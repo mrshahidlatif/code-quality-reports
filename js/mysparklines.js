@@ -7,7 +7,7 @@
 
     var options = {
       slids: ['slComplexity', 'slCoupling', 'slCohesion', 'slInheritance'],     //pass ids for containers of first and second graph
-      sldef: ['wmc,max_cc', 'cbo,ca,ce', 'lcom3', 'dit,noc'], //pass fields for graphs
+      sldef: ['wmc,max_cc', 'ca,ce', 'lcom3', 'dit,noc'], //pass fields for graphs
       slopts: [
         { height: 25 }, //pass Sparklines options, dafaults to {type: 'bar', disableHiddenCheck: true, height: 200, barWidth: 4}
         //pass options specfic to each sl if required, in order
@@ -25,7 +25,7 @@
     settings = { //default options:
       csvurl: '',
       slids: ['sl1', 'sl2'],              //ids for containers 1 and 2
-      sldef: ['wmc,max_cc', 'cbo,ca,ce'], //fields for graphs 1 and 2
+      sldef: ['wmc,max_cc', 'ca,ce'], //fields for graphs 1 and 2
       slopts: [                           //default Sparklines options
         {                         //options for all sls
           type: 'bar',

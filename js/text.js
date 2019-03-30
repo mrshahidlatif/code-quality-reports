@@ -239,7 +239,7 @@ function bugText() {
 
 function generatePPCaption() {
     // TODO: color metric names
-    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> ('+generateShortMetricSpan('wmc')+', '+generateShortMetricSpan('max_cc')+'), <span class="couplingMetric clickable">coupling</span> ('+generateShortMetricSpan('cbo')+', '+generateShortMetricSpan('ca')+', '+generateShortMetricSpan('ce')+'), <span class="cohesionMetric clickable">cohesion</span> ('+generateShortMetricSpan('lcom3')+'), <span class="inheritanceMetric clickable">inheritance</span> ('+generateShortMetricSpan('noc')+', '+generateShortMetricSpan('dit')+') and <span class="otherMetric clickable">other metrics</span> ('+generateShortMetricSpan('loc')+', '+generateShortMetricSpan('amc')+', '+generateShortMetricSpan('npm')+', '+generateShortMetricSpan('bug')+'). ';
+    var caption = 'An overview of software quality in terms of <span class="complexityMetric clickable">complexity</span> ('+generateShortMetricSpan('wmc')+', '+generateShortMetricSpan('max_cc')+'), <span class="couplingMetric clickable">coupling</span> ('+generateShortMetricSpan('ca')+', '+generateShortMetricSpan('ce')+'), <span class="cohesionMetric clickable">cohesion</span> ('+generateShortMetricSpan('lcom3')+'), <span class="inheritanceMetric clickable">inheritance</span> ('+generateShortMetricSpan('noc')+', '+generateShortMetricSpan('dit')+') and <span class="otherMetric clickable">other metrics</span> ('+generateShortMetricSpan('loc')+', '+generateShortMetricSpan('amc')+', '+generateShortMetricSpan('npm')+', '+generateShortMetricSpan('bug')+'). ';
 
     caption += 'Gray <span class="box"/> lines (left<span class="pcpInfo infoIcon"title=""> &#9432;</span>) and dots (right<span class="spInfo infoIcon"title=""> &#9432;</span>) represent classes.';
 
@@ -273,9 +273,9 @@ function showComplexityMetricDescription() {
 }
 
 function showCouplingMetricDescription() {
-    var content = '<p>It is desirable that different classes are only coupled in a loose fashion&mdash;depedencencies should be avoided where possible, but moved within classes (see also: cohesion). We consider three different metrics to cover different views on coupling: The metrics coupling between objects (<span class="cbo">cbo</span>), afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>).</p>';
+    var content = '<p>It is desirable that different classes are only coupled in a loose fashion&mdash;depedencencies should be avoided where possible, but moved within classes (see also: cohesion). We consider two different metrics to cover different views on coupling: afferent coupling (<span class="ca">ca</span>), and efferent coupling (<span class="ce">ce</span>).</p>';
 
-    content += '</p>For instance, ' + createClassSpan(findClassWithMaxValueOfMetricX('cbo')) + ' has high coupling. </p>';
+    content += generateMaxMetricText(['ca', 'ce']);
 
     updateDetailPanel("Background: Coupling Metrics", content);
 }
@@ -321,7 +321,7 @@ function generateAndSetTooltipTexts() {
         content: generateAttributeTooltip(['wmc', 'max_cc',], 'wmc > 34 or max_cc > 4', 'wmc > 11 or max_cc > 2')
     });
     $(".couplingInfo").tooltip({
-        content: generateAttributeTooltip(['cbo', 'ca', 'ce'], 'cbo >= 9, ca > 39, or ce > 16', 'cbo >= 7, ca > 7, or ce > 6')
+        content: generateAttributeTooltip(['ca', 'ce'], 'ca > 39 or ce > 16', 'ca > 7 or ce > 6')
     });
     $(".cohesionInfo").tooltip({
         content: generateAttributeTooltip(['lcom3'], 'lcom3 > 0.725', 'lcom3 > 0.167')
@@ -467,7 +467,6 @@ function generateMetricSpan(metric, shortVersion) {
         "amc": { name: "average method complexity", category: "other" },
         "bug": { name: "number of historic bugs", category: "other" },
         "ca": { name: "afferent coupling", category: "coupling" },
-        "cbo": { name: "coupling between objects", category: "coupling" },
         "ce": { name: "efferent coupling", category: "coupling" },
         "dit": { name: "depth of inheritance tree", category: "inheritance" },
         "lcom3": { name: "lack of cohesion of methods", category: "cohesion" },

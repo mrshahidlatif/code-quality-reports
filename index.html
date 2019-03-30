@@ -217,9 +217,9 @@
         goodComplexityArr.push(classSpan);
       }
 
-      if (d.cbo >= 9 || d.ca > 39 || d.ce > 16) {
+      if (d.ca > 39 || d.ce > 16) {
         badCouplingArr.push(classSpan);
-      } else if (d.cbo >= 7 || d.ca > 7 || d.ce > 6) {
+      } else if (d.ca > 7 || d.ce > 6) {
         regularCouplingArr.push(classSpan);
       } else {
         goodCouplingArr.push(classSpan);
@@ -942,7 +942,6 @@
     var myDimensions = {
       "wmc": { type: "number" },
       "max_cc": { type: "number" },
-      "cbo": { type: "number" },
       "ca": { type: "number" },
       "ce": { type: "number" },
       "lcom3": { type: "number" },
@@ -1006,7 +1005,6 @@
       amc: d.amc,
       bug: d.bug,
       ca: d.ca,
-      cbo: d.cbo,
       ce: d.ce,
       dit: d.dit,
       lcom3: d.lcom3,
