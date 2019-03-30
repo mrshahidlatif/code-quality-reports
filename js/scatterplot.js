@@ -5,8 +5,9 @@ function ScatterPlot() {
     var colorAcessor = null;
     var colorScale = d3.scale.ordinal(d3.schemeCategory10);
     var data;
-    //not used parameters :
-    var dimensions = [], excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc"];
+    var dimensions = []
+    // FIXME: exclusion of cbo does not have an effect
+    var excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc", "lcom", "cbo"];
     var dotRadius = 3;
     var mouseout = function (d, i) { };
     var mouseover = function (d, i) { };
@@ -50,7 +51,7 @@ function ScatterPlot() {
         var h = d3.select($el).style("height");
         svg = d3.select($el).append("svg").attr('width', w).attr("height", h);
         root = svg.append("g")
-            .attr("transform", "translate(" + margin + ",0)");
+            .attr("transform", "translate(" + margin + ",10)");
         if (prev_data != null && prev_data.length > 0) {
             var chart_data = clone(prev_data);
             data = chart_data;
@@ -66,7 +67,7 @@ function ScatterPlot() {
             d.index = i;
             d.neighbors = [];
         });
-        size = size + 15; // increase height because x-axis label is not used TODO: replace by better solution
+        size = size + 10; // increase height because x-axis label is not used TODO: replace by better solution
 
         var xValue = function (d) { return d[dimensions[0]]; }, // data -> value
             xScale = d3.scale.linear().range([0, size]),     // value -> display
