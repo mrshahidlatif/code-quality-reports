@@ -283,7 +283,7 @@ function showCohesionMetricDescription() {
 }
 
 function showInheritanceMetricDescription() {
-    var content = '<p>Inheritance between classes is a characteristic feature of object-oriented programming. However, the inappropriate or overly use of inheritance can also decrease code quality. We consider specifically a high '+generateMetricSpan('dit')+' and a high '+generateMetricSpan('noc')+' of a class as such potential problems. In the first case, many inheritance relations need to be followed to understand the code. In the latter case, the inheritance hierarchy gets too broad&mdash;further classes could substructure the larger set of children.</p>';
+    var content = '<p>Inheritance between classes is a characteristic feature of object-oriented programming. However, the inappropriate or overly use of inheritance can also decrease code quality. We consider specifically a high ' + generateMetricSpan('dit') + ' and a high ' + generateMetricSpan('noc') + ' of a class as such potential problems. In the first case, many inheritance relations need to be followed to understand the code. In the latter case, the inheritance hierarchy gets too broad&mdash;further classes could substructure the larger set of children.</p>';
     content += generateMaxMetricText(['dit', 'noc']);
     updateDetailPanel("Background: Inheritance Metrics", content);
 }
@@ -313,20 +313,20 @@ function generateAndSetTooltipTexts() {
         content: projInfo
     });
     $(".complexityInfo").tooltip({
-        content: generateAttributeTooltip(['wmc', 'max_cc',], 'wmc > 34 or max_cc > 4', 'wmc > 11 or max_cc > 2')
+        content: generateAttributeTooltip(['wmc', 'max_cc',], [['wmc', '> 34'], ['max_cc', '> 4']], [['wmc', '> 11'], ['max_cc', '> 2']])
     });
     $(".couplingInfo").tooltip({
-        content: generateAttributeTooltip(['ca', 'ce'], 'ca > 39 or ce > 16', 'ca > 7 or ce > 6')
+        content: generateAttributeTooltip(['ca', 'ce'], [['ca', '> 39'], ['ce', '> 16']], [['ca', '> 7'], ['ce', '> 6']])
     });
     $(".cohesionInfo").tooltip({
-        content: generateAttributeTooltip(['lcom3'], 'lcom3 > 0.725', 'lcom3 > 0.167')
+        content: generateAttributeTooltip(['lcom3'], [['lcom3', '> 0.725']], [['lcom3', '> 0.167']])
     });
     $(".inheritanceInfo").tooltip({
-        content: generateAttributeTooltip(['noc', 'dit'], 'noc > 3 or dit > 4', 'noc > 1 or dit > 2')
+        content: generateAttributeTooltip(['noc', 'dit'], [['noc', '> 3'],['dit', '> 4']], [['noc', '> 1'], ['dit','> 2']])
     });
     // TODO: add scientific source
     $(".codeSmellsInfo").tooltip({
-        content: '<p>The detection of code smells is based on four metrics: ' + printList(['wmc','loc','amc','npm'].map(metric => generateMetricSpan(metric))) +'. We categorize each class as having code smells according to the threshold values:</p><p>Large Class: ' + generateShortMetricSpan('loc') + ' &#8805; 1500 and ' + generateShortMetricSpan('amc') + ' &#8805; 129 <br> Functional Decomposition: ' + generateShortMetricSpan('npm') + ' &#8804; 8 and ' + generateShortMetricSpan('wmc') + '	&#8805 16 <br> Spaghetti Class: ' + generateShortMetricSpan('amc') + ' &#8805; 151 <br> Lazy Class: ' + generateShortMetricSpan('wmc') + ' = 0 '
+        content: '<p>The detection of code smells is based on four metrics: ' + printList(['wmc', 'loc', 'amc', 'npm'].map(metric => generateMetricSpan(metric))) + '. We categorize each class as having code smells according to the threshold values:</p><p>Large Class: ' + generateShortMetricSpan('loc') + ' &#8805; 1500 AND ' + generateShortMetricSpan('amc') + ' &#8805; 129 <br> Functional Decomposition: ' + generateShortMetricSpan('npm') + ' &#8804; 8 AND ' + generateShortMetricSpan('wmc') + '	&#8805 16 <br> Spaghetti Class: ' + generateShortMetricSpan('amc') + ' &#8805; 151 <br> Lazy Class: ' + generateShortMetricSpan('wmc') + ' = 0 '
     });
     $(".pcpInfo").tooltip({
         content: 'A <i>parallel coordinates plot</i> visualizes all software metrics that we use in the analysis. Each of the vertical dimensions represents a metric. A class is then drawn as a line connecting the different dimesions according to metrics values of the class.'
@@ -338,7 +338,12 @@ function generateAndSetTooltipTexts() {
 
 function generateAttributeTooltip(metricList, condBad, condRegular) {
     metricList = metricList.map(metric => generateMetricSpan(metric));
-    return '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p><p><i>Low</i>: ' + condBad + '<br><i>Regular</i>: not <i>low</i> and ' + condRegular + '<br><i>Good</i>: all other cases</p>';
+    var text = '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p>';
+    if (condBad.length > 1) {
+        return text + '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + ' OR ' + generateShortMetricSpan(condBad[1][0]) + ' ' + condBad[1][1] + '<br><i>Regular</i>: not <i>low</i> AND (' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + ' OR ' + generateShortMetricSpan(condRegular[1][0]) + ' ' + condRegular[1][1] + ')<br><i>Good</i>: all other cases</p>';
+    } else {
+        return text + '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + '<br><i>Regular</i>: not <i>low</i> AND ' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + '<br><i>Good</i>: all other cases</p>';
+    }
 }
 
 /* ------------------------------------------------------------------------*/
