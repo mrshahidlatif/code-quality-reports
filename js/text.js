@@ -113,7 +113,7 @@ function attributeIntroText(attributes) {
         avgScore += score;
     });
     avgScore = avgScore / attributes.length;
-    var text = '<p>An analysis of software metrics along four quality attributes shows generally ';
+    var text = '<p>An analysis of software metrics along four quality attributes<span class="attributeInfo infoIcon"title=""> &#9432;</span> shows generally ';
     if (avgScore >= 2.5) {
         text += '<i>very good</i> quality';
     } else if (avgScore >= 1.75) {
@@ -311,6 +311,9 @@ function generateMaxMetricText(metrics) {
 function generateAndSetTooltipTexts() {
     $(".projInfo").tooltip({
         content: projInfo
+    });
+    $(".attributeInfo").tooltip({
+        content: '<p>We classify each class into three categories (<i>low</i>, <i>regular</i>, <i>good</i>) along four quality attributes, each attribute being connected to one or two software metrics. In literature, threshold values for these metrics have been suggested, which we use as a basis for the categorization. </p><p>Reference: Filó, T. G., Bigonha, M., & Ferreira, K. (2015). A catalogue of thresholds for object-oriented software metrics. SOFTENG 2015, 48-55.</p>'
     });
     $(".complexityInfo").tooltip({
         content: generateAttributeTooltip(['wmc', 'max_cc',], [['wmc', '> 34'], ['max_cc', '> 4']], [['wmc', '> 11'], ['max_cc', '> 2']])
