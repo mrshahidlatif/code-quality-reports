@@ -984,7 +984,10 @@
       .style("font-size", "14px");
 
     pcz.on("brush", function (d) {
+      var sAxis = pcz.brushExtents();
+      var sAxisName = Object.keys(sAxis);
       var content = 'The current selection (marked with black <span class="boxBlack"></span> color) contains ' + num2word(d.length) + ' class' + (d.length == 1 ? '' : 'es');
+      
       if (d.length == 1) {
         content += ': ' + printList([createClassSpan(d[0].cname)]);
       }
@@ -994,9 +997,13 @@
       else if (d.length == 3) {
         content += ': ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
       }
+      else if (d.length > 3 && sAxis[sAxisName] != undefined) {
+        content += '. The values of ' + generateShortMetricSpan(sAxisName)  + ' for this selection ranges between '+ sAxis[sAxisName][0].toFixed(2) + ' and '+sAxis[sAxisName][1].toFixed(2);
+      }
+      
       //TODO: fix the problem with linking of this selection with scatterplot
       // scatterfilter(newdata);
-      updateCaption(content + ' <span class="pcpBrushInfo infoIcon" title="">ⓘ</span>.'); 
+      updateCaption(content + '. <span class="pcpBrushInfo infoIcon" title="">ⓘ</span>'); 
       $(".pcpBrushInfo").tooltip({
         content: 'To reset the manual brushing, click on the brushed axis anywhere outside the rectangle.'
       });
