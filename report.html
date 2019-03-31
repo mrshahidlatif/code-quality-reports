@@ -490,7 +490,7 @@
 
       parallelfilter(dims);
 
-      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Large Class smell; their <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
+      var caption = 'The classes drawn in black <span class="boxBlack"></span> have a Large Class smell, with <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
       updateCaption(caption);
     }
   });
@@ -514,7 +514,7 @@
       dims['wmc'] = [16, null];
       parallelfilter(dims);
 
-      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Functional Decomposition smell; their <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
+      var caption = 'The classes drawn in black <span class="boxBlack"></span> have a Functional Decomposition smell, with <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
       updateCaption(caption);
     }
   });
@@ -537,7 +537,7 @@
       dims['amc'] = [151, null];
       parallelfilter(dims);
 
-      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Spaghetti Class smell; their <span class="amc">amc</span> > 151';
+      var caption = 'The classes drawn in black <span class="boxBlack"></span> have a Spaghetti Class smell, with <span class="amc">amc</span> > 151';
       updateCaption(caption);
     }
   });
@@ -560,7 +560,7 @@
       dims['wmc'] = [0, 0.1];
       parallelfilter(dims);
 
-      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Lazy Class smell; their <span class="wmc">wmc</span> = 0';
+      var caption = 'The classes drawn in black <span class="boxBlack"></span> have a Lazy Class smell, with <span class="wmc">wmc</span> = 0';
       updateCaption(caption);
     }
   });
@@ -694,7 +694,7 @@
     haveClassToPersist = true;
     persistentClass = className;
 
-    updateCaption('The class '+createClassSpan(className) + ' is marked with black <span class="boxBlack"></span> color.');
+    updateCaption('The class '+createClassSpan(className) + ' is selected and drawn in black <span class="boxBlack"></span>.');
 
   }
   function removePersistentHighlighting(className) {
@@ -989,7 +989,7 @@
     pcz.on("brush", function (d) {
       var sAxis = pcz.brushExtents();
       var sAxisName = Object.keys(sAxis);
-      var content = 'The current selection (marked with black <span class="boxBlack"></span> color) contains ' + num2word(d.length) + ' class' + (d.length == 1 ? '' : 'es');
+      var content = 'The current selection is drawn in black <span class="boxBlack"></span> and contains ' + num2word(d.length) + ' class' + (d.length == 1 ? '' : 'es');
       
       if (d.length == 1) {
         content += ': ' + printList([createClassSpan(d[0].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[0][sAxisName].toFixed()+')']);
@@ -1001,7 +1001,7 @@
         content += ': ' + printList([createClassSpan(d[0].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[0][sAxisName].toFixed()+')', createClassSpan(d[1].cname)+ ' (' + generateShortMetricSpan(sAxisName) + ': '+d[1][sAxisName].toFixed()+')', createClassSpan(d[2].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[2][sAxisName].toFixed()+')']);
       }
       else if (d.length > 3 && sAxis[sAxisName] != undefined) {
-        content += '. The values of ' + generateShortMetricSpan(sAxisName)  + ' for this selection ranges between '+ sAxis[sAxisName][0].toFixed(2) + ' and '+sAxis[sAxisName][1].toFixed(2);
+        content += '. The values of ' + generateShortMetricSpan(sAxisName)  + ' for this selection range between '+ sAxis[sAxisName][0].toFixed(2) + ' and '+sAxis[sAxisName][1].toFixed(2);
       }
 
       var newdata=Array(fullData.length).fill(false);
