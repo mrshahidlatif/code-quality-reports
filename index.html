@@ -59,12 +59,12 @@
 			display: block;
 			margin-left: auto;
 			margin-right: auto;
-			width: 75%;
+			width: 65%;
 		}
 		img{
 			max-width:100%;
 			max-height:100%;
-		} 
+        }
        
     </style>
 
@@ -79,21 +79,30 @@
         <p>Our interactive tool runs locally without any Web server installed and is fully self-contained (i.e., the package includes all required data). We have tested it in the current versions of Mozilla Firefox and Google Chrome. Please note that this system is a prototype. Hence, please excuse occasional bugs that might still appear and suboptimal loading times.</p>
 		<h2>Available Code Quality Documents</h2>
     <p>Please click on any of the following project to explore its code quality document in our tool:</p>
-		<ul>
+		<ul class="projNames">
 			<li><a href='report.html?project=xerces-1.2_filtered' target="Code quality documents">Xerces 1.2</a></li>
 			<li><a href='report.html?project=xerces-1.1_filtered' target="Code quality documents">Xerces 1.1</a></li>
 			<li><a href='report.html?project=lucene-2.0_filtered' target="Code quality documents">Lucene</a></li>
 			<li><a href='report.html?project=log4j-1.2_filtered' target="Code quality documents">Log4j</a></li>
 			<li><a href='report.html?project=zuzel_filtered' target="Code quality documents">Zuzel</a></li>
 			<li><a href='report.html?project=forrest-0.7_filtered' target="Code quality documents">Forest</a></li>
-    </ul>
+        </ul>
 		<div id="image">
 			<figure>
 			  <img src="tool.png" alt="Tool interface">
 			  <figcaption>Fig.1 Screenshot of the interface. The left panel provides an overview in terms of textual explanations and visualizatons. The right panel is reserved for showing various types of details on demand. </figcaption>
 			</figure>
 			
-		</div>
+        </div>
+        <h2>Tips</h2>
+        <ul>
+            <li>The presence of [+] sign indicates the availability of extra information which can be expanded by clicking on it.</li>
+            <li>When hovering over the info icon (ⓘ), it presents additional informaton in a tooltip.</li>
+            <li>The black underlined words or phrases of text are hoverable or clickable.</li>
+            <li>Yellow highlighting color corresponds to the brushing-and-linking of related content across different views.</li>
+            <li>Text that appears in bold font, and the elements shown in black colors are relatec to persistent (click) interactions. </li>
+            <li>Important terms (such as software metrics, quality attributes, etc.) contain colored borders at their bottom.</li>
+        </ul>
     </div>
 </body>
 
