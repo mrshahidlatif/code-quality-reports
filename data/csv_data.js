@@ -1,4 +1,4 @@
-csvData = {"xerces 1.2_filtered":
+csvData = {"xerces-1.2_filtered":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.xml.sax.SAXException,6,3,3,0,10,0,0,0,6,0,54,1,0,0.85,0.555555556,1,2,7.833333333,3,1,0
 org.apache.xerces.parsers.DOMParser,63,2,3,27,225,793,7,20,42,0.872080089,5680,0.896551724,6,0.678947368,0.152073733,2,11,88.6984127,6,1.6984,0
@@ -294,7 +294,7 @@ org.apache.xerces.dom.DeferredProcessingInstructionImpl,3,3,0,4,8,0,1,4,1,0.75,4
 org.apache.wml.dom.WMLMetaElementImpl,15,4,0,3,20,105,0,3,15,2,84,0,0,0.854166667,0.4,1,4,4.6,1,0.9333,0
 org.apache.xerces.readers.AbstractCharReader,33,2,2,16,70,0,3,14,20,0.565625,3041,1,2,0.184210526,0.174479167,1,3,90.84848485,2,1.0606,1
 `,
-"xerces 1.1_filtered":
+"xerces-1.1_filtered":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.xml.sax.SAXParseException,8,4,0,0,14,0,0,0,8,0.428571429,98,1,0,0.833333333,0.45,0,0,10.75,1,0.5,2
 org.apache.xerces.utils.UTF8DataChunk,21,1,0,6,35,68,1,5,12,0.677272727,1458,0.727272727,4,0,0.271428571,0,0,67.9047619,24,4.7619,0
@@ -659,7 +659,7 @@ org.apache.lucene.analysis.KeywordAnalyzer,2,2,0,3,4,1,0,3,2,2,10,0,0,0.66666666
 org.apache.lucene.store.FSDirectory,26,2,1,13,80,53,6,8,18,0.854545455,938,0.818181818,0,0.314285714,0.296,0,0,34.65384615,2,1,14
 org.apache.lucene.search.BooleanClause,10,1,0,7,18,0,6,2,10,0.333333333,107,1,2,0,0.375,1,1,9.5,4,1.4,1
 `,
-"log4j 1.2_filtered":
+"log4j-1.2_filtered":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.apache.log4j.chainsaw.XMLFileHandler,8,2,0,4,22,4,1,3,4,0.767857143,273,1,2,0.708333333,0.291666667,1,2,31.125,6,2.375,3
 org.apache.log4j.spi.Configurator,1,1,0,7,1,0,6,1,1,2,2,0,0,0,1,0,0,0,1,1,2
