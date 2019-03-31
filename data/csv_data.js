@@ -1,4 +1,4 @@
-csvData = {"xerces-1.2_filtered":
+csvData = {"xerces-1.2":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.xml.sax.SAXException,6,3,3,0,10,0,0,0,6,0,54,1,0,0.85,0.555555556,1,2,7.833333333,3,1,0
 org.apache.xerces.parsers.DOMParser,63,2,3,27,225,793,7,20,42,0.872080089,5680,0.896551724,6,0.678947368,0.152073733,2,11,88.6984127,6,1.6984,0
@@ -294,7 +294,7 @@ org.apache.xerces.dom.DeferredProcessingInstructionImpl,3,3,0,4,8,0,1,4,1,0.75,4
 org.apache.wml.dom.WMLMetaElementImpl,15,4,0,3,20,105,0,3,15,2,84,0,0,0.854166667,0.4,1,4,4.6,1,0.9333,0
 org.apache.xerces.readers.AbstractCharReader,33,2,2,16,70,0,3,14,20,0.565625,3041,1,2,0.184210526,0.174479167,1,3,90.84848485,2,1.0606,1
 `,
-"xerces-1.1_filtered":
+"xerces-1.1":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.xml.sax.SAXParseException,8,4,0,0,14,0,0,0,8,0.428571429,98,1,0,0.833333333,0.45,0,0,10.75,1,0.5,2
 org.apache.xerces.utils.UTF8DataChunk,21,1,0,6,35,68,1,5,12,0.677272727,1458,0.727272727,4,0,0.271428571,0,0,67.9047619,24,4.7619,0
@@ -429,7 +429,7 @@ org.apache.xerces.framework.XMLAttrList,21,1,0,9,27,0,8,1,20,0.806666667,838,1,1
 org.apache.xerces.dom.DeferredElementDefinitionImpl,4,3,0,5,11,0,1,5,1,0.666666667,74,0.5,0,0.94,0.5,2,12,17,2,1,0
 org.apache.xerces.utils.XMLMessages,5,1,0,2,14,0,1,1,4,1.243730408,1102,0.009404389,0,0,0.5,0,0,155.6,9,2.2,0
 `,
-"zuzel_filtered":
+"zuzel":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 windows.tabela,6,6,0,0,27,7,0,0,1,0.7,177,1,0,0.992088608,1,0,0,27.5,2,1.5,0
 manadzerData.Motor,10,1,0,14,11,3,14,0,10,0.666666667,72,1,0,0,0.533333333,0,0,5.8,1,0.8,0
@@ -461,7 +461,7 @@ manadzerData.InterfejsZawodnika,11,1,0,12,11,55,12,0,11,2,11,0,0,0,0.515151515,0
 windows.MainWindow,20,6,0,20,67,118,17,7,5,0.857585139,665,1,3,0.972093023,0.23,0,0,31.4,2,1.5,4
 bean.DomyslnaDruzynaBean,6,1,0,5,18,0,4,1,6,0,77,1,0,0,0.375,0,0,11.66666667,2,1.1667,0
 `,
-"lucene-2.0_filtered":
+"lucene-2.0":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.apache.lucene.analysis.WhitespaceAnalyzer,2,2,0,3,4,1,0,3,2,2,10,0,0,0.666666667,0.666666667,0,0,4,1,0.5,0
 org.apache.lucene.search.QueryTermVector,10,1,0,4,37,0,0,4,9,0.388888889,278,1,0,0,0.34,0,0,26.6,5,1.6,0
@@ -659,7 +659,7 @@ org.apache.lucene.analysis.KeywordAnalyzer,2,2,0,3,4,1,0,3,2,2,10,0,0,0.66666666
 org.apache.lucene.store.FSDirectory,26,2,1,13,80,53,6,8,18,0.854545455,938,0.818181818,0,0.314285714,0.296,0,0,34.65384615,2,1,14
 org.apache.lucene.search.BooleanClause,10,1,0,7,18,0,6,2,10,0.333333333,107,1,2,0,0.375,1,1,9.5,4,1.4,1
 `,
-"log4j-1.2_filtered":
+"log4j-1.2":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.apache.log4j.chainsaw.XMLFileHandler,8,2,0,4,22,4,1,3,4,0.767857143,273,1,2,0.708333333,0.291666667,1,2,31.125,6,2.375,3
 org.apache.log4j.spi.Configurator,1,1,0,7,1,0,6,1,1,2,2,0,0,0,1,0,0,0,1,1,2
@@ -867,7 +867,7 @@ org.apache.log4j.net.test.SocketMin,8,1,0,7,42,14,0,7,2,0.75,308,0,2,0,0.2380952
 org.apache.log4j.test.X1Logger,7,3,0,5,19,7,1,5,4,0.777777778,74,0.333333333,1,0.912280702,0.5,2,2,9.142857143,1,0.7143,0
 org.apache.log4j.xml.SAXErrorHandler,4,1,0,2,17,6,1,1,4,2,53,0,0,0,0.875,0,0,12.25,1,0.75,3
 `,
-"forrest-0.7_filtered":
+"forrest-0.7":
 `cname,wmc,dit,noc,cbo,rfc,lcom,ca,ce,npm,lcom3,loc,dam,moa,mfa,cam,ic,cbm,amc,max_cc,avg_cc,bug
 org.apache.forrest.sourcetype.SourceTypeAction,3,2,0,24,43,0,0,24,3,0.75,247,1,0,0.714285714,0.428571429,0,0,80.66666667,1,0.6667,0
 org.apache.forrest.locationmap.lm.SelectNode,3,3,0,13,30,0,2,13,3,0.625,216,1,2,0.818181818,0.444444444,2,2,69.66666667,1,0.6667,0
