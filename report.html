@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html>
+<header>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="data/csv_data.js"></script>
+  <script type="text/javascript" src="data/java_code.js"></script>
+  <script type="text/javascript" src="lib/jquery-2.2.2.min.js"></script>
+  <script type="text/javascript" src="lib/jquery.sparkline.js"></script>
+  <script type="text/javascript" src="lib/prism.js"></script>
+  <script type="text/javascript" src="lib/jquery-ui.js"></script>
+  <script type="text/javascript" src="lib/d3.min.js"></script>
+  <script type="text/javascript" src="lib/bboxCollide.js"></script>
+  <script type="text/javascript" src="lib/d3-annotation.js"></script>
+  <script type="text/javascript" src="js/parcoords.js"></script>
+  <script type="text/javascript" src="js/mysparklines.js"></script>
+  <script type="text/javascript" src="js/scatterplot.js"></script>
+  <script type="text/javascript" src="js/text.js"></script>
+  <script src="lib/simple-statistics.min.js"></script>
+  <link rel="stylesheet" href="lib/jquery-ui.css" type='text/css' media='all'>
+  <link rel="stylesheet" href="lib/prism.css" type='text/css' media='all' />
+  <link rel="stylesheet" href="css/parcoords.css" type='text/css' media='all'>
+  <link rel='stylesheet' href='css/mysparklines.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
+  <title>Code Quality Documents</title>
+</header>
+
+<body>
+  <div id="grid-container">
+    <div id="header">
+      <div id="title">Code Quality Documents </div>
+      <div id="subtitle"></div>
+    </div>
+    <div id="textPanel">
+      <div id="textAPanel"></div>
+      <div id="textBPanel"></div>
+    </div>
+    <div id="vis">
+      <div id="parallelplot" class="parcoords"></div>
+      <div id="scatterplot">
+        <div id="controlsY"></div>
+        <div id="chart_container">
+          <div id="chart"></div>
+          <div id="tooltip" class="tooltip"></div>
+        </div>
+        <div id="controlsX"></div>
+      </div>
+      <div id="caption"></div>
+    </div>
+    <div id="details">
+      <h3 id="detailsHeader"></h3>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript">
+
+  /* ------------------------------------------------------------------------*/
+  /* Global variables */
+  /* ------------------------------------------------------------------------*/
+
+  var projectName = "xerces-1.2_filtered"; // Default project; other can be loaded through an URL parameter e.g., "?project=lucene-2.0_filtered"
+
+  var fullData;
+  var badClasses;
+  var classNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
+  var xVal; //variables to store active values of scatterplot dimensions
+  var yVal; //variables to store active values of scatterplot dimensions
+  var classesWithBadSmells = [];
+  var haveClassToPersist = false;
+  var persistentClass = "";
+  var scatterPlotDimensions = [];
+  var brushedData = [];
+
+  var LOC, AMC, WMC, NPM;
+
+  var badCt = 0, bugCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "", goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "", badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
+
+  /* ------------------------------------------------------------------------*/
+  /* Generate report */
+  /* ------------------------------------------------------------------------*/
+
+  $(document).ready(function () {
+    var param = getUrlParameter("project");
+    if (param) {
+      projectName = param;
+    }
+    if (!csvData[projectName]) {
+      console.error('Project "'+projectName+'" is unknown.')
+    } else {
+      generateReport(d3.csv.parse(csvData[projectName]));
+    }
+  });
+
+  function generateReport(data) {
+    analyzeData(data);
+    generateText(data);
+    parallelplot(data);
+    scatterPlotDimensions = ['npm', 'loc'];
+    makeScatterPlot(data);
+  }
+
+  /* ------------------------------------------------------------------------*/
+  /* Analyze data */
+  /* ------------------------------------------------------------------------*/
+
+  function analyzeData(data) {
+
+    classCt = data.length;
+
+    //making data available to all files
+    fullData = data;
+    data.forEach(function (d, i) {
+      d.index = i;
+      d.smells = {
+        blob: false,
+        decomposition: false,
+        spaghetti: false,
+        highblob: false,
+        lazy: false,
+      };
+
+      LOC = d["LOC"] || d["loc"],
+        AMC = d["AMC"] || d["amc"],
+        WMC = d["WMC"] || d["wmc"],
+        NPM = d["NPM"] || d["npm"];
+
+      if (LOC >= 1500 && AMC >= 129) {
+        d.smells.blob = true;
+      }
+
+      if (LOC >= 8000 && AMC >= 129) {
+        d.smells.highblob = true;
+      }
+
+      if (NPM <= 8 && WMC >= 16) {
+        d.smells.decomposition = true;
+      }
+
+      if (AMC >= 151) {
+        d.smells.spaghetti = true;
+      }
+
+      if (WMC == 0) {
+        d.smells.lazy = true;
+      }
+    });
+
+    data.forEach(function (d, i) {
+      classNameToIndex[d.cname] = i;
+      var s = d.smells;
+      var badClass = new Object;
+      var badSmellsinClass = [];
+
+      var bad = false;
+
+      var classSpan = createClassSpan(d.cname);
+
+      // TODO: remove code clones in the following
+
+      if (s.blob) {
+        blobCt++;
+        blobArr.push(classSpan);
+        bad = true;
+
+        badSmellsinClass.push("Large Class");
+      }
+
+      if (s.highblob) {
+        highblobCt++;
+        highblobArr.push(classSpan);
+        //bad = true;
+
+
+      }
+
+      if (s.decomposition) {
+        decomCt++;
+        decomArr.push(classSpan);
+        bad = true;
+        badSmellsinClass.push("Functional Decomposition");
+      }
+
+      if (s.spaghetti) {
+        spaCt++;
+        spaArr.push(classSpan);
+        bad = true;
+
+        badSmellsinClass.push("Spaghetti Code");
+      }
+
+      if (s.lazy) {
+        lazyCt++;
+        lazyArr.push(classSpan);
+        badSmellsinClass.push("Lazy Class");
+      }
+
+      if (d.bug >= 1) {
+
+        bugCt++;
+        bugArr.push(classSpan);
+      }
+
+      if (bad) {
+        badCt++;
+      }
+      if (s.lazy || s.spaghetti || s.decomposition || s.blob || d.bug > 0) {
+        badClass.name = d.cname;
+        badClass.badSmells = badSmellsinClass;
+        badClass.bug = d.bug;
+        classesWithBadSmells.push(badClass);
+      }
+      badClasses = classesWithBadSmells;
+
+      if (d.max_cc > 4 || d.wmc > 34) {
+        badComplexityArr.push(classSpan);
+      } else if (d.max_cc > 2 || d.wmc > 11) {
+        regularComplexityArr.push(classSpan);
+      } else {
+        goodComplexityArr.push(classSpan);
+      }
+
+      if (d.ca > 39 || d.ce > 16) {
+        badCouplingArr.push(classSpan);
+      } else if (d.ca > 7 || d.ce > 6) {
+        regularCouplingArr.push(classSpan);
+      } else {
+        goodCouplingArr.push(classSpan);
+      }
+
+      if (d.lcom3 > 0.725) {
+        badCohesionArr.push(classSpan);
+      } else if (d.lcom3 > 0.167) {
+        regularCohesionArr.push(classSpan);
+      } else {
+        goodCohesionArr.push(classSpan);
+      }
+
+      if (d.dit > 4 || d.noc > 3) {
+        badInheritanceArr.push(classSpan);
+      } else if (d.dit > 2 || d.noc > 1) {
+        regularInheritanceArr.push(classSpan);
+      } else {
+        goodInheritanceArr.push(classSpan);
+      }
+    })
+
+    for (var i = 0; i < bugArr.length; i++) {
+      var b = bugArr[i];
+      if (i == 0) {
+        bugList += b;
+      } else if (i == bugArr.length - 1) {
+        bugList += " and " + b;
+      } else {
+        bugList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < blobArr.length; i++) {
+      var b = blobArr[i];
+      if (i == 0) {
+        blobList += b;
+      } else if (i == blobArr.length - 1) {
+        blobList += " and " + b;
+      } else {
+        blobList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < highblobArr.length; i++) {
+      var b = highblobArr[i];
+      if (i == 0) {
+        highblobList += b;
+      } else if (i == highblobArr.length - 1) {
+        highblobList += " and " + b;
+      } else {
+        highblobList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < decomArr.length; i++) {
+      var b = decomArr[i];
+      if (i == 0) {
+        decomList += b;
+      } else if (i == decomArr.length - 1) {
+        decomList += " and " + b;
+      } else {
+        decomList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < spaArr.length; i++) {
+      var b = spaArr[i];
+      if (i == 0) {
+        spaList += b;
+      } else if (i == spaArr.length - 1) {
+        spaList += " and " + b;
+      } else {
+        spaList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < lazyArr.length; i++) {
+      var b = lazyArr[i];
+      if (i == 0) {
+        lazyList += b;
+      } else if (i == lazyArr.length - 1) {
+        lazyList += " and " + b;
+      } else {
+        lazyList += ", " + b;
+      }
+    }
+
+    for (var i = 0; i < goodCouplingArr.length; i++) {
+      var b = goodCouplingArr[i];
+      if (i == 0) {
+        goodCouplingList += b;
+      } else if (i == goodCouplingArr.length - 1) {
+        goodCouplingList += " and " + b;
+      } else {
+        goodCouplingList += ", " + b;
+      }
+    }
+
+
+    //check for classes having both bad smells and bugs
+    var m = 0, n = 0;
+    for (var i = 0; i < bugArr.length; i++) {
+      var str1 = bugArr[i].split('<i>').pop().split('</i>')[0];
+      if (blobList.includes(str1) === true) {
+        bugBlobArr[m] = bugArr[i];
+        m++;
+        bugBlobList += str1 + " ";
+
+        bugBlobCt += 1;
+        blobTag = true;
+      }
+      if (decomList.includes(str1) === true) {
+        bugDecomArr[n] = bugArr[i];
+        n++;
+        bugDecomList += str1 + " ";
+        bugDecomCt += 1;
+        decomTag = true;
+      }
+      if (spaList.includes(str1) === true) {
+        bugSpaArr[m] = spaArr[i];
+        m++;
+        bugSpaList += str1 + " ";
+
+        bugSpaCt += 1;
+        spaTag = true;
+      }
+      if (lazyList.includes(str1) === true) {
+        bugLazyArr[n] = bugArr[i];
+        n++;
+        bugLazyList += str1 + " ";
+        bugLazyCt += 1;
+        lazyTag = true;
+      }
+    }
+
+    //check for classes having multiple bad smells
+    var j = 0, k = 0, l = 0;
+    for (var i = 0; i < blobArr.length; i++) {
+      var str1 = blobArr[i].split('<i>').pop().split('</i>')[0];
+      if (decomList.includes(str1) === true) {
+        blobDecomArr[j] = blobArr[i];
+        superSmellsArr[i] = blobDecomArr[j];
+        j++;
+        blobDecomList += str1 + " ";
+        blobDecomCt += 1;
+        superSmellsCt += 1;
+      }
+      if (spaList.includes(str1) === true) {
+        blobSpaArr[k] = blobArr[i];
+        superSmellsArr[i] = blobSpaArr[k];
+        k++;
+        blobSpaList += str1 + " ";
+        blobSpaCt += 1;
+        superSmellsCt += 1;
+      }
+      if (lazyList.includes(str1) === true) {
+        blobLazyArr[l] = blobArr[i];
+        superSmellsArr[i] = blobLazyArr[l];
+        l++;
+        blobLazyList += str1 + " ";
+        blobLazyCt += 1;
+        superSmellsCt += 1;
+      }
+    }
+
+    superSmellsList = blobDecomList + blobSpaList + blobLazyList;
+    superSmellsList = superSmellsList.split(/[ ,]+/).join(', ');
+    superSmellsList = superSmellsList.replace(/,\s*$/, "");
+
+    badCt = blobCt + decomCt + spaCt + lazyCt;
+
+    var paths = [];
+    data.forEach(function (d, i) {
+      paths.push(d.cname);
+    });
+    paths = paths.map(function (path) { return path.split('.'); });
+
+    var result = stringify(structurize(paths));
+    var packages = [];
+    for (var i = 0; i < paths.length; i++) {
+      if (packages.includes(paths[i][paths[i].length - 2])) {
+      }
+      else {
+        packages.push(paths[i][paths[i].length - 2]);
+      }
+    }
+    numberOfPackages = packages.length;
+    result = stringify(structurize(paths)).join("\n");
+
+  }
+
+  /* ------------------------------------------------------------------------*/
+  /* Click and hover events */
+  /* ------------------------------------------------------------------------*/
+
+  // TODO: also show the metric description in the details panel
+  $(document).on("click", "button.collapsible", function () {
+    $(this)[0].classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+
+  //Highlighting corresponding element of vis on hovering class name in text
+  $(document).on("mouseover", ".className", function () {
+    var className = getClassNameFromClassSpan(this);
+    showHoverHighlighting(className);
+  }).on('mouseout', '.className', function () {
+    var className = getClassNameFromClassSpan(this);
+    if (haveClassToPersist) {
+      removeHoverHighlighting(className);
+    }
+    else {
+      removePersistentHighlighting(className);
+      removeHoverHighlighting(className);
+    }
+  });
+
+  $(document).on("click", ".className", function () {
+    var className = getClassNameFromClassSpan(this);
+    loadSourcecode(className);
+  });
+
+  function loadSourcecode(className) {
+    updateDetailPanel("Class " + className.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
+    var src = javaCode[className];
+    src = src.substring(src.indexOf("package "));   // cut out license text
+    $("#sourcecode").text(src);
+    Prism.highlightElement($("#sourcecode")[0]);
+    updateClassDescription(generateClassDescription(className));
+    makeSelectionPersistent(className);
+  }
+
+
+  // TODO: give for each pattern an example (maybe one for high, medium and low).
+  // TODO: integrate links to the respective metrics
+  $(document).on("click", ".smellBlob", function () {
+    updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
+
+    scatterPlotDimensions = ['loc', 'amc'];
+    makeScatterPlot(fullData);
+    haveClassToPersist = true;
+
+    if (blobCt > 0) {
+      var newdata = [];
+      fullData.forEach(function (d, i) {
+        newdata.push(!!d.smells.blob);
+      });
+      scatterfilter(newdata);
+
+      var dims = {};
+      dims['loc'] = [1500, null];
+      dims['amc'] = [129, null];
+
+      parallelfilter(dims);
+
+      var caption = 'The <span class="BSLegend">Classes</span> containing Large Class smell have <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
+      updateCaption(caption);
+    }
+  });
+
+  $(document).on("click", ".smellFc", function () {
+    updateDetailPanel("Background: The 'Functional Decomposition' Smell", '<p>This smell refers to classes created in a way that rather fit procedural not object-oriented programming. This means, the affected classes are mostly used a group of methods, not as a part of an object-oriented design leveraging inheritance, instantiation, and other concepts.</p>');
+
+    scatterPlotDimensions = ['npm', 'wmc'];
+    makeScatterPlot(fullData);
+    haveClassToPersist = true;
+
+    if (decomCt > 0) {
+      var newdata = [];
+      fullData.forEach(function (d, i) {
+        newdata.push(!!d.smells.decomposition);
+      });
+      scatterfilter(newdata);
+
+      var dims = {};
+      dims['npm'] = [null, 8];
+      dims['wmc'] = [16, null];
+      parallelfilter(dims);
+
+      var caption = 'The <span class="BSLegend">Classes</span> containing Functional Decomposition smell have <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
+      updateCaption(caption);
+    }
+  });
+
+  $(document).on("click", ".smellSpa", function () {
+    updateDetailPanel("Background: The 'Spaghetti Code' Smell", '<p>The metaphor of spaghetti refers to methods that are overly long. Similar to <span class="smellFc clickable">Functional Decomposition</span>, classes that are affected by this are not designed in an object-oriented, but a procedural way.</p>');
+
+    // TODO: What should be the second dimension here?
+    scatterPlotDimensions = ['amc', 'wmc'];
+    makeScatterPlot(fullData);
+    haveClassToPersist = true;
+
+    if (spaCt > 0) {
+      var newdata = [];
+      fullData.forEach(function (d, i) {
+        newdata.push(!!d.smells.spaghetti);
+      });
+      scatterfilter(newdata);
+
+      var dims = {};
+      dims['amc'] = [151, null];
+      parallelfilter(dims);
+
+      var caption = 'The <span class="BSLegend">Classes</span> containing Spaghetti Class smell have <span class="amc">amc</span> > 151';
+      updateCaption(caption);
+    }
+  });
+
+  $(document).on("click", ".smellLazy", function () {
+    updateDetailPanel("Background: The 'Lazy Class' Bad Smell", '<p>A Lazy Class is the opposite of a <span class="smellBlob clickable">Large Class</span>: a class that contains almost no functionality. Often, it should be integrated with another class.</p>');
+
+    // TODO: What should be the second dimension here?
+    scatterPlotDimensions = ['amc', 'wmc'];
+    makeScatterPlot(fullData);
+    haveClassToPersist = true;
+
+    if (lazyCt > 0) {
+      var newdata = [];
+      fullData.forEach(function (d, i) {
+        newdata.push(!!d.smells.lazy);
+      });
+      scatterfilter(newdata);
+
+      var dims = {};
+      dims['wmc'] = [0, 0.1];
+      parallelfilter(dims);
+
+      var caption = 'The <span class="BSLegend">Classes</span> containing Lazy Class smell have <span class="wmc">wmc</span> = 0';
+      updateCaption(caption);
+    }
+  });
+
+  $(document).on("click", ".couplingMetric", function () {
+    showCouplingMetricDescription();
+    scatterPlotDimensions = ['ce', 'ca'];
+    makeScatterPlot(fullData);
+  });
+
+  $(document).on("click", ".complexityMetric", function () {
+    showComplexityMetricDescription();
+
+    scatterPlotDimensions = ['max_cc', 'wmc'];
+    makeScatterPlot(fullData);
+  });
+
+  $(document).on("click", ".cohesionMetric", function () {
+    showCohesionMetricDescription();
+    scatterPlotDimensions = ['lcom3', 'loc'];
+    makeScatterPlot(fullData);
+  });
+
+  $(document).on("click", ".inheritanceMetric", function () {
+    showInheritanceMetricDescription();
+    scatterPlotDimensions = ['noc', 'dit'];
+    makeScatterPlot(fullData);
+  });
+
+  $(document).on("click", ".otherMetric", function () {
+    showOtherMetricDescription();
+    scatterPlotDimensions = ['npm', 'loc'];
+    makeScatterPlot(fullData);
+  });
+
+  $(document).on("click", "#closeBtn", function () {
+    removePersistentHighlighting();
+    updateDetailPanel('', '');
+  });
+
+  // TODO: reimplement - separate selecting the dimensions in the scatterplot from loading the source code
+  function updateScatterPlot(className) {
+    /*//TODO: complete it and try to do the same when a bar is clicked in the sparklines
+    //Selecting relevant dimensions in scatterplot
+    var cSmells = fullData[classNameToIndex[className]].smells;
+    if (clickedClass.parent().attr('id') === "textAPanel"){
+      scatterPlotDimensions=['loc','bug'];
+      makeScatterPlot(fullData);
+    }
+    else if (cSmells.blob == true) {
+        scatterPlotDimensions=['loc','amc'];
+        makeScatterPlot(fullData);
+    }*/
+  }
+
+  function showClassCaption(className) {
+    var bs = findBadSmellsInClass(className);
+    $('#caption').append('<span id="dynamicCaption"></span>');
+    $('#dynamicCaption').append(createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.');
+  }
+  function showPersistentClassCaption(className) {
+    var bs = findBadSmellsInClass(className);
+    // $('#caption').append('<span id="dynamicPersistentCaption"></span>');
+    var content = createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
+    updateCaption(content)
+  }
+
+  function updateCaption(content) {
+    $('#adaptiveCaption').remove();
+    $('#caption').append('<span id="adaptiveCaption"></span>');
+    $('#adaptiveCaption').append(' ' + content);
+  }
+
+  function highlightCodeSmell(className) {
+    var cSmells = fullData[classNameToIndex[className]].smells;
+    if (cSmells.blob == true) {
+      $(".smellBlob").css('background', '#ffe68e');
+    }
+    if (cSmells.decomposition == true) {
+      $(".smellFc").css('background', '#ffe68e');
+    }
+    if (cSmells.spaghetti == true) {
+      $(".smellSpa").css('background', '#ffe68e');
+    }
+    if (cSmells.lazy == true) {
+      $(".smellLazy").css('background', '#ffe68e');
+    }
+  }
+
+  function showHoverHighlighting(className) {
+    var classIndex = classNameToIndex[className];
+    $('span.className[data-index=' + classIndex + ']').css('background', '#ffe68e');
+    $('span.slcls[data-index=' + classIndex + ']').css('background', '#ffe68e');
+    $('#scatterplot circle[data-index=' + classIndex + ']').attr("r", "6").attr("stroke", "#ffe68e").attr("stroke-width", "4px");
+
+    //Highlighting edge of parallel coordinates when hovering over dot in scatter plot
+    highlightEdge(fullData[classIndex]);
+    highlightCodeSmell(className);
+    // showClassCaption(className);
+  }
+
+  function makeSelectionPersistent(className) {
+    //Already a class selected then clear highlighting first
+    removePersistentHighlighting();
+
+    //make the highlight persistent now
+    var classIndex = classNameToIndex[className];
+    $('span.className[data-index=' + classIndex + ']').css('font-weight', 'bold');
+    $("span.slcls." + className + "").css('background', 'black');
+    $("#scatterplot").contents().find("circle#" + className).css("fill", "black");
+
+    makeEdgePersistent(className);
+
+    //make code smell name persistent
+    var cSmells = fullData[classNameToIndex[className]].smells;
+    if (cSmells.blob == true) {
+      $(".smellBlob").css('font-weight', 'bold');
+    }
+    if (cSmells.decomposition == true) {
+      $(".smellFc").css('font-weight', 'bold');
+    }
+    if (cSmells.spaghetti == true) {
+      $(".smellSpa").css('font-weight', 'bold');
+    }
+    if (cSmells.lazy == true) {
+      $(".smellLazy").css('font-weight', 'bold');
+    }
+
+    haveClassToPersist = true;
+    persistentClass = className;
+
+  }
+  function removePersistentHighlighting(className) {
+    var classIndex = classNameToIndex[className];
+    $('span.className').css('font-weight', 'normal');
+    $(".smellBlob").css('font-weight', 'normal');
+    $(".smellFc").css('font-weight', 'normal');
+    $(".smellSpa").css('font-weight', 'normal');
+    $(".smellLazy").css('font-weight', 'normal');
+
+    $("span.slcls").css('background', '');
+    $("#scatterplot circle").css('fill', '#AAAAAAAA');
+    $('#scatterplot circle[data-index=' + classIndex + ']').attr("r", "3").attr("stroke", "").attr("stroke-width", "0px");
+    resetParallelPlot();
+    $('.clickable').css('background', 'none');
+
+    //reset to original caption
+    $('#adaptiveCaption').remove();
+
+    haveClassToPersist = false;
+    persistentClass = "";
+  }
+
+  function removeHoverHighlighting(className) {
+    var classIndex = classNameToIndex[className];
+    var persistentClassIndex = classNameToIndex[persistentClass];
+    $('span.slcls[data-index=' + classIndex + ']').css('background', '');
+    if (persistentClass != '') $('span.slcls[data-index=' + persistentClassIndex + ']').css('background', 'black');
+
+    $('#scatterplot circle[data-index=' + classIndex + ']').attr("r", "3").attr("stroke", "").attr("stroke-width", "0px");
+    if (persistentClass != '') $('#scatterplot circle[data-index=' + persistentClassIndex + ']').css('fill', 'black');
+    unHighlight();
+    $('.clickable').css('background', 'none');
+
+    //reset to original caption
+    $('#dynamicCaption').remove();
+  }
+
+  /* ------------------------------------------------------------------------*/
+  /* Util functions */
+  /* ------------------------------------------------------------------------*/
+
+  // http://stackoverflow.com/questions/19491336/get-url-parameter-jquery
+  function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+      var sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] == sParam) {
+        console.log(sParameterName[1]);
+        return sParameterName[1];
+      }
+    }
+  }
+
+  function clone(obj) {
+    if (obj === null || typeof (obj) !== 'object' || 'isActiveClone' in obj)
+      return obj;
+
+    if (obj instanceof Date)
+      var temp = new obj.constructor(); //or new Date(obj);
+    else
+      var temp = obj.constructor();
+
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        obj['isActiveClone'] = null;
+        temp[key] = clone(obj[key]);
+        delete obj['isActiveClone'];
+      }
+    }
+    return temp;
+  }
+
+  function findClassWithMaxValueOfMetricX(X) {
+    var max = Math.max.apply(Math, fullData.map(function (o) { return o[X]; }))
+    var maxClass = fullData.filter(function (d) { return d[X] == max; })[0];
+
+    return maxClass.cname;
+  }
+
+  function createClassSpan(cname) {
+    var i = classNameToIndex[cname];
+    return "<span class='className clickable' data-index='" + i + "'>" + cname.split(".").pop() + "</span>";
+  }
+
+  function getClassNameFromClassSpan(span) {
+    var idx = Number($(span).attr("data-index"));
+    return fullData[idx].cname;
+  }
+
+  function printList(list) {
+    var s = "";
+    switch (list.length) {
+      case 1: s += list[0]; break;
+      case 2: s += list[0] + " and " + list[1]; break;
+      default:
+        for (var i = 0; i < list.length; i++) {
+          if (i != list.length - 1) {
+            s += list[i] + ", ";
+          }
+          else s += " and " + list[i];
+        }
+    }
+    return s;
+  }
+
+  // TODO: rename and use printList() here instead of a code clone
+  function printItalicList(list) {
+    var s = "";
+    switch (list.length) {
+      case 1: s += createClassSpan(list[0]); break;
+      case 2: s += createClassSpan(list[0]) + ' and ' + createClassSpan(list[1]); break;
+      default:
+        for (var i = 0; i < list.length; i++) {
+          if (i != list.length - 1) {
+            s += createClassSpan(list[i]) + ", ";
+          }
+          else s += " and " + createClassSpan(list[i]);
+        }
+    }
+    return s;
+  }
+
+  // TODO: use this util function consistently
+  function updateDetailPanel(title, content) {
+    $("#detailsHeader").text(title);
+    $("#detailsContent").empty();
+    $("#detailsContent").append($(content));
+  }
+  function updateClassDescription(content) {
+    $("#detailsContent").prepend('<p id="classDescription"></p>');
+    $('#classDescription').html(content);
+    $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
+  }
+
+  function findBadSmellsInClass(className) {
+    //use global data variable called fullData
+    var bs = [];
+    if (fullData[classNameToIndex[className]].smells['blob']) { bs.push('Large Class') };
+    if (fullData[classNameToIndex[className]].smells['decomposition']) { bs.push('Functional Decomposition') };
+    if (fullData[classNameToIndex[className]].smells['spaghetti']) { bs.push('Spaghetti Code') };
+    if (fullData[classNameToIndex[className]].smells['lazy']) { bs.push('Lazy Class') };
+
+    return bs;
+  }
+
+  // TODO: use consistently
+  function createCollapsibleClassList(list) {
+    return '<button class="collapsible"></button><div class="content">' + printList(list) + '</div>';
+  }
+
+  function structurize(paths) {
+    var items = [];
+    for (var i = 0, l = paths.length; i < l; i++) {
+      var path = paths[i];
+      var name = path[0];
+      var rest = path.slice(1);
+      var item = null;
+      for (var j = 0, m = items.length; j < m; j++) {
+        if (items[j].name === name) {
+          item = items[j];
+          break;
+        }
+      }
+      if (item === null) {
+        item = { name: name, children: [] };
+        items.push(item);
+      }
+      if (rest.length > 0) {
+        item.children.push(rest);
+      }
+    }
+    for (i = 0, l = items.length; i < l; i++) {
+      item = items[i];
+      item.children = structurize(item.children);
+    }
+    return items;
+  }
+
+  function stringify(items) {
+    var lines = [];
+    for (var i = 0, l = items.length; i < l; i++) {
+      var item = items[i];
+      lines.push(item.name);
+      var subLines = stringify(item.children);
+      for (var j = 0, m = subLines.length; j < m; j++) {
+        lines.push("  " + subLines[j]);
+      }
+    }
+    return lines;
+  }
+
+  function noOfBadSmells(list) {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].badSmells.length == 4)
+        return list[i];
+      else if (list[i].badSmells.length == 3)
+        return list[i];
+      else if (list[i].badSmells.length == 2)
+        return list[i];
+    }
+  }
+
+  //bugs report
+  function NoOfBugSmells(list) {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].badSmells.length == 4 && list[i].bug != "0")
+        return list[i];
+      else if (list[i].badSmells.length == 3 && list[i].bug != "0")
+        return list[i];
+      else if (list[i].badSmells.length == 2 && list[i].bug != "0")
+        return list[i];
+    }
+  }
+
+  function classesWithBugSmells(list) {
+    var c = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].badSmells.length == 4 && list[i].bug != "0")
+        c.push(list[i].name);
+      else if (list[i].badSmells.length == 3 && list[i].bug != "0")
+        c.push(list[i].name);
+      else if (list[i].badSmells.length == 2 && list[i].bug != "0")
+        c.push(list[i].name);
+    }
+    return c;
+  }
+
+  function countClassesHavingBadSmells(data) {
+    var count = 0;
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].badSmells.length != 0) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /* ------------------------------------------------------------------------*/
+  /* Parallel Coordinates */
+  /* ------------------------------------------------------------------------*/
+
+  function parallelplot(data) {
+
+    data.forEach(function (d, i) {
+      delete d.rfc;
+      delete d.dam;
+      delete d.moa;
+      delete d.mfa;
+      delete d.cam;
+      delete d.ic;
+      delete d.cbm;
+      delete d.avg_cc;
+    });
+
+    //specify the dimensions and their order
+    var myDimensions = {
+      "wmc": { type: "number" },
+      "max_cc": { type: "number" },
+      "ca": { type: "number" },
+      "ce": { type: "number" },
+      "lcom3": { type: "number" },
+      "noc": { type: "number" },
+      "dit": { type: "number" },
+      "loc": { type: "number" },
+      "amc": { type: "number" },
+      "npm": { type: "number" },
+      "bug": { type: "number" },
+    };
+
+    pcz = d3.parcoords()("#parallelplot")
+      .data(data)
+      .hideAxis(["name"])
+      .composite("darken")
+      .color(function (d) {
+        return "#AAAAAAAA";
+      })
+      .hideAxis(['cname'])
+      .dimensions(myDimensions)
+      .render()
+      .brushMode("1D-axes")  // enable brushing
+      .interactive() // command line mode
+      .brushedColor("black");
+
+    // adding axis labels
+    pcz.svg.selectAll(".dimension")
+      .selectAll(".label")
+      .style("font-size", "14px");
+
+    pcz.on("brush", function (d) {
+      var content = 'The current selection contains ' + d.length + ' class' + (d.length == 1 ? '' : 'es');
+      if (d.length == 1) {
+        content += ', ' + printList([createClassSpan(d[0].cname)]);
+      }
+      else if (d.length == 2) {
+        content += ', ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname)]);
+      }
+      else if (d.length == 3) {
+        content += ', ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
+      }
+      scatterfilter(d);
+      content += '.';
+      updateCaption(content);
+      //TODO: !!CRUCIAL!!!! not a neat solution, it's more like a hack at the moment
+      if (d.length == 293 || d.length == 0) {
+        resetScatterplot();
+        updateCaption('');
+      }
+      haveClassToPersist = true;
+    });
+
+  }
+  function unHighlight() {
+    //clearing the highlighting
+    pcz.unhighlight();
+  }
+  function highlightEdge(d) {
+    var classData = {
+      cname: d.cname,
+      amc: d.amc,
+      bug: d.bug,
+      ca: d.ca,
+      ce: d.ce,
+      dit: d.dit,
+      lcom3: d.lcom3,
+      loc: d.loc,
+      max_cc: d.max_cc,
+      noc: d.noc,
+      npm: d.npm,
+      wmc: d.wmc
+    };
+    pcz.highlight([classData]);
+
+  }
+  function makeEdgePersistent(className) {
+    //TODO: maybe find a better way of doing it. 
+    pcz.brushReset();
+    pcz.color(function (d) {
+      if (d.cname === className) {
+        return 'black';
+      }
+      return '#AAAAAAAA';
+    }).render();
+  }
+  function resetParallelPlot() {
+    //TODO: maybe find a better way of doing it. 
+    pcz.brushReset();
+    pcz.color(function (d) {
+      return '#AAAAAAAA';
+    }).render();
+  }
+
+  function parallelfilter(dims) {
+    for (var dim in dims) {
+      var domain = pcz.dimensions()[dim].yscale["domain"]();
+
+      if (dims[dim][0] == null) {
+        dims[dim][0] = Math.min(domain[0], domain[1]);
+      }
+      if (dims[dim][1] == null) {
+        dims[dim][1] = Math.max(domain[0], domain[1]);
+      }
+    }
+    pcz.brushReset();
+    pcz.brushExtents(dims);
+  }
+
+  /* ------------------------------------------------------------------------*/
+  /* Scatter Plot */
+  /* ------------------------------------------------------------------------*/
+
+  // TODO: Fix size and layout of scatterplot 
+  // TODO: Needs cleaning and refactoring 
+  function makeScatterPlot(data) {
+
+    var controlsX = d3.select('#controlsX');
+    var controlsY = d3.select('#controlsY');
+    var tooltip = d3.select('#tooltip').style("opacity", 0);
+
+    var OUTLIER_THRESHOLD = 15, selectData = [], prev_data, excluded_keys = ["smells", "cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc", "x", "y"], prev_options = {}, dimensions = [];
+
+    prev_data = clone(data);
+
+    var columns = Object.keys(data[0]);
+    selectData = [];
+    for (var c in columns) {
+      if (excluded_keys.indexOf(columns[c]) == -1) {
+        selectData.push({ text: columns[c] });
+      }
+    }
+
+    setup(data);
+
+    function xChange() {
+      prev_options.xSelect = this.value;
+      if (prev_data) {
+        var chart_data = clone(prev_data);
+        xVal = this.value;
+        setup(chart_data);
+      }
+    }
+
+    function yChange() {
+      prev_options.ySelect = this.value;
+      if (prev_data) {
+        var chart_data = clone(prev_data);
+        yVal = this.value;
+        setup(chart_data);
+      }
+    }
+
+    function updateThreshold() {
+      const thresh = OUTLIER_THRESHOLD;
+      try { OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value); } catch (e) { }
+      if (thresh != OUTLIER_THRESHOLD) {
+        var chart_data = clone(prev_data);
+        setup(chart_data);
+      }
+    }
+
+    function setup(data) {
+      try { OUTLIER_THRESHOLD = parseInt(document.getElementById("outlierInput").value); } catch (e) { }
+
+      d3.selectAll('#controlsX>*').remove();
+      d3.selectAll('#controlsY>*').remove();
+
+      var xSpan = controlsX.append('span')
+        .text('x: ');
+
+      var xInput = controlsX.append('select')
+        .attr('id', 'xSelect')
+        .on('change', xChange)
+        .selectAll('option')
+        .data(selectData)
+        .enter()
+        .append('option')
+        .attr('value', function (d) { return d.text })
+        .text(function (d) { return d.text; });
+
+      var ySpan = controlsY.append('span')
+        .text('y: ')
+
+      var yInput = controlsY.append('select')
+        .attr('id', 'ySelect')
+        .on('change', yChange)
+        .selectAll('option')
+        .data(selectData)
+        .enter()
+        .append('option')
+        .attr('value', function (d) { return d.text })
+        .text(function (d) { return d.text; });
+
+      dimensions = [];
+      d3.keys(data[0]).map(function (item) {
+        try {
+          if (item != "cname" && !isNaN(parseFloat(data[0][item]))) {
+            dimensions.push(item);
+          }
+        } catch (e) { }
+      });
+
+      if (scatterPlotDimensions.length == 0) {
+        // Dimensions coming from the x and y dimension selectors
+        var dims = {};
+        var dimension = [dimensions[0], dimensions[0]];
+        try {
+          if (prev_options.xSelect != null) {
+            document.getElementById("xSelect").value = prev_options.xSelect;
+            dimension[0] = prev_options.xSelect;
+            dims[dimension[0]] = [null, 0];
+          }
+        } catch (e) { }
+        try {
+          if (prev_options.ySelect != null) {
+            document.getElementById("ySelect").value = prev_options.ySelect;
+            dimension[1] = prev_options.ySelect;
+            dims[dimension[1]] = [null, 0];
+          }
+        } catch (e) { }
+      }
+      else {
+        //Dimensions coming from the global variable.
+        dimension = scatterPlotDimensions;
+        document.getElementById("xSelect").value = dimension[0];
+        document.getElementById("ySelect").value = dimension[1];
+      }
+
+
+      d3.selectAll("#chart>*").remove();
+      var h = d3.select("#chart").style("height");
+      var size = +h.substring(0, h.length - 2) - 40;
+
+      var scatterplot = ScatterPlot().$el("#chart").size(size).threshold(12).margin(40).threshold(OUTLIER_THRESHOLD)
+        .dotRadius(4).dotOpacity(1).dimensions(dimension).data(data).mouseover(function (d, i) {
+          tooltip.style("opacity", 1)
+            .html((d.cname ? d.cname : ("label" + d.index.toString())))
+            .style("left", (d3.event.pageX - 155) + "px")  // specify x location
+            .style("top", (d3.event.pageY - 110) + "px");  // specify y location
+        }).mouseout(function (d) {
+          tooltip.style("opacity", 0);
+        });
+      scatterplot.render();
+    }
+    // Clearing the gloabl variable after scatter plot has been made
+    scatterPlotDimensions.length = 0;
+
+  }
+  function scatterfilter(newdata) {
+    var g = d3.select("#chart svg g");
+    g.selectAll(".dot")
+      .style("fill", function (d, i) { return newdata[i] ? "black" : "#AAAAAAAA"; });
+  }
+  //For resetting the scatterplot completely
+  function resetScatterplot() {
+    var g = d3.select("#chart svg g");
+    g.selectAll(".dot")
+      .style("fill", function (d) {
+        return "#AAAAAAAA";
+      });
+  }
+</script>
+</html>
