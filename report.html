@@ -453,7 +453,7 @@
   function loadSourcecode(className) {
     updateDetailPanel("Class " + className.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
     var src = javaCode[className];
-    if (src == undefined) { $("#sourcecode").text('Source code for this class is not available!'); }
+    if (src == undefined) { $("#sourcecode").text('Source code of this class is not available!'); }
     else {
       src = src.substring(src.indexOf("package "));   // cut out license text
       $("#sourcecode").text(src);
@@ -992,14 +992,14 @@
       else if (d.length == 3) {
         content += ', ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
       }
-      scatterfilter(d);
+      // scatterfilter(newdata);
       content += '.';
       updateCaption(content);
       //TODO: !!CRUCIAL!!!! not a neat solution, it's more like a hack at the moment
-      if (d.length == 293 || d.length == 0) {
-        resetScatterplot();
-        updateCaption('');
-      }
+      // if (d.length == 293 || d.length == 0) {
+      //   resetScatterplot();
+      //   updateCaption('');
+      // }
       haveClassToPersist = true;
     });
 
