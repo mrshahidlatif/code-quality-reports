@@ -594,6 +594,7 @@
   $(document).on("click", "#closeBtn", function () {
     removePersistentHighlighting();
     updateDetailPanel('', '');
+    $('#detailsHeader').empty();
   });
 
   // TODO: reimplement - separate selecting the dimensions in the scatterplot from loading the source code
@@ -815,11 +816,12 @@
     $("#detailsHeader").text(title);
     $("#detailsContent").empty();
     $("#detailsContent").append($(content));
+    $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
   }
   function updateClassDescription(content) {
     $("#detailsContent").prepend('<p id="classDescription"></p>');
     $('#classDescription').html(content);
-    $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
+    // $('#detailsHeader').prepend('<span id="closeBtn">[X] </span>');
   }
 
   function findBadSmellsInClass(className) {
