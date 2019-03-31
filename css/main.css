@@ -355,7 +355,10 @@ svg .bug rect {
 .clickable {
     border-bottom: 1px solid black;
 }
-
+/* label of packages in sparlines */
+.lbl:hover{
+    cursor: context-menu; 
+}
 .clickable:hover {
     cursor: pointer;
     color: #666666;
