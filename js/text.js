@@ -344,10 +344,12 @@ function generateAttributeTooltip(metricList, condBad, condRegular) {
     metricList = metricList.map(metric => generateMetricSpan(metric));
     var text = '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p>';
     if (condBad.length > 1) {
-        return text + '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + ' OR ' + generateShortMetricSpan(condBad[1][0]) + ' ' + condBad[1][1] + '<br><i>Regular</i>: not <i>low</i> AND (' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + ' OR ' + generateShortMetricSpan(condRegular[1][0]) + ' ' + condRegular[1][1] + ')<br><i>Good</i>: all other cases</p>';
+        text += '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + ' OR ' + generateShortMetricSpan(condBad[1][0]) + ' ' + condBad[1][1] + '<br><i>Regular</i>: not <i>low</i> AND (' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + ' OR ' + generateShortMetricSpan(condRegular[1][0]) + ' ' + condRegular[1][1] + ')<br><i>Good</i>: all other cases</p>';
     } else {
-        return text + '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + '<br><i>Regular</i>: not <i>low</i> AND ' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + '<br><i>Good</i>: all other cases</p>';
+        text += '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + '<br><i>Regular</i>: not <i>low</i> AND ' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + '<br><i>Good</i>: all other cases</p>';
     }
+    return text + '<p>The detailed embedded visualization can be expanded by clicking on the [+] icon. Each bar in this visualization represents a class and the classes are grouped by packages.</p>';
+   
 }
 
 /* ------------------------------------------------------------------------*/
