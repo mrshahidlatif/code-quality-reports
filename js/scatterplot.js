@@ -6,7 +6,6 @@ function ScatterPlot() {
     var colorScale = d3.scale.ordinal(d3.schemeCategory10);
     var data;
     var dimensions = []
-    // FIXME: exclusion of cbo does not have an effect
     var excluded_dimensions = ["cname", "index", "neighbors", "rfc", "dam", "moa", "mfa", "cam", "ic", "cbm", "avg_cc", "lcom", "cbo"];
     var dotRadius = 3;
     var mouseout = function (d, i) { };
