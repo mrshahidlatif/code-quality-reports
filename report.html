@@ -486,7 +486,7 @@
 
       parallelfilter(dims);
 
-      var caption = 'The <span class="BSLegend">Classes</span> containing Large Class smell have <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
+      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Large Class smell; their <span class="loc">loc</span> > 1500 and <span class="amc">amc</span> > 129.';
       updateCaption(caption);
     }
   });
@@ -510,7 +510,7 @@
       dims['wmc'] = [16, null];
       parallelfilter(dims);
 
-      var caption = 'The <span class="BSLegend">Classes</span> containing Functional Decomposition smell have <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
+      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Functional Decomposition smell; their <span class="wmc">wmc</span> > 16 and <span class="npm">npm</span> < 8';
       updateCaption(caption);
     }
   });
@@ -534,7 +534,7 @@
       dims['amc'] = [151, null];
       parallelfilter(dims);
 
-      var caption = 'The <span class="BSLegend">Classes</span> containing Spaghetti Class smell have <span class="amc">amc</span> > 151';
+      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Spaghetti Class smell; their <span class="amc">amc</span> > 151';
       updateCaption(caption);
     }
   });
@@ -558,7 +558,7 @@
       dims['wmc'] = [0, 0.1];
       parallelfilter(dims);
 
-      var caption = 'The <span class="BSLegend">Classes</span> containing Lazy Class smell have <span class="wmc">wmc</span> = 0';
+      var caption = 'The classes indicated by black <span class="boxBlack"></span> color have Lazy Class smell; their <span class="wmc">wmc</span> = 0';
       updateCaption(caption);
     }
   });
@@ -992,11 +992,13 @@
       else if (d.length == 3) {
         content += ', ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
       }
+      //TODO: fix the problem with linking of this selection with scatterplot
       // scatterfilter(newdata);
       updateCaption(content + ' <span class="pcpBrushInfo infoIcon" title="">ⓘ</span>.'); 
       $(".pcpBrushInfo").tooltip({
         content: 'To reset the manual brushing, click on the brushed axis anywhere outside the rectangle.'
       });
+
       //TODO: !!CRUCIAL!!!! not a neat solution, it's more like a hack at the moment
       // if (d.length == 293 || d.length == 0) {
       //   resetScatterplot();

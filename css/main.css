@@ -267,6 +267,12 @@ svg .bug rect {
     display: inline-block;
     background: #AAAAAAAA;
 }
+.boxBlack {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: black;
+}
 
 /* ------------------------------------------------------------------------
 /* Tooltips
