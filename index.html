@@ -59,7 +59,7 @@
   /* Global variables */
   /* ------------------------------------------------------------------------*/
 
-  var projectName = "xerces 1.2_filtered"; // Default project; other can be loaded through an URL parameter e.g., "?project=lucene-2.0_filtered"
+  var projectName = "xerces 1.2"; // Default project; other can be loaded through an URL parameter e.g., "?project=lucene-2.0_filtered"
   var fullData;
   var badClasses;
   var classNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently
@@ -73,8 +73,6 @@
 
   var LOC, AMC, WMC, NPM;
 
-
-
   var badCt = 0, bugCt = 0, bugBlobCt = 0, bugDecomCt = 0, blobDecomCt = 0, blobSpaCt = 0, blobLazyCt = 0, superSmellsCt = 0, classCt = 0, blobCt = 0, blobList = "", bugList = "", blobArr = [], bugArr = [], goodCouplingArr = [], regularCouplingArr = [], badCouplingArr = [], goodComplexityArr = [], regularComplexityArr = [], badComplexityArr = [], goodInheritanceArr = [], regularInheritanceArr = [], badInheritanceArr = [], goodCohesionArr = [], regularCohesionArr = [], badCohesionArr = [], bugBlobArr = [], bugDecomArr = [], blobDecomArr = [], blobSpaArr = [], blobLazyArr = [], superSmellsArr = [], goodCouplingList = "", regularCouplingList = "", badCouplingList = "", goodInheritanceList = "", regularInheritanceList = "", badInheritanceList = "", goodCohesionList = "", regularCohesionList = "", badCohesionList = "", goodComplexityList = "", regularComplexityList = "", badComplexityList = "", bugBlobList = "", bugDecomList = "", blobDecomList = "", blobSpaList = "", blobLazyList = "", superSmellsList = "", decomCt = 0, decomList = "", decomArr = [], spaCt = 0, spaList = "", spaArr = [], highblobCt = 0, highblobList = "", highblobArr = [], lazyCt = 0, lazyList = "", lazyArr = [], blobTag = false, decomTag = false, projInfo = "", numberOfPackages = 0, bugSpaArr = [], bugLazyArr = [], bugSpaList = "", bugLazyList = "", bugSpaCt = 0, bugLazyCt = 0, spaTag = false, lazyTag = false;
 
   /* ------------------------------------------------------------------------*/
@@ -86,7 +84,11 @@
     if (param) {
       projectName = param;
     }
-    generateReport(d3.csv.parse(csvData[projectName]));
+    if (!csvData[projectName]) {
+      console.error('Project "'+projectName+'" is unknown.')
+    } else {
+      generateReport(d3.csv.parse(csvData[projectName]));
+    }
   });
 
   function generateReport(data) {

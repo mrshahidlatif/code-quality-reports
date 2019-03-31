@@ -20,11 +20,11 @@ function generateText(data) {
 }
 
 function introText() {
+    // TODO: intro text for Lucene
     var text = "";
     if (projectName.includes("xerces")) {
         projInfo = "A collection of software libraries for parsing, validating, serializing, and manipulating XML";
     }
-
     if (projectName.includes("log4j")) {
         projInfo = "An open source project that allows the developer to control which log statements are output with arbitrary granularity.";
     }
@@ -32,7 +32,6 @@ function introText() {
     return text;
 }
 
-// TODO: eliminate interfaces from analysis (throw them out entirely)
 // TODO: info icon after "analysis of software metrics"
 // TODO: reorder list of bad smells based on their frequency
 // TODO: mention the number of classes affected by smells, not just the number of smells
