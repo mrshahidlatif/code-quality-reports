@@ -453,9 +453,12 @@
   function loadSourcecode(className) {
     updateDetailPanel("Class " + className.split(".").pop(), $('<pre id="sourcecodeContainer"><code id="sourcecode" class="language-java"></code></pre>'));
     var src = javaCode[className];
-    src = src.substring(src.indexOf("package "));   // cut out license text
-    $("#sourcecode").text(src);
-    Prism.highlightElement($("#sourcecode")[0]);
+    if (src == undefined) { $("#sourcecode").text('Source code for this class is not available!'); }
+    else {
+      src = src.substring(src.indexOf("package "));   // cut out license text
+      $("#sourcecode").text(src);
+      Prism.highlightElement($("#sourcecode")[0]);
+    }
     updateClassDescription(generateClassDescription(className));
     makeSelectionPersistent(className);
   }
@@ -1199,7 +1202,7 @@
   function scatterfilter(newdata) {
     var g = d3.select("#chart svg g");
     g.selectAll(".dot")
-      .style("fill", function (d, i) { return newdata[i] ? "black" : "#AAAAAAAA"; });
+      .style("fill", function (d, i) {  return newdata[i] ? "black" : "#AAAAAAAA"; });
   }
   //For resetting the scatterplot completely
   function resetScatterplot() {
