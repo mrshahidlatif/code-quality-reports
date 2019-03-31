@@ -159,7 +159,7 @@
         }
         if (i + 1 == pckgs[pckg].length || (b + 1) % maxbars_row == 0) {  //if max number of bars per row have been added or it's the last bar
           //add label to last added divs
-          $(".sl>div.pckg:last-child").append('<div class="lbl"><span>' + pckg + '</span></div>');
+          $(".sl>div.pckg:last-child").append('<div class="lbl"><span class="pkgLbl">' + pckg + '</span></div>');
           newlbls = $(".sl>div.pckg:last-child>div.lbl>span");
           var newlbl = newlbls.eq(0);
           if ((b + 1) % maxbars_row > 0 && newlbl.outerWidth(true) > barwd * numbars_pckg_row) newlbls.css('visibility', 'hidden');
