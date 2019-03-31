@@ -993,8 +993,10 @@
         content += ', ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
       }
       // scatterfilter(newdata);
-      content += '.';
-      updateCaption(content);
+      updateCaption(content + ' <span class="pcpBrushInfo infoIcon" title="">ⓘ</span>.'); 
+      $(".pcpBrushInfo").tooltip({
+        content: 'To reset the manual brushing, click on the brushed axis anywhere outside the rectangle.'
+      });
       //TODO: !!CRUCIAL!!!! not a neat solution, it's more like a hack at the moment
       // if (d.length == 293 || d.length == 0) {
       //   resetScatterplot();
