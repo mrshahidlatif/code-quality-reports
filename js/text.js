@@ -362,7 +362,7 @@ function generateClassDescription(className) {
     // TODO: make bad smells clickable
     //bs = bs.map(smell => '<span class="clickable">' + smell + '</span>')
     var badQualityWith = [];
-    if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
+    if (badComplexityArr.indexOf(createClassSpan(className)) != -1) {
         badQualityWith.push('<span class="complexityMetric clickable">complexity</span>');
     }
     if (badCouplingArr.indexOf(createClassSpan(className)) != -1) {
