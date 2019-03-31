@@ -989,13 +989,13 @@
       var content = 'The current selection (marked with black <span class="boxBlack"></span> color) contains ' + num2word(d.length) + ' class' + (d.length == 1 ? '' : 'es');
       
       if (d.length == 1) {
-        content += ': ' + printList([createClassSpan(d[0].cname)]);
+        content += ': ' + printList([createClassSpan(d[0].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[0][sAxisName].toFixed()+')']);
       }
       else if (d.length == 2) {
-        content += ': ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname)]);
+        content += ': ' + printList([createClassSpan(d[0].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[0][sAxisName].toFixed()+')', createClassSpan(d[1].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[1][sAxisName].toFixed()+')']);
       }
       else if (d.length == 3) {
-        content += ': ' + printList([createClassSpan(d[0].cname), createClassSpan(d[1].cname), createClassSpan(d[2].cname)]);
+        content += ': ' + printList([createClassSpan(d[0].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[0][sAxisName].toFixed()+')', createClassSpan(d[1].cname)+ ' (' + generateShortMetricSpan(sAxisName) + ': '+d[1][sAxisName].toFixed()+')', createClassSpan(d[2].cname) + ' (' + generateShortMetricSpan(sAxisName) + ': '+d[2][sAxisName].toFixed()+')']);
       }
       else if (d.length > 3 && sAxis[sAxisName] != undefined) {
         content += '. The values of ' + generateShortMetricSpan(sAxisName)  + ' for this selection ranges between '+ sAxis[sAxisName][0].toFixed(2) + ' and '+sAxis[sAxisName][1].toFixed(2);
