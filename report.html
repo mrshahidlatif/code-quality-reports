@@ -691,6 +691,8 @@
     haveClassToPersist = true;
     persistentClass = className;
 
+    updateCaption('The class '+createClassSpan(className) + ' is marked with <span class="boxBlack"></span> color.');
+
   }
   function removePersistentHighlighting(className) {
     var classIndex = classNameToIndex[className];
