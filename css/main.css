@@ -340,7 +340,7 @@ svg .bug rect {
 }
 
 .infoIcon:hover {
-    cursor: pointer;
+    cursor: context-menu;
     color: #666666;
 }
 
