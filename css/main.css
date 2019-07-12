@@ -18,7 +18,9 @@ body {
 
 #grid-container {
     display: grid;
-    grid-template-areas: 'header header' 'main right' 'vis right';
+    grid-template-areas: 'header header' 'main right' 'vis right'
+                        'footer footer';
+    
     grid-gap: 10px;
     height: 100vh;
     background-color: #e8e8e8;
@@ -530,4 +532,47 @@ div.pckg:hover>div.lbl>span {
     width: 100%;
     height: 100%;
     position: absolute;
+}
+
+/* ------------------------------------------------------------------------
+/* Footer
+/* ------------------------------------------------------------------------*/
+
+.footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.footer li {
+    float: right;
+}
+
+.footer li a {
+    display: block;
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+#disclaimer{
+   display: block;
+}
+
+.footer li a:hover:not(.active) {
+   color: DodgerBlue;
+}
+
+.footer {
+    grid-area: footer;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 25px;
+    background-color: #e8e8e8;
+    color: black;
+    vertical-align: top;
+    line-height: 5px;  
+    font-size: 08pt;
 }

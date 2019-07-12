@@ -51,6 +51,13 @@
       <div id="detailsContent"></div>
     </div>
   </div>
+  <div class="footer">
+      <ul>
+        <li><a href="index.html">ABOUT</a></li>
+        <li><a href="https://www.uni-due.de/de/impressum.shtml">IMPRINT</a></li>
+        <li><a href="https://www.uni-due.de/de/datenschutz.php">DATA PRIVACY</a></li>
+      </ul>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -58,9 +65,9 @@
   /* ------------------------------------------------------------------------*/
   /* Global variables */
   /* ------------------------------------------------------------------------*/
-
+  
   var projectName = "xerces-1.2"; // Default project; other can be loaded through an URL parameter e.g., "?project=lucene-2.0_filtered"
-
+  document.title= 'Code Quality Document - ' + projectName;
   var fullData;
   var badClasses;
   var classNameToIndex = {}; // dictionary to retrieve idicies by class name efficiently

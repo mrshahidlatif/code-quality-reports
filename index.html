@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='css/main.css' type='text/css' media='all' />
-    <title></title>
+    <title>Code Quality Documents</title>
     <style>
         body {
             font-family: Sans-Serif;
@@ -24,7 +24,7 @@
             background-color: '#gray';
             padding: 0px;
             text-align: center;
-			      border-bottom: 1px solid gray
+			border-bottom: 1px solid gray
         }
         #title h2 {
             padding-top: 0px;
@@ -45,16 +45,6 @@
           padding: 20px;
         }
 
-        a {
-            font-weight: bold;
-            text-decoration: none;
-            color: black;
-        }
-
-        a:hover {
-            color: rgb(0, 139, 253);
-            text-decoration: underline;
-        }
 		#image{
 			display: block;
 			margin-left: auto;
@@ -65,25 +55,59 @@
 			max-width:100%;
 			max-height:100%;
         }
+        .footer{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 08pt;
+            font-style: normal;
+           
+        }
+        .uni {
+            margin: 5px;
+            color: black;
+        }
+
+        .person {
+            /* background-color: #f8f8f8; */
+            float: left;
+            height: 160px;
+            width: 200px;
+            text-align: center;
+            padding: 20px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .pic img {
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            height: 100px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+        .person a{
+            color: gray;
+        }
+        .person a:hover{
+            color: dodgerblue;
+        }
        
     </style>
 </head>
 <body>
     <div id="main">
         <div id="title">
-            <h2>Exploranative Code Quality Documents  </h2>
-            <h3>Supplemental Material &ndash; Submission ID 1057</h3>
+            <h2>Exploranative Code Quality Documents</h2>
+            <!-- <h3>Supplemental Material</h3> -->
         </div>
         <p>Our interactive tool runs locally without any Web server installed and is fully self-contained (i.e., the package includes all required data). We have tested it in the current versions of Mozilla Firefox and Google Chrome. Please note that this system is a prototype. Hence, please excuse occasional bugs that might still appear and suboptimal loading times.</p>
 		<h2>Available Code Quality Documents</h2>
     <p>Please click on any of the following project to explore its code quality document in our tool:</p>
 		<ul class="projNames">
-			<li><a href='report.html?project=xerces-1.2' target="Code quality document - xerces-1.2">Xerces 1.2</a></li>
+			<li><a href='report.html?project=xerces-1.2'>Xerces 1.2</a></li>
 			<!-- <li><a href='report.html?project=xerces-1.1' target="Code quality document - xerces-1.1">Xerces 1.1</a></li> -->
-			<li><a href='report.html?project=lucene-2.0' target="Code quality document - lucene-2.0">Lucene 2.0</a></li>
+			<li><a href='report.html?project=lucene-2.0'>Lucene 2.0</a></li>
 			<!-- <li><a href='report.html?project=log4j-1.2' target="Code quality document - log4j-1.2">Log4j 1.2</a></li> -->
 			<!-- <li><a href='report.html?project=zuzel' target="Code quality document - zuzel">Zuzel</a></li> -->
-			<li><a href='report.html?project=forrest-0.7' target="Code quality document - forrest-0.7">Forrest 0.7</a></li>
+			<li><a href='report.html?project=forrest-0.7'>Forrest 0.7</a></li>
         </ul>
 		<div id="image">
 			<figure>
@@ -101,6 +125,78 @@
             <li>Text that appears in bold font, and the elements shown in black colors are relatec to persistent (click) interactions. </li>
             <li>Important terms (such as software metrics, quality attributes, etc.) contain colored borders at their bottom.</li>
         </ul>
+        <h2>Publication</h2>
+        <p>This tool is a supplemental material to our paper that has been published in <b>IEEE Transactions on Visualization and Computer Graphics</b>. If you use this tool or build on top of it, please cite this work as: 
+        <ul>
+            <li>H. Mumtaz, S. Latif, F. Beck, and D. Weiskopf. Exploranative Code Quality Documents. <i>IEEE Transactions on Visualization and Computer Graphics (TVCG)</i>, 2020  </li>
+        </ul>
+        </p>
+        <h2>Authors</h2>
+        <div class="person">
+            <div class="pic">
+                    <img src="/images/haris.jpg">
+            </div>
+            <div class="name">
+                <a href="https://www.vis.uni-stuttgart.de/institut/team/Mumtaz-00001/" target="blank">
+                Haris Mumtaz
+                </a>
+            </div>
+            <div class="uni">
+                University of Stuttgart
+            </div>
+        </div>
+
+        <div class="person">
+            <div class="pic">
+                    <img src="/images/shahid.jpg">
+            </div>
+            <div class="name">
+                <a href="https://www.vis.wiwi.uni-due.de/en/team/shahid-latif/" target="blank">
+                Shahid Latif
+                </a>
+            </div>
+            <div class="uni">
+                University of Duisburg-Essen
+            </div>
+        </div>
+
+        <div class="person">
+            <div class="pic">
+                    <img src="/images/fabian.jpg">
+            </div>
+            <div class="name">
+                <a href="https://www.vis.wiwi.uni-due.de/en/team/fabian-beck/" target="blank">
+                Fabian Beck
+                </a>
+            </div>
+            <div class="uni">
+                University of Duisburg-Essen
+            </div>
+        </div>
+        <div class="person">
+            <div class="pic">
+                    <img src="/images/daniel.jpg">
+            </div>
+            <div class="name">
+                <a href="https://www.vis.uni-stuttgart.de/institut/team/Weiskopf-00007/" target="blank">
+                Daniel Weiskopf
+                </a>
+            </div>
+            <div class="uni">
+                University of Stuttgart
+            </div>
+        </div>       
+        <div style="clear: both"></div>
+
+
+    </div>
+    <div class="footer">
+            <ul>
+              <li><a href="index.html">ABOUT</a></li>
+              <li><a href="https://www.uni-due.de/de/impressum.shtml">IMPRINT</a></li>
+              <li><a href="https://www.uni-due.de/de/datenschutz.php">DATA PRIVACY</a></li>
+              <!-- <li style="float: right;"> <a id="disclaimer">Disclaimer: Author's profile text is automatically generated. Errors and omissions are excepted.</a>></li> -->
+            </ul>
     </div>
 </body>
 
