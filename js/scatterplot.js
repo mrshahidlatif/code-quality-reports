@@ -29,7 +29,7 @@ function ScatterPlot() {
             return obj;
 
         if (obj instanceof Date)
-            var temp = new obj.constructor(); //or new Date(obj);
+            var temp = new obj.constructor(); 
         else
             var temp = obj.constructor();
 
@@ -66,7 +66,7 @@ function ScatterPlot() {
             d.index = i;
             d.neighbors = [];
         });
-        size = size + 10; // increase height because x-axis label is not used TODO: replace by better solution
+        size = size + 10; // increase height because x-axis label is not used
 
         var xValue = function (d) { return d[dimensions[0]]; }, // data -> value
             xScale = d3.scale.linear().range([0, size]),     // value -> display
@@ -87,36 +87,13 @@ function ScatterPlot() {
             .style("font-size", "12px")
             .attr("transform", "translate( 0, " + size + ")") // move axis to bottom of chart
             .call(xAxis);
-        //     .call(d3.axis(xScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
-        //   }));
-
-        // x-axis label
-        /*root.append("text")
-            .attr("class", "label")
-            .attr("x", size/2)
-            .attr("y", size+30)
-            .style("text-anchor", "middle")
-            .text(dimensions[0])
-            .style("font-size","12px");*/
-
-        // y-axis
+ 
         root.append("g")
             .attr("class", "axis y-axis")
             .style("font-size", "12px")
             .attr("transform", "translate(" + 0 + ",0)") // move axis to bottom of chart
             .call(yAxis);
-        //     .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {  if ((d / 1000) >= 1) { d = d / 1000 + "K";} return d;
-        //   }));
-
-        // y-axis label
-        /*root.append("text")
-            .attr("class", "label")
-            .attr("x", 0-(size/2))
-            .attr("y", 0-margin*0.7)
-            .attr("transform", "rotate(-90)") // rotate text -90 degrees from x, y
-            .style("text-anchor", "middle")
-            .text(dimensions[1])
-            .style("font-size","12px");*/
+    
 
         root.selectAll(".dot")
             .data(data)
@@ -433,7 +410,7 @@ function ScatterPlot() {
         var c = 0;
         labels.forEach((d, i) => {
             if (d.index !== undefined && label.index !== d.index && lineRectIntersects(line, getLabelLeftCorner(d))) c++;
-            // if(b && d.note.label == "XSchemaValidator")console.log(line, getLabelLeftCorner(d))
+            
         });
         return c;
     }

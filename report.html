@@ -180,8 +180,6 @@
       if (s.highblob) {
         highblobCt++;
         highblobArr.push(classSpan);
-        //bad = true;
-
 
       }
 
@@ -430,7 +428,6 @@
   /* Click and hover events */
   /* ------------------------------------------------------------------------*/
 
-  // TODO: also show the metric description in the details panel
   $(document).on("click", "button.collapsible", function () {
     $(this)[0].classList.toggle("active");
     var content = this.nextElementSibling;
@@ -474,9 +471,6 @@
     makeSelectionPersistent(className);
   }
 
-
-  // TODO: give for each pattern an example (maybe one for high, medium and low).
-  // TODO: integrate links to the respective metrics
   $(document).on("click", ".smellBlob", function () {
     updateDetailPanel("Background: The 'Large Class' Smell", '<p>The Large Class smell identifies those classes that contain too much functionality. Most likely, it is recommendable to split these classes into multiple ones. Exceptions might be generated code.</p>');
 
@@ -610,21 +604,6 @@
   });
 
 
-  // TODO: reimplement - separate selecting the dimensions in the scatterplot from loading the source code
-  function updateScatterPlot(className) {
-    /*//TODO: complete it and try to do the same when a bar is clicked in the sparklines
-    //Selecting relevant dimensions in scatterplot
-    var cSmells = fullData[classNameToIndex[className]].smells;
-    if (clickedClass.parent().attr('id') === "textAPanel"){
-      scatterPlotDimensions=['loc','bug'];
-      makeScatterPlot(fullData);
-    }
-    else if (cSmells.blob == true) {
-        scatterPlotDimensions=['loc','amc'];
-        makeScatterPlot(fullData);
-    }*/
-  }
-
   function showClassCaption(className) {
     var bs = findBadSmellsInClass(className);
     $('#caption').append('<span id="dynamicCaption"></span>');
@@ -632,7 +611,6 @@
   }
   function showPersistentClassCaption(className) {
     var bs = findBadSmellsInClass(className);
-    // $('#caption').append('<span id="dynamicPersistentCaption"></span>');
     var content = createClassSpan(className) + ' carries ' + (bs.length === 1 ? 'a ' : '') + (bs.length > 0 ? printList(bs) : 'no') + ' code smell' + (bs.length === 1 ? '' : 's') + '.';
     updateCaption(content)
   }
@@ -825,7 +803,6 @@
     return s;
   }
 
-  // TODO: use this util function consistently
   function updateDetailPanel(title, content) {
     $("#detailsHeader").text(title);
     $("#detailsContent").empty();
@@ -849,7 +826,6 @@
     return bs;
   }
 
-  // TODO: use consistently
   function createCollapsibleClassList(list) {
     return '<button class="collapsible"></button><div class="content">' + printList(list) + '</div>';
   }
@@ -1087,7 +1063,6 @@
   /* Scatter Plot */
   /* ------------------------------------------------------------------------*/
 
-  // TODO: Fix size and layout of scatterplot 
   // TODO: Needs cleaning and refactoring 
   function makeScatterPlot(data) {
 
