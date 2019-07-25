@@ -315,16 +315,16 @@ function generateAndSetTooltipTexts() {
         content: '<p>We classify each class into three categories (<i>low</i>, <i>regular</i>, <i>good</i>) along four quality attributes, each attribute being connected to one or two software metrics. In literature, threshold values for these metrics have been suggested, which we use as a basis for the categorization. </p><p>Reference: Filó, T. G., Bigonha, M., & Ferreira, K. (2015). A catalogue of thresholds for object-oriented software metrics. SOFTENG 2015, 48-55.</p>'
     });
     $(".complexityInfo").tooltip({
-        content: generateAttributeTooltip(['wmc', 'max_cc',], [['wmc', '> 34'], ['max_cc', '> 4']], [['wmc', '> 11'], ['max_cc', '> 2']])
+        content: generateAttributeTooltip(['wmc', 'max_cc',], [['wmc', '> 34'], ['max_cc', '> 4']], [['wmc', '> 11'], ['max_cc', '> 2']],"complexity")
     });
     $(".couplingInfo").tooltip({
-        content: generateAttributeTooltip(['ca', 'ce'], [['ca', '> 39'], ['ce', '> 16']], [['ca', '> 7'], ['ce', '> 6']])
+        content: generateAttributeTooltip(['ca', 'ce'], [['ca', '> 39'], ['ce', '> 16']], [['ca', '> 7'], ['ce', '> 6']], "couling")
     });
     $(".cohesionInfo").tooltip({
-        content: generateAttributeTooltip(['lcom3'], [['lcom3', '> 0.725']], [['lcom3', '> 0.167']])
+        content: generateAttributeTooltip(['lcom3'], [['lcom3', '> 0.725']], [['lcom3', '> 0.167']], "cohesion")
     });
     $(".inheritanceInfo").tooltip({
-        content: generateAttributeTooltip(['noc', 'dit'], [['noc', '> 3'],['dit', '> 4']], [['noc', '> 1'], ['dit','> 2']])
+        content: generateAttributeTooltip(['noc', 'dit'], [['noc', '> 3'],['dit', '> 4']], [['noc', '> 1'], ['dit','> 2']], "inheritance")
     });
     // TODO: add scientific source
     $(".codeSmellsInfo").tooltip({
@@ -340,9 +340,9 @@ function generateAndSetTooltipTexts() {
     
 }
 
-function generateAttributeTooltip(metricList, condBad, condRegular) {
+function generateAttributeTooltip(metricList, condBad, condRegular, attType) {
     metricList = metricList.map(metric => generateMetricSpan(metric));
-    var text = '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing coupling as <i>low</i>, <i>regular</i>, or <i>good</i>.</p>';
+    var text = '<p>We use thresholds values of ' + printList(metricList) + ' for categorizing ' + attType + ' as <i>low</i>, <i>regular</i>, or <i>good</i>.</p>';
     if (condBad.length > 1) {
         text += '<p><i>Low</i>: ' + generateShortMetricSpan(condBad[0][0]) + ' ' + condBad[0][1] + ' OR ' + generateShortMetricSpan(condBad[1][0]) + ' ' + condBad[1][1] + '<br><i>Regular</i>: not <i>low</i> AND (' + generateShortMetricSpan(condRegular[0][0]) + ' ' + condRegular[0][1] + ' OR ' + generateShortMetricSpan(condRegular[1][0]) + ' ' + condRegular[1][1] + ')<br><i>Good</i>: all other cases</p>';
     } else {
