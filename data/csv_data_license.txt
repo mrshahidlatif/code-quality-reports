@@ -1,0 +1,1 @@
+The data in the csv_data.js file is licensed under the Creative Commons Attribution 4.0 International.
